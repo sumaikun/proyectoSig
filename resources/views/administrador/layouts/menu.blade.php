@@ -24,6 +24,11 @@
          <i class="fa fa-th-large"></i> <span><b>Modulos delegados</b></span>
       </a>
    </li>
+   <li @if($op=='actividades') {{'class="active"'}} @endif>
+      <a href="{{ url('admin/actividades') }}">
+         <i class="fa fa-child"></i> <span><b>Reporte de Actividades</b></span>
+      </a>
+   </li>   
 
    
                <!--<li class="treeview">

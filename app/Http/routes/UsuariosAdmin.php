@@ -16,9 +16,9 @@ Route::any('usuarios', function(){
 
 // CARGA LA VISTA PARA AGREGAR UN NUEVO USUARIO
 Route::any('nuevousuario', function(){
-   $roles = Modroles::orderBy('rol_nombre')->get();
-   $dependencias = Moddependencias::orderBy('depe_nombre')->get();
-   $cargos = Modcargos::orderBy('carg_nombre')->get();
+   $roles = psig\models\Modroles::orderBy('rol_nombre')->get();
+   $dependencias = psig\models\Moddependencias::orderBy('depe_nombre')->get();
+   $cargos = psig\models\Modcargos::orderBy('carg_nombre')->get();
    return View::make('administrador.usuarios.nuevousuario', 
    	array('roles' => $roles, 'dependencias' => $dependencias, 'cargos' => $cargos));
 });
@@ -26,7 +26,7 @@ Route::any('nuevousuario', function(){
 
 // ESTA RUTA MUESTRA EL LISTADO DE USUARIOS PARA SU EDICION
 Route::any('listausuario', function(){
-   $usuarios = Modusuarios::orderBy('usu_nombres')->get();
+   $usuarios = psig\models\Modusuarios::orderBy('usu_nombres')->get();
    return View::make('administrador.usuarios.listausuario', array('usuarios' => $usuarios));
 });
 

@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------------------------------                                                                                               
 
 Route::any('modulos', function(){
-  $funciones = Modfuncionalidades::all();
+  $funciones = psig\models\Modfuncionalidades::all();
   return View::make('administrador.modulos.modulos', array('funciones' => $funciones));
 });
 
@@ -20,7 +20,7 @@ Route::post('reg_funcion', 'Confuncionalidades@create');
 Route::get('eliminarfun/{id}', 'Confuncionalidades@destroy');
 
 Route::any('permisos_modulos', function(){
-   $funciones = Modfuncionalidades::all();
+   $funciones = psig\models\Modfuncionalidades::all();
    $usuarios = DB::table('usuarios')
       ->join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
       ->where('roles.rol_nombre', '=', 'usuario')->get();

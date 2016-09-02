@@ -19,8 +19,8 @@ Route::any('cassima', function(){
 
 // categoria y subcategoria
 Route::any('cat_and_sub', function(){
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
    return View::make('administrador.modulos.cassima.cat_and_sub', array('categorias' => $categorias, 'subcategorias' => $subcategorias));
 });
 
@@ -33,8 +33,8 @@ Route::post('registrar_sub', 'Congdsubcategorias@create');
 
 // esta ruta es para editar y ordenar las categorias y las subcategorias
 Route::any('ord_edit_cat_and_sub', function(){
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
    return View::make('administrador.modulos.cassima.ord_edit_cat_and_sub', array('categorias' => $categorias, 'subcategorias' => $subcategorias));
 });
 
@@ -71,8 +71,8 @@ Route::get('ordsubcatup/{idcat}/{idsub}', 'Congdsubcategorias@ordsubup');
 
 // asignar permisos por persona
 Route::any('permisos_per_doc', function(){
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();
          
    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
@@ -81,7 +81,7 @@ Route::any('permisos_per_doc', function(){
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
 
-   $usuarios = Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
+   $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
    ->where('roles.rol_nombre', '=', 'usuario')->get();
          
    return View::make('administrador.modulos.cassima.permisos_per_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'usuarios' => $usuarios));   
@@ -99,8 +99,8 @@ Route::post('reg_permisos', 'Congdpermisosdocumentos@create_per_doc');
 
 // asignar permisos por documento
 Route::any('permisos_doc_per', function(){
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();
          
    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
@@ -109,7 +109,7 @@ Route::any('permisos_doc_per', function(){
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
 
-   $usuarios = Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
+   $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
    ->where('roles.rol_nombre', '=', 'usuario')->get();
          
    return View::make('administrador.modulos.cassima.permisos_doc_per', 
@@ -121,8 +121,8 @@ Route::post('reg_permisos_doc_per', 'Congdpermisosdocumentos@create_doc_per');
 
 // vista principal para asociar permisos a los documentos por cargo
 Route::any('asociar_doc_carg', function(){
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->where('gd_versiones.gdver_estado', '=', 'activo')
@@ -141,7 +141,7 @@ Route::post('buscar_permiso_carg_json', 'Congdpermisoscargos@show');
 
 
 Route::any('permisos_por_cargo', function(){
-   $usuarios = Modusuarios::where('usu_estado', '=', 'activo')->get();
+   $usuarios = psig\models\Modusuarios::where('usu_estado', '=', 'activo')->get();
    return View::make('administrador.modulos.cassima.permisos_por_cargo', array('usuarios' => $usuarios));
 });
 
@@ -156,8 +156,8 @@ Route::post('reg_permisos_por_cargo', 'Congdpermisoscargos@asignar_por_cargo');
 /******************************************** SUBIR DOCUMENTOS ************************************************/
 Route::any('subir_doc', function(){
    // Modgdcategorias::all()->orderBy('gdcat_guia');
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->where('gd_versiones.gdver_estado', '=', 'activo')
@@ -172,8 +172,8 @@ Route::post('registrar_doc', 'Congddocumentos@create');
 
 Route::any('new_version', function(){
 	// Modgdcategorias::all()->orderBy('gdcat_guia');
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
     	->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
     	->where('gd_versiones.gdver_estado', '=', 'activo')
@@ -189,8 +189,8 @@ Route::post('registrar_version', 'Congdversiones@create');
 
 Route::any('update_ver', function(){
 	// Modgdcategorias::all()->orderBy('gdcat_guia');
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->where('gd_versiones.gdver_estado', '=', 'activo')
@@ -209,8 +209,8 @@ Route::post('buscarsubcate_json', 'Congdsubcategorias@store_json');
    
 // pagina principal para inabilitar un documento
 Route::any('disable_doc', function(){
-   $categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
     ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
     ->where('gd_versiones.gdver_estado', '=', 'activo')

@@ -10,7 +10,7 @@
                                                                                        
 
 Route::any('cuenta', function(){  
-	$usuario = Modusuarios::find(Session::get('usu_id'));
+	$usuario = psig\models\Modusuarios::find(Session::get('usu_id'));
    return View::make('usuarios.cuenta.cuenta', array('usuario'=>$usuario));
 });
 

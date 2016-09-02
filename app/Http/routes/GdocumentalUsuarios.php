@@ -14,8 +14,8 @@ Route::any('gdocumental', function(){
 
 // CARGA LA VISTA PRINCIPAL DE LA DESCARGA DE DOCUMENTOS
 Route::any('download_doc', function(){	
- 	$categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();     
+ 	$categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();     
    $documentos = DB::table('gd_documentos')
    	->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->join('usuarios', 'usuarios.usu_id', '=', 'gd_documentos.usu_id')
@@ -42,7 +42,7 @@ Route::post('descargar_doc_json', 'Congddocumentos@download_json');
 Route::post('download_sin_consecutivo', 'Congddocumentos@download_sin_conse_json');
 
 Route::any('registros_pendientes', function(){
-	$consecutivos = Modgdconsecutivos::where('usu_id', '=', Session::get('usu_id'))->where('gdcon_estado', '=', 'abierto')->get();
+	$consecutivos = psig\models\Modgdconsecutivos::where('usu_id', '=', Session::get('usu_id'))->where('gdcon_estado', '=', 'abierto')->get();
    if($consecutivos->isEmpty()){
    	return View::make('usuarios.gdocumental.gdocumental', array('mensaje' => 'No tiene registros pendientes'));
    }else{
@@ -55,8 +55,8 @@ Route::post('guardar_registro', 'Congdregistros@create_pusuario');
 
 // consultar registros del usuario
 Route::any('consultar_registros', function(){	
-	$categorias = Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-	$subcategorias = Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
+	$categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
+	$subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->join('usuarios', 'usuarios.usu_id', '=', 'gd_documentos.usu_id')
@@ -72,28 +72,28 @@ Route::any('consultar_registros', function(){
 
 // consultar linea de tiempo registros del usuario por documento
 Route::any('timeline_registro', function(){	
-	$registros = Modgdregistros::join('gd_permisos_registros', 'gd_permisos_registros.gdreg_id', '=', 'gd_registros.gdreg_id')
+	$registros = psig\models\Modgdregistros::join('gd_permisos_registros', 'gd_permisos_registros.gdreg_id', '=', 'gd_registros.gdreg_id')
       ->where('gd_registros.gddoc_id', '=', Input::get('gddoc_id'))
       ->where('gd_permisos_registros.usu_id', '=', Session::get('usu_id'))
       ->where('gd_permisos_registros.gdperreg_permiso', '=', true)->get();
 
-	$documet = Modgddocumentos::find(Input::get('gddoc_id'));
+	$documet = psig\models\Modgddocumentos::find(Input::get('gddoc_id'));
 	return View::make('usuarios.gdocumental.timeline_reg_doc', array('registros' => $registros, 'documet' => $documet));
 });
 
 // consultar registros del usuario individual
 Route::any('consulta_reg_individual', function(){
-	$documento = Modgddocumentos::where('gddoc_identificacion', '=', trim (Input::get('gddoc_identificacion')))->first();
+	$documento = psig\models\Modgddocumentos::where('gddoc_identificacion', '=', trim (Input::get('gddoc_identificacion')))->first();
 	if(is_null($documento)){
    	return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Documento no encontrado!!');
    }else{
-      $consecutivo = Modgdconsecutivos::where('gddoc_id', '=', $documento->gddoc_id)
+      $consecutivo = psig\models\Modgdconsecutivos::where('gddoc_id', '=', $documento->gddoc_id)
       	->where('gdcon_consecutivo', '=', Input::get('gdcon_consecutivo'))->first();
 
          if(is_null($consecutivo)){
             return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Consecutivo no encontrado!!');
          }else{
-            $registro = Modgdregistros::join('gd_permisos_registros', 'gd_permisos_registros.gdreg_id', '=', 'gd_registros.gdreg_id')
+            $registro = psig\models\Modgdregistros::join('gd_permisos_registros', 'gd_permisos_registros.gdreg_id', '=', 'gd_registros.gdreg_id')
             	->where('gd_registros.gddoc_id', '=', $documento->gddoc_id)
             	->where('gd_registros.gdcon_id', '=', $consecutivo->gdcon_id)
             	->where('gd_permisos_registros.usu_id', '=', Session::get('usu_id'))

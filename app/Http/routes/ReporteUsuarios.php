@@ -3,8 +3,8 @@
 
 //CARGA EL FORMULARIO PARA DILIGENCIAR EL REPORTE DIARIO DE ACTIVIDADES
 Route::any('reporte_actividades', function(){  
-	$empresas = Modraempresas::orderby('raemp_empresa')->get();
-	$actividades = Modraactividades::orderby('racct_actividad')->get();
+	$empresas = psig\models\Modraempresas::orderby('raemp_empresa')->get();
+	$actividades = psig\models\Modraactividades::orderby('racct_actividad')->get();
     return View::make('usuarios.reporte.reporte', array('empresas' => $empresas, 'actividades' => $actividades));
 }); 
 

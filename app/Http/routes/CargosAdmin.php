@@ -10,7 +10,7 @@
 
 // CARGA LA VISTA PRINCIPAL DE LA SECCION CARGOS
 Route::any('cargos', function(){
-   $cargos = Modcargos::orderBy('carg_nombre')->get();
+   $cargos = psig\models\Modcargos::orderBy('carg_nombre')->get();
    return View::make('administrador.cargos.cargos', array('cargos' => $cargos));
 });
     

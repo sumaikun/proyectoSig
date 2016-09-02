@@ -9,9 +9,9 @@ Route::any('comunicaciones', array('before' => 'sfun:comunicaciones_cliente', fu
 		Session::put('anio_cc_consecutivo', date("Y"));
 	}
 
-	$contactos = Modcccontactos::orderby('cccnt_nombres')->get();
-	$centroc = Modcccentrocosto::all();
-	$consecutivos = Modccconsecutivos::whereRaw ('YEAR( created_at ) = ?', array(Session::get('anio_cc_consecutivo')))->paginate(8);
+	$contactos = psig\models\Modcccontactos::orderby('cccnt_nombres')->get();
+	$centroc = psig\models\Modcccentrocosto::all();
+	$consecutivos = psig\models\Modccconsecutivos::whereRaw ('YEAR( created_at ) = ?', array(Session::get('anio_cc_consecutivo')))->paginate(8);
 
 	return View::make('usuarios.comunicaciones.comunicaciones', 
 		array('consecutivos' => $consecutivos, 'centroc' => $centroc, 'contactos' => $contactos));

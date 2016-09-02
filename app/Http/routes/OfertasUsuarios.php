@@ -8,7 +8,7 @@ Route::any('ofertas', array('before' => 'sfun:ofertas', function(){
 		Session::put('anio_ofertas', date("Y"));
 	}
 
-	$ofertas = Modgeofertas::whereRaw ('YEAR( created_at ) = ?', array(Session::get('anio_ofertas')))->get();
+	$ofertas = psig\models\Modgeofertas::whereRaw ('YEAR( created_at ) = ?', array(Session::get('anio_ofertas')))->get();
 	return View::make('usuarios.ofertas.ofertas', array('ofertas' => $ofertas));
 }));
 

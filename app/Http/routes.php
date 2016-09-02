@@ -93,6 +93,9 @@ Route::any('inicio', function(){ return View::make('administrador.inicio'); });
 //-----------------------------------------------------------------------------------------------------
 
 
+require (__DIR__ . '/routes/ActividadesUsuarios.php');
+
+
 });
 
 

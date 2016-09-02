@@ -2,7 +2,7 @@
 
 // CARGA LA VISTA PRINCIPAL DE DEPENDENCIAS
 Route::any('dependencias', function(){
-   $dependencias = Moddependencias::orderBy('depe_nombre')->get();
+   $dependencias = psig\models\Moddependencias::orderBy('depe_nombre')->get();
    return View::make('administrador.dependencias.dependencias', array('dependencias' => $dependencias));
 });
 
