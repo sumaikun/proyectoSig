@@ -1,0 +1,147 @@
+/* Special class on .container surrounding .navbar, used for positioning it into place. */
+.navbar-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin-top: 20px;
+}
+
+/* Flip around the padding for proper display in narrow viewports */
+.navbar-wrapper .container {
+  padding-left: 0;
+  padding-right: 0;
+}
+.navbar-wrapper .navbar {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.navbar-content
+{
+    width:320px;
+    padding: 15px;
+    padding-bottom:0px;
+}
+.navbar-content:before, .navbar-content:after
+{
+    display: table;
+    content: "";
+    line-height: 0;
+}
+.navbar-nav.navbar-right:last-child {
+margin-right: 15px !important;
+}
+.navbar-footer 
+{
+    background-color:#DDD;
+}
+.navbar-footer-content { padding:15px 15px 15px 15px; }
+.dropdown-menu {
+padding: 0px;
+overflow: hidden;
+}
+
+
+
+.correte{
+  padding-left: 10px;
+  margin-left: 20px;
+}
+
+
+.ocultar{
+    overflow: auto;
+    width: 100%;
+    max-height: 500px;
+}
+
+.ocultar_300px{
+    overflow: auto;
+    width: 100%;
+    max-height: 300px;
+}
+
+.ocultar_350px{
+    overflow: auto;
+    width: 100%;
+    max-height: 350px;
+}
+
+.ocultar_450px{
+    overflow: auto;
+    width: 100%;
+    max-height: 450px;
+}
+
+
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-xl {
+  width: 100px;
+  height: 100px;
+  padding: 20px 16px;
+  font-size: 40px;
+  line-height: 1.33;
+  border-radius: 50px;
+  margin-top: 50%;
+}
+
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+
+
+
+.btn-xlarge {
+   padding: 18px 28px;
+   font-size: 22px;
+   line-height: normal;
+   -webkit-border-radius: 8px;
+      -moz-border-radius: 8px;
+           border-radius: 8px;
+}
+
+
+
+
+.fondo_inicio{
+background: url("../../usuarios/images/general/fondo_votaciones.jpg") no-repeat center center fixed; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+}
+
+
+
+
+td.last, th.last {
+    width: 1px;
+    white-space: nowrap;
+}
+
+
+/*esta clase es para el maximizar o minimizar del usuario*/
+.maxi{
+  position: fixed;
+  top: 60px;
+  right: 40px;
+  cursor: pointer;
+  z-index: 1000 !important;
+  /*-webkit-animation-duration: 3s;
+  -webkit-animation-delay: 2s;
+  -webkit-animation-iteration-count: infinite;*/
+}

@@ -1,0 +1,103 @@
+.custab{
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5% 0;
+    box-shadow: 3px 3px 2px #ccc;
+    transition: 0.5s;
+    }
+.custab:hover{
+    box-shadow: 3px 3px 0px transparent;
+    transition: 0.5s;
+    }
+
+
+
+
+.correte{
+	padding-left: 10px;
+	margin-left: 20px;
+}
+
+
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+
+
+
+.ocultar{
+    overflow: auto;
+    width: 100%;
+    max-height: 500px;
+}
+
+.ocultar_250px{
+    overflow: auto;
+    width: 100%;
+    max-height: 250px;
+}
+
+.ocultar_300px{
+    overflow: auto;
+    width: 100%;
+    max-height: 300px;
+}
+
+.ocultar_350px{
+    overflow: auto;
+    width: 100%;
+    max-height: 350px;
+}
+
+
+
+.ocultar_400px{
+    overflow: auto;
+    width: 100%;
+    max-height: 400px;
+}
+
+.ocultar_450px{
+    overflow: auto;
+    width: 100%;
+    max-height: 450px;
+}
+
+
+/*este estilo es utilizado en el boton circular de anular consecutivo*/
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-xl {
+  width: 100px;
+  height: 100px;
+  padding: 20px 16px;
+  font-size: 40px;
+  line-height: 1.33;
+  border-radius: 50px;
+  margin-top: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+td.last, th.last {
+    width: 1px;
+    white-space: nowrap;
+}
