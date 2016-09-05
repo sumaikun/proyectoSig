@@ -25,8 +25,23 @@ Route::get('actividades/list', function(){
 });
 
 Route::any('actividades/parameters', function(){
-   $cargos = psig\models\Modcargos::orderBy('carg_nombre')->get();
-   return View::make('actividades.parametros', array('cargos' => $cargos));
+   $actividades = psig\models\ListActivities::orderBy('nombre')->get();
+   $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();
+   return View::make('actividades.parametros', array('actividades' => $actividades,'empresas'=>$empresas));
 });
 
-Route::post('registraractividad', 'Conactividad@create');    
+Route::post('actividades/registraractividad', 'Conactividades@createAct');
+
+Route::post('actividades/registrarempresa', 'Conactividades@createEmp');    
+
+Route::get('actividades/editAct/{id}', 'Conactividades@showAct');
+
+Route::get('actividades/editEmp/{id}', 'Conactividades@showEmp');
+
+Route::post('actividades/updateAct','conactividades@updateAct');
+
+Route::post('actividades/updateEmp','conactividades@updateEmp');
+
+Route::get('actividades/destroyAct/{id}','conactividades@destroyAct');
+
+Route::get('actividades/destroyEmp/{id}','conactividades@destroyEmp');

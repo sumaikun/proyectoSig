@@ -2,6 +2,8 @@
 /**
 * 
 */
+namespace psig\Helpers;
+
 class Metodos{
 
 
@@ -135,6 +137,20 @@ class Metodos{
 		$usuario = Modusuarios::find($registro->usu_id);
 		return $usuario->usu_nombres." ".$usuario->usu_apellido1;
 	}
+
+
+	public static function id_generator($table,$id){
+
+		$query = $table::lists($id)->last();
+		if($query!=null)
+		{
+			return $query+1;	
+		}	
+		else {
+			return 1;
+		} 
+	}
+
 
 
 }

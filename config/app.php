@@ -156,6 +156,9 @@ return [
         psig\Providers\EventServiceProvider::class,
         psig\Providers\RouteServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
+        'Maatwebsite\Excel\ExcelServiceProvider',
+        Intervention\Image\ImageServiceProvider::class,
+        
     ],
 
     /*
@@ -204,6 +207,7 @@ return [
         'Form' => 'Collective\Html\FormFacade',
         'HTML' => 'Collective\Html\HtmlFacade',
         'Input' => Illuminate\Support\Facades\Input::class,
+        'Excel' => 'Maatwebsite\Excel\Facades\Excel',
     ],
 
 ];

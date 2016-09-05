@@ -9,6 +9,18 @@
 @stop
 
 @section('contenido')
+
+<style>
+
+ .tb-enterprise{
+   }
+
+ .tb-data
+  {
+    visibility: hidden;
+  } 
+
+</style>
 <!-- header de la pagina -->
 <section class="content-header">
 	<h1><i class="fa fa-puzzle-piece"></i> Parametros <!-- <small>Nuevo usuario</small> --></h1>
@@ -33,49 +45,67 @@
 
       
       <div class="panel-body">
-         <a href="#" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal"><b>+</b> Agregar nueva actividad</a>
+         <a href="#"  class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal"><b>+</b> Agregar nueva actividad</a>          
+         <a href="#" style="margin-right:5px;" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal2"><b>+</b> Agregar nueva Empresa</a>        
+            
+            <p><br></p>  
+            <p><br></p>    
 
-         <p>&nbsp&nbsp&nbspº&nbsp&nbsp<p>
+         <input type="text"  style="margin-bottom:10px;" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filtro" />       
 
-         <a href="#" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal2"><b>+</b> Agregar nueva Empresa</a><p><br></p>    
+          <a href="#"  class="btn btn-success" onclick="hide_empresas()"><b>*</b> Actividades </a>          
+         <a href="#" style="margin-right:5px;" class="btn btn-warning" onclick="hide_actividades()"><b>*</b> Empresas </a>   
 
-         <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filtro" />
       </div>
          
          <div class="table-responsive ocultar_400px">
-         <table class="table table-hover table-condensed" id="dev-table">
-         <thead>
-            <tr class="active">
-               <th>#</th>
-               <th>ID</th>
-               <th>Nombre del cargo</th>
-               <th>Perfil del cargo</th>
-               <th></th>
-            </tr>
-         </thead>
-         <tbody>
-         @foreach ($cargos as $key => $cargo)
-            <tr>
-               <td></td>
-               <td></td>
-               <td><a href="#"><span class="label label-info">Ver perfil <i class="fa fa-book"></i></span> </a></td>
-               <td align="right">
-                  <a href="{{ url('admin/showcargo/'.$cargo->carg_id) }}" class="btn btn-warning btn-xs">
-                     <i class="fa fa-pencil-square-o"></i> Editar
-                  </a>
-                  <a href="{{ url('admin/eliminarcargo/'.$cargo->carg_id) }}" class="btn btn-danger btn-xs">
-                     <i class="fa fa-trash-o"></i> Eliminar
-                  </a>
-               </td>
-            </tr>
-         @endforeach
-         </tbody>
-         </table>
-         </div>
-
+            <table class="table table-hover table-condensed" id="dev-table">
+               <thead>
+                  <tr class="active">
+                     <th style="width:73.33px;">#</th>
+                     <th style="width:96.67px;">ID</th>
+                     <th style="width:294.44px;"> Nombre</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody class="tb-activity ">         
+                  @foreach ($actividades as $actividad)
+                     <tr>
+                        <td style="width:73.33px !important;"></td>
+                        <td style="width:96.67px !important;"> {{$actividad->id}} </td>
+                        <td style="width:294.44px !important;">{{$actividad->nombre}} </td>
+                        <td align="right" style="width:568.89px;">
+                           <a href="{{ url('admin/actividades/editAct/'.$actividad->id) }}" class="btn btn-warning btn-xs">
+                              <i class="fa fa-pencil-square-o"></i> Editar
+                           </a>
+                           <a href="{{ url('admin/actividades/destroyAct/'.$actividad->id) }}" class="btn btn-danger btn-xs">
+                              <i class="fa fa-trash-o"></i> Eliminar
+                           </a>
+                        </td>
+                     </tr>
+                  @endforeach
+               </tbody> 
+                       
+               <tbody class="tb-enterprise tb-data">          
+                  @foreach ($empresas as $empresa)
+                     <tr>
+                        <td style="width:73.33px !important;"></td>
+                        <td style="width:96.67px !important;"> {{$empresa->id}} </td>
+                        <td style="width:294.44px !important;">{{$empresa->nombre}} </td>
+                        <td align="right" style="width:568.89px;">
+                           <a href="{{ url('admin/actividades/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
+                              <i class="fa fa-pencil-square-o"></i> Editar
+                           </a>
+                           <a href="{{ url('admin/actividades/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">
+                              <i class="fa fa-trash-o"></i> Eliminar
+                           </a>
+                        </td>
+                     </tr>
+                  @endforeach
+               </tbody>
+            </table>
+       </div>
    </div>
-</div>
-
 </div>
 
  
@@ -96,7 +126,7 @@
             <div class="row">
                <div class="col-lg-12">
                   <label for="carg_nombre">Nombre</label>
-                  <input type="text" name="carg_nombre" id="carg_nombre" class="form-control input-sm" placeholder="Actividad" autofocus required>
+                  <input type="text" name="act_nombre" id="act_nombre" class="form-control input-sm" placeholder="Actividad" autofocus required>
                </div>
 
             </div>
@@ -113,7 +143,7 @@
 
 
 <!-- Modal2 -->
-<form name="form1" id="form1" action="registrarcargo" method="post">
+<form name="form1" id="form1" action="registrarempresa" method="post">
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
@@ -128,7 +158,7 @@
             <div class="row">
                <div class="col-lg-12">
                   <label for="carg_nombre">Nombre</label>
-                  <input type="text" name="carg_nombre" id="carg_nombre" class="form-control input-sm" placeholder="Empresa" autofocus required>
+                  <input type="text" name="emp_nombre" id="emp_nombre" class="form-control input-sm" placeholder="Empresa" autofocus required>
                </div>
 
             </div>
@@ -153,18 +183,7 @@
 <script type="text/javascript">
 
 
-function validar_update(){
 
-
-   if($('#carg_id').val()==''){
-      alert("No ha seleccionado ningun cargo!");
-      return false;
-   }else if(!confirm("Está seguro de actualizar el cargo?")){
-      return false;
-   }
-
-   return true;
-}
 
 
 
@@ -213,5 +232,22 @@ $(function(){
    });
    $('[data-toggle="tooltip"]').tooltip();
 })
+
+
+
+      function hide_empresas(){
+        document.getElementsByClassName("tb-enterprise")[0].style.display = "none";
+        document.getElementsByClassName("tb-activity")[0].style.display = "";
+        document.getElementsByClassName("tb-data")[0].style.visibility = "visible";
+         event.preventDefault();
+      }
+
+      function hide_actividades(){
+        document.getElementsByClassName("tb-activity")[0].style.display = "none";
+        document.getElementsByClassName("tb-enterprise")[0].style.display = "";
+        document.getElementsByClassName("tb-data")[0].style.visibility = "visible"; 
+         event.preventDefault(); 
+      }
+
 </script>
 @stop
