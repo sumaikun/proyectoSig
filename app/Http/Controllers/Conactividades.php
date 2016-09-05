@@ -10,6 +10,8 @@ use psig\models\ListActivities;
 
 use psig\models\ListEnterprises;
 
+use psig\models\modActividad;
+
 use psig\Http\Requests;
 
 use Input;
@@ -116,5 +118,55 @@ class Conactividades extends Controller
 
             return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
         }
+    }
+
+    public function store()
+    {
+        $Actividad = new modActividad;
+        $id = Metodos::id_generator($Actividad,'id');
+        $Actividad->id = $id;
+        $Actividad->fecha = Input::get('fecha');
+        $Actividad->tp_actividad = Input::get('actividad');
+        $Actividad->tp_empresa = Input::get('empresa');
+        $Actividad->filial = Input::get('filial');
+        $Actividad->subcontratista = Input::get('fecha');
+        $Actividad->horas = Input::get('horas');
+        $Actividad->descripcion = Input::get('descripcion');
+
+        if($Actividad->save()){  return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada!!');
+        }
+        else{
+
+            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+        } 
+
+    }
+
+    public function edit($id)
+    {
+        $registro = modActividad::find($id);
+        $actividades = ListActivities::lists('nombre','id');
+        $empresas = ListEnterprises::lists('nombre','id');
+        return View::make('actividades.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));
+    }
+
+    public function update()
+    {
+        $Actividad=modActividad::find(Input::get('id'));
+        $Actividad->fecha = Input::get('fecha');
+        $Actividad->tp_actividad = Input::get('actividad');
+        $Actividad->tp_empresa = Input::get('empresa');
+        $Actividad->filial = Input::get('filial');
+        $Actividad->subcontratista = Input::get('fecha');
+        $Actividad->horas = Input::get('horas');
+        $Actividad->descripcion = Input::get('descripcion');
+
+        if($Actividad->save()){  return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Registro Editado!!');
+        }
+        else{
+
+            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+        } 
+
     }
 }

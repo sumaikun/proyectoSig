@@ -14,10 +14,10 @@
 @section('contenido')
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-plus-circle"></i>Nueva Actividad<!-- <small>Nuevo usuario</small> --></h1>
+	<h1><i class="fa fa-plus-circle"></i>Editar Registro<!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
    	<li><a href="{{ url('admin/actividades') }}"><i class="fa fa-child"></i> Gestión de Actividades</a></li>
-      <li class="active">Nueva Actividad</li>
+      <li class="active">Editar Registro</li>
     </ol>
     <!-- <hr> -->
 </section>
@@ -33,31 +33,40 @@
    </div>
    <div class="panel-body">
  		
- 		<form name="form1" id="form1" action="registraractividad" onsubmit="return validar()" method="post" enctype="multipart/form-data">
+ 		<form name="form1" id="form1" action="../updateactividad" onsubmit="return validar()" method="post" enctype="multipart/form-data">
 
  		<div class="col-lg-9">
 			
+			<input type="hidden" value="{{$registro->id}}" name="id">
+
   	    	<div class="form-group">			
           			<label>Fecha</label>
-          			<input  class="form-control" name="fecha" type="date" required/>          	
+          			<input  class="form-control" name="fecha" type="date" value="{{$registro->fecha}}" required/>          	
     	    </div>	
-
+			
     	    <div class="form-group">
 					<label>Actividad</label>
-					<select class="form-control" name=actividad required>
-						<option value="">Selecciona</option>
+					<select class="form-control" name=actividad required>					
 					@foreach($actividades as $key=>$value)
+
+						@if($key==$registro->tp_actividad)
+						<option value={{$key}} selected>{{$value}}</option>
+						@else
 						<option value={{$key}}>{{$value}}</option>
+						@endif
 					@endforeach	
 					</select>
     	    </div>
 
     	    <div class="form-group">
 					<label>Empresa</label>
-					<select class="form-control" name="empresa" required>
-						<option value="">Selecciona</option>
+					<select class="form-control" name="empresa" required>					
 					@foreach($empresas as $key=>$value)
+						@if($key==$registro->tp_empresa)
+						<option value={{$key}} selected>{{$value}}</option>
+						@else
 						<option value={{$key}}>{{$value}}</option>
+						@endif
 					@endforeach		
 					</select>
     	    </div>
@@ -65,17 +74,17 @@
 
     	    <div class="form-group">
 					<label>Filial</label>
-					<input class="form-control" name="filial" type="text" maxlength="30" placeholder="Filial" required/>
+					<input class="form-control" name="filial" type="text" maxlength="30" placeholder="Filial" value="{{$registro->filial}}" required/>
     	    </div>    	    
 
     	    <div class="form-group">
 					<label>Subcontratista/Tema</label>
-					<input class="form-control" name="subcontratista" type="text" maxlength="100" placeholder="Subcontratista/tema" required/>
+					<input class="form-control" name="subcontratista" type="text" maxlength="100" placeholder="Subcontratista/tema" value="{{$registro->subcontratista}}" required/>
     	    </div>
 			
 			<div class="form-group">
 					<label>Numero de horas</label>
-					 <input type="number" name="horas" min="1" max="24" class="form-control" placeholder="Numero de horas" required>
+					 <input type="number" name="horas" min="1" max="24" class="form-control" placeholder="Numero de horas" value="{{$registro->horas}}" required>
 			</div>
 
 			<div class="form-group">

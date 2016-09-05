@@ -25,8 +25,8 @@
 <section class="content-header">
 	<h1><i class="fa fa-puzzle-piece"></i> Parametros <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-   	<li><a href="{{ url('admin/cargos') }}"><i class="fa fa-puzzle-piece"></i> Parametros </a></li>
-      <li class="active">inicio</li>
+   	<li><a href="{{ url('admin/actividades') }}"><i class="fa fa-puzzle-piece"></i> Actividades </a></li>
+      <li class="active">parametros</li>
     </ol>
     <!-- <hr> -->
 </section>
