@@ -61,6 +61,14 @@
       </a>
    </li>
    @endif
+
+   @if(Session::get('actividades'))
+   <li @if($op=='actividades') {{'class="active"'}} @endif>
+      <a href="{{ url('usuario/actividades') }}">
+         <i class="fa fa-child"></i> <span><b>Reporte de Actividades</b></span>
+      </a>
+   </li>
+   @endif
  
 </ul>
       

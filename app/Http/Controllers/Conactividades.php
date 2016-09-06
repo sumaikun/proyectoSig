@@ -54,13 +54,13 @@ class Conactividades extends Controller
     public function showAct($id)
     {
        $actividad = ListActivities::find($id);
-       return View::make('actividades.update_parameter',array('actividad'=>$actividad));
+       return View::make('actividades.admin.update_parameter',array('actividad'=>$actividad));
     }
 
     public function showEmp($id)
     {
         $empresa = ListEnterprises::find($id);
-        return View::make('actividades.update_parameter',array('empresa'=>$empresa));
+        return View::make('actividades.admin.update_parameter',array('empresa'=>$empresa));
     }
 
     public function updateAct()
@@ -132,6 +132,7 @@ class Conactividades extends Controller
         $Actividad->subcontratista = Input::get('fecha');
         $Actividad->horas = Input::get('horas');
         $Actividad->descripcion = Input::get('descripcion');
+        $Actividad->usuario = Session::get('usu_id');
 
         if($Actividad->save()){  return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada!!');
         }
@@ -147,7 +148,7 @@ class Conactividades extends Controller
         $registro = modActividad::find($id);
         $actividades = ListActivities::lists('nombre','id');
         $empresas = ListEnterprises::lists('nombre','id');
-        return View::make('actividades.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));
+        return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));
     }
 
     public function update()

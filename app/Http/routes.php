@@ -92,11 +92,126 @@ Route::any('inicio', function(){ return View::make('administrador.inicio'); });
                                              require (__DIR__ . '/routes/ComuClienteAdmin.php');
 //-----------------------------------------------------------------------------------------------------
 
-
-require (__DIR__ . '/routes/ActividadesUsuarios.php');
-
+//ACTIVIDADES-----------------------------------------------------------------------------------
+											 require (__DIR__ . '/routes/ActividadesAdmin.php');
+//-----------------------------------------------------------------------------------------------------
 
 });
 
 
  
+
+//-----------------------------------------------------------                                                        
+//  _   _  ____   _   _     _     ____   ___   ___   ____  
+// | | | |/ ___| | | | |   / \   |  _ \ |_ _| / _ \ / ___| 
+// | | | |\___ \ | | | |  / _ \  | |_) | | | | | | |\___ \ 
+// | |_| | ___) || |_| | / ___ \ |  _ <  | | | |_| | ___) |
+//  \___/ |____/  \___/ /_/   \_\|_| \_\|___| \___/ |____/ 
+//-----------------------------------------------------------
+                                                      
+
+
+// Rutas de usuario
+Route::group(array('prefix' => 'usuario', 'before' => 'usuario'), function(){
+
+
+Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
+
+   
+//GESTION DOCUMENTAL--------------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/GdocumentalUsuarios.php');
+//--------------------------------------------------------------------------------------------------
+
+//CASSIMA-------------------------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/CassimaUsuarios.php');
+//--------------------------------------------------------------------------------------------------
+
+//CUENTA USUARIO------------------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/CuentasUsuarios.php');
+//--------------------------------------------------------------------------------------------------
+
+
+//REPORTE DE ACTIVIDADES----------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/ReporteUsuarios.php');
+//--------------------------------------------------------------------------------------------------
+
+
+//COMUNICACIONES------------------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/ComuClienteUsuarios.php');
+//--------------------------------------------------------------------------------------------------
+
+//OFERTAS------------------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/OfertasUsuarios.php');
+//--------------------------------------------------------------------------------------------------
+
+//ACTIVIDADES-----------------------------------------------------------------------------------
+											 require (__DIR__ . '/routes/ActividadesUsuario.php');
+//-----------------------------------------------------------------------------------------------------
+   
+
+
+});
+
+
+
+
+
+
+
+
+
+
+Route::get('registrar', function(){
+
+
+   $depe = new Moddependencias();
+   $depe->depe_id = 1;
+   $depe->depe_nombre = 'Gestión IT';
+   $depe->depe_sigla = 'IT';
+   $depe->depe_responsable = 'Moises Forero Forero';
+   $depe->save();
+
+   $carg = new Modcargos();
+   $carg->carg_id = 1;
+   $carg->carg_nombre = 'Profesional IT';
+   $carg->save();
+
+   $rol = new Modroles();
+   $rol->rol_id = 1;
+   $rol->rol_nombre = 'administrador';
+   $rol->save();
+
+   $rol2 = new Modroles();
+   $rol2->rol_id = 2;
+   $rol2->rol_nombre = 'usuario';
+   $rol2->save();
+
+   $fun = new Modfuncionalidades();
+   $fun->fun_nombre = 'cassima';
+   $fun->save();
+
+   $fun = new Modfuncionalidades();
+   $fun->fun_nombre = 'gdocumental';
+   $fun->save();
+
+	$user = new Modusuarios;
+   $user->usu_id = 1;
+	$user->usu_nombres ="shamir";
+	$user->usu_apellido1 ="torres";
+	$user->usu_apellido2 ="villamil";
+	$user->usu_email ="storres@grupo-sig.com";
+	$user->usu_usuario ="storres";
+	$user->password = Hash::make('shamirtv');
+	$user->rol_id = 1;
+	$user->carg_id = 1;
+	$user->depe_id = 1;
+
+	$user->save();
+	return "El usuario fue agregado.";
+
+
+});
+
+Route::any('prueba', function(){
+	return View::make('emails.nuevo_usuario');
+});

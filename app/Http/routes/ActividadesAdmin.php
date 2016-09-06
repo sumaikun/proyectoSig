@@ -10,26 +10,26 @@
 //-------------------------------------------------------------------------------------------    
 
 Route::any('actividades', function(){
-   return View::make('actividades.actividades');
+   return View::make('actividades.admin.actividades');
 });
 
 Route::get('actividades/create', function(){
 	  
   $actividades = psig\models\ListActivities::lists('nombre','id');
   $empresas = psig\models\ListEnterprises::lists('nombre','id');
-  return View::make('actividades.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas));
+  return View::make('actividades.admin.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas));
    //return View::make('actividades.actividades');
 });
 
 Route::get('actividades/list', function(){
-	$registros = psig\models\modActividad::orderBy('fecha')->get();
-   return View::make('actividades.listaactividades',array('registros'=> $registros));
+	$registros = psig\models\modActividad::orderBy('fecha')->get(); 
+   return View::make('actividades.admin.listaactividades',array('registros'=> $registros));
 });
 
 Route::any('actividades/parameters', function(){
    $actividades = psig\models\ListActivities::orderBy('nombre')->get();
    $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();
-   return View::make('actividades.parametros', array('actividades' => $actividades,'empresas'=>$empresas));
+   return View::make('actividades.admin.parametros', array('actividades' => $actividades,'empresas'=>$empresas));
 });
 
 Route::post('actividades/registraractividad', 'Conactividades@createAct');

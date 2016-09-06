@@ -4,6 +4,13 @@
 */
 namespace psig\Helpers;
 
+use psig\models\Modfuncionalidades;
+use psig\models\Modpermisosfuncionalidades;
+use psig\models\Modgddescargas;
+use psig\models\Modgdregistros;
+use psig\models\Modusuarios;
+use Session;
+
 class Metodos{
 
 

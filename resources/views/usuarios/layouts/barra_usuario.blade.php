@@ -7,7 +7,7 @@
          <span class="icon-bar"></span>
          <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#"><strong>SIG 1.0</strong></a>
+      <a class="navbar-brand" href="#"><strong>SIG 1.2</strong></a>
    </div>
 
    <!-- Collect the nav links, forms, and other content for toggling -->

@@ -12,7 +12,7 @@
 @section('contenido')
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-users"></i> Gestión usuarios <!-- <small>Nuevo usuario</small> --></h1>
+	<h1><i class="fa fa-users"></i> Actividades <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
    	<li><a href="#"><i class="fa fa-users"></i> Gestión de Actividades</a></li>
       <li class="active">Inicio</li>

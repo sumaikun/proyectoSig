@@ -9,4 +9,19 @@ class modActividad extends Model
 {
     use SoftDeletes;
     protected $table = 'reg_actividades';
+
+    public function actividades(){
+
+    	return $this->belongsTo('psig\models\ListActivities','tp_actividad');
+    }
+
+    public function empresas(){
+
+    	return $this->belongsTo('psig\models\ListEnterprises','tp_empresa');
+    }
+
+   public function usuarios(){
+
+    	return $this->belongsTo('psig\models\Modusuarios','usuario');
+    }
 }
