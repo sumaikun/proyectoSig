@@ -5,7 +5,7 @@ use psig\models\Modgeofertas;
 use Input;
 use View;
 use Session;
-
+use Excel;
 
 class Congeofertas extends Controller {
 

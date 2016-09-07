@@ -22,9 +22,9 @@ Route::get('actividades/create', function(){
 });
 
 Route::get('actividades/list', function(){
-	$registros = psig\models\modActividad::orderBy('fecha')->get();
-  $nombres = psig\models\Modusuarios::lists('usu_nombres','usu_id');
-   return View::make('actividades.usuario.listaactividades',array('registros'=> $registros,'nombres'=>$nombres));
+	$registros = psig\models\modActividad::orderBy('fecha')->where('usuario','=',Session::get('usu_id'))->get();
+  Session::put('usu_exportactividades',$registros);  
+   return View::make('actividades.usuario.listaactividades',array('registros'=> $registros));
 });
 
 
@@ -33,3 +33,5 @@ Route::post('actividades/registraractividad','conactividades@store');
 Route::get('actividades/edit/{id}', 'Conactividades@edit');
 
 Route::post('actividades/updateactividad','conactividades@update');
+
+Route::get('actividades/export_excel','conactividades@exportar_actividades');

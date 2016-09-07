@@ -22,7 +22,8 @@ Route::get('actividades/create', function(){
 });
 
 Route::get('actividades/list', function(){
-	$registros = psig\models\modActividad::orderBy('fecha')->get(); 
+	$registros = psig\models\modActividad::orderBy('fecha')->get();
+  Session::put('usu_exportactividades',$registros);  
    return View::make('actividades.admin.listaactividades',array('registros'=> $registros));
 });
 

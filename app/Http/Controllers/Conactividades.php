@@ -14,9 +14,15 @@ use psig\models\modActividad;
 
 use psig\Http\Requests;
 
+use Cache;
+
 use Input;
 
 use View;
+
+use Excel;
+
+use Session;
 
 class Conactividades extends Controller
 {
@@ -129,16 +135,34 @@ class Conactividades extends Controller
         $Actividad->tp_actividad = Input::get('actividad');
         $Actividad->tp_empresa = Input::get('empresa');
         $Actividad->filial = Input::get('filial');
-        $Actividad->subcontratista = Input::get('fecha');
+        $Actividad->subcontratista = Input::get('subcontratista');
         $Actividad->horas = Input::get('horas');
         $Actividad->descripcion = Input::get('descripcion');
         $Actividad->usuario = Session::get('usu_id');
 
-        if($Actividad->save()){  return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada!!');
+        if($Actividad->save()){  
+            if(Session::get('rol_nombre')=='administrador')
+            {
+             return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada!!');
+            }
+            else
+            {
+                $key=$id;
+                Cache::put($key,Session::get('usu_id'),30);
+
+             return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada, tiene 30 minutos si desea editarla!!');
+            }       
         }
         else{
 
-            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+            if(Session::get('rol_nombre')=='administrador')
+            {     
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+            }
+            else
+            {
+                return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+            }    
         } 
 
     }
@@ -148,7 +172,22 @@ class Conactividades extends Controller
         $registro = modActividad::find($id);
         $actividades = ListActivities::lists('nombre','id');
         $empresas = ListEnterprises::lists('nombre','id');
-        return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));
+        if(Session::get('rol_nombre')=='administrador')
+        {
+          return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));    
+        }
+        else{
+            if(Cache::get($id)==Session::get('usu_id'))
+            {
+                 return View::make('actividades.usuario.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));  
+            }
+            else{
+
+                 return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'No puede editarse');
+            }
+
+        }    
+        
     }
 
     public function update()
@@ -162,12 +201,77 @@ class Conactividades extends Controller
         $Actividad->horas = Input::get('horas');
         $Actividad->descripcion = Input::get('descripcion');
 
-        if($Actividad->save()){  return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Registro Editado!!');
+        if($Actividad->save()){ 
+            if(Session::get('rol_nombre')=='administrador')
+            {  
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Registro Editado!!');
+            }
+            else
+            {
+                return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Registro Editado!!'); 
+            }           
         }
         else{
-
-            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+            if(Session::get('rol_nombre')=='administrador')
+            {
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+            }   
+            else
+            {
+                return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+            }    
         } 
+
+    }
+
+
+    public function exportar_actividades()
+    {
+
+        Excel::create('Reporte_Actividades', function($excel){
+        $excel->sheet('reporte', function($sheet){
+
+            $sheet->mergeCells('A1:K4');
+                $sheet->row(1, function ($row) {
+                $row->setFontSize(15);
+                $row->setBackground('#A9E2F3');
+                   $row->setFontColor('#08088A');
+                   $row->setAlignment('center');
+                   $row->setValignment('center');
+                   $row->setFontWeight('bold');
+                });
+
+                $sheet->row(1, array('Reporte Actividades'));
+
+                $sheet->cells('A6:I6', function($cells)  {
+                    $cells->setBackground('#A9E2F3');
+                    $cells->setFontColor('#000000');
+                    $cells->setAlignment('left');
+                    $cells->setValignment('center');
+                    $cells->setFontWeight('bold');
+                });
+       
+            $data=[];
+                array_push($data, array('FECHA', 'USUARIO', 'ACTIVIDAD', 'EMPRESA', 'FILIAL', 'SUBCONTRATISTA', '#HORAS', 'DESC. ACTIVIDAD'));
+
+                $registros = Session::get('usu_exportactividades');
+                foreach ($registros as $registro) {
+                    array_push($data, array(
+                        $registro->fecha,
+                        $registro->usuarios->usu_nombres,
+                        $registro->actividades->nombre,
+                        $registro->empresas->nombre,
+                        $registro->filial,
+                        $registro->subcontratista,
+                        $registro->horas,                    
+                        $registro->descripcion,               
+                    ));
+                }
+                
+                $sheet->fromArray($data, null, 'A6', false, false);
+
+        });
+        })->download('xlsx');
 
     }
 }

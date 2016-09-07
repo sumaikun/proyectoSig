@@ -1,7 +1,14 @@
 <div class="col-lg-12">
    <div class="panel panel-primary">
       <div class="panel-heading">
-         <h3 class="panel-title"><i class="fa fa-list"></i> Listado de usuarios</h3>
+         <div class="col-lg-10">
+         <h3 class="panel-title"><i class="fa fa-list"></i> Listado de actividades</h3>
+         </div> 
+          <div class="col-log-2">
+            <a class="btn btn-success " href="{{url('usuario/actividades/export_excel')}}">
+                <i class="fa fa-file-excel-o"></i> Exportar
+            </a>
+         </div>
       </div>
       <div class="panel-body">
          <!--<a href="{{ url('admin/nuevousuario') }}" class="btn btn-primary btn-xs pull-right"><b>+</b> Agregar Usuario</a>-->
