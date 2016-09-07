@@ -50,5 +50,6 @@ class Kernel extends HttpKernel
         'guest' => \psig\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'admin' => \psig\Http\Middleware\admin::class,
+        'user' => \psig\Http\Middleware\user::class,
     ];
 }

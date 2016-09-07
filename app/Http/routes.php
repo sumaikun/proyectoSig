@@ -112,7 +112,7 @@ Route::any('inicio', function(){ return View::make('administrador.inicio'); });
 
 
 // Rutas de usuario
-Route::group(array('prefix' => 'usuario', 'before' => 'usuario'), function(){
+Route::group(array('prefix' => 'usuario', 'before' => 'usuario', 'middleware' => 'user'), function(){
 
 
 Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
