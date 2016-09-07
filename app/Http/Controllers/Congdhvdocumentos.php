@@ -9,7 +9,7 @@ use Input;
 use View;
 use Session;
 use Response;
-
+use DB;
 
 class Congdhvdocumentos extends Controller {
 

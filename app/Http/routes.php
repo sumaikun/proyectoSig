@@ -54,7 +54,7 @@ Route::get('404', function(){
 // /_/   \_\|____/ |_|  |_||___||_| \_||___||____/   |_|  |_| \_\/_/   \_\|____/  \___/ |_| \_\
 //------------------------------------------------------------------------------------------------
 
-Route::group(array('prefix' => 'admin', 'before' => 'admin'), function(){
+Route::group(array('prefix' => 'admin', 'before' => 'admin', 'middleware' => 'admin'), function(){
 
 
 Route::any('inicio', function(){ return View::make('administrador.inicio'); });

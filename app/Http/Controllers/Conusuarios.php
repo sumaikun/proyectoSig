@@ -21,6 +21,11 @@ class Conusuarios extends Controller {
 	 *
 	 * @return Response
 	 */
+	public function __construct(){
+		$this->middleware('admin', ['except' => ['login','logout']]);
+	}
+
+
 	public function login()	{
 
 		$userdata = array(
