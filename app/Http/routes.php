@@ -155,12 +155,6 @@ Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
 
 
 
-
-
-
-
-
-
 Route::get('registrar', function(){
 
 

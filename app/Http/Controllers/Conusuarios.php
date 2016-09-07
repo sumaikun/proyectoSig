@@ -12,6 +12,7 @@ use Auth;
 use Session;
 use Redirect;
 use View;
+use Hash;
 
 class Conusuarios extends Controller {
 
