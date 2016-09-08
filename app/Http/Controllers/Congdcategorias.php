@@ -7,8 +7,7 @@ use psig\Helpers\Metodos;
 use File;
 use Input;
 use View;
-use redirect;
-
+use Redirect;
 
 class Congdcategorias extends Controller {
 

@@ -14,6 +14,7 @@ use Redirect;
 use View;
 use Hash;
 use File;
+use Image;
 
 class Conusuarios extends Controller {
 
