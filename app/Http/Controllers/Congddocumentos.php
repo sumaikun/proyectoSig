@@ -13,6 +13,7 @@ use Session;
 use View;
 use DB;
 use Response;
+use Str;
 
 class Congddocumentos extends Controller {
 

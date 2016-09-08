@@ -209,6 +209,8 @@ return [
         'Input' => Illuminate\Support\Facades\Input::class,
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Image' => 'Intervention\Image\Facades\Image',
+        'Str'   => Illuminate\Support\Str::class,
+        
     ],
 
 ];
