@@ -3,9 +3,11 @@ namespace psig\Http\Controllers;
 
 use psig\models\Modgdcategorias;
 use psig\models\Modgdsubcategorias;
+use psig\Helpers\Metodos;
 use File;
 use Input;
 use View;
+use redirect;
 
 
 class Congdcategorias extends Controller {

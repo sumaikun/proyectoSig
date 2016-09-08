@@ -5,6 +5,8 @@ use psig\models\Modgdcategorias;
 use psig\models\Modgdsubcategorias;
 use Input;
 use View;
+use Redirect;
+use psig\Helpers\Metodos;
 
 class Congdsubcategorias extends Controller {
 

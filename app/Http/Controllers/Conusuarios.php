@@ -13,6 +13,7 @@ use Session;
 use Redirect;
 use View;
 use Hash;
+use File;
 
 class Conusuarios extends Controller {
 

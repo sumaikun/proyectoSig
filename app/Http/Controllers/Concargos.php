@@ -3,6 +3,7 @@ namespace psig\Http\Controllers;
 
 use Input;
 use psig\models\Modcargos;
+use psig\models\Modusuarios;
 use View;
 
 class Concargos extends Controller {
