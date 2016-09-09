@@ -14,6 +14,7 @@ use View;
 use DB;
 use Response;
 use Str;
+use File;
 
 class Congddocumentos extends Controller {
 

@@ -129,7 +129,7 @@ Route::any('asociar_doc_carg', function(){
       ->where('gd_documentos.gddoc_estado', '=', 'activo')
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
-   $cargos = Modcargos::all();
+   $cargos = psig\models\Modcargos::all();
 
    return View::make('administrador.modulos.cassima.asociar_doc_carg', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'cargos' => $cargos));
 });
