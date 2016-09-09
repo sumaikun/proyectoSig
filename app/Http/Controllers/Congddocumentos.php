@@ -52,6 +52,7 @@ class Congddocumentos extends Controller {
 				$doc->gddoc_anio = date("y");
 			}
 			$doc->gdsub_id = Input::get('gdsub_id');
+			//return $doc->gdsub_id;
 			$doc->usu_id = Session::get('usu_id');
 
 			//si se guarda el registro general del documento se procede a cargar la 
