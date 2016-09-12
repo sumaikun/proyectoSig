@@ -68,6 +68,7 @@ Route::any('timeline_registro', function(){
       ->get();
 
    $documet = psig\models\Modgddocumentos::find(Input::get('gddoc_id'));
+  
 
    return View::make('administrador.modulos.gdocumentos.timeline_reg_doc', array('registros' => $registros, 'documet' => $documet));
 });
