@@ -7,6 +7,7 @@ use psig\models\Modgdconsecutivos;
 use psig\models\Modgddocumentos;
 use Input;
 use Session;
+use DB;
 
 
 
@@ -32,7 +33,7 @@ class Congdconsecutivos extends Controller {
 	public function create(){		
 
 		$consecutivo = null;
-		$existe_activo = namespace psig\Http\Controllers;::whereRaw('usu_id = ? and gdcon_estado=? and gddoc_id=?', array( Session::get('usu_id'), 'abierto', Input::get('iddoc')))->exists();
+		$existe_activo = Modgdconsecutivos::whereRaw('usu_id = ? and gdcon_estado=? and gddoc_id=?', array( Session::get('usu_id'), 'abierto', Input::get('iddoc')))->exists();
 
 		if($existe_activo){
 			// el proceso termina por que el usuario tiene un proceso pendiente

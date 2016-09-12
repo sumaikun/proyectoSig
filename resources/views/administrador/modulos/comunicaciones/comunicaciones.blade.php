@@ -115,9 +115,7 @@
             </tbody>
          </table>
 
-
-
-         <?php echo $consecutivos->links(); ?>
+          {{$consecutivos->render()}}  
 
          </div>
 

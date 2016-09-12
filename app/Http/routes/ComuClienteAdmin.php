@@ -1,13 +1,19 @@
 <?php 
 
 
-Route::any('comunicaciones', function(){
+Route::any('comunicaciones', function(){	
+	
 
 	if(Input::has('anio_cc_consecutivo')){
 		Session::put('anio_cc_consecutivo', Input::get('anio_cc_consecutivo'));
-	}else{
-		Session::put('anio_cc_consecutivo', date("Y"));
+		//return Input::get('anio_cc_consecutivo');
 	}
+	elseif (strpos(URL::previous(),'comunicaciones')) {
+		//Do Nothing
+	}
+	else{
+		Session::put('anio_cc_consecutivo', date("Y"));
+ 
 
 	$usuarios = psig\models\Modusuarios::orderby('usu_nombres')->get();
 	$contactos = psig\models\Modcccontactos::orderby('cccnt_nombres')->get();
