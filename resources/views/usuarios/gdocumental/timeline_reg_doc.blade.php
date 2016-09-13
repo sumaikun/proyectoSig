@@ -46,10 +46,10 @@
                <?php $word = array(".doc", ".docx"); ?>
                <?php $pdf = array(".pdf"); ?>
                <?php $ppt = array(".ppt",".pptx"); ?>
-               @if(Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $excel))<i class="fa fa-file-excel-o fa-3x"></i>@endif
-               @if(Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $word))<i class="fa fa-file-word-o fa-3x"></i>@endif
-               @if(Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $pdf))<i class="fa fa-file-pdf-o fa-3x"></i>@endif
-               @if(Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $ppt))<i class="fa fa-file-powerpoint-o fa-3x"></i>@endif
+               @if(psig\Helpers\Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $excel))<i class="fa fa-file-excel-o fa-3x"></i>@endif
+               @if(psig\Helpers\Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $word))<i class="fa fa-file-word-o fa-3x"></i>@endif
+               @if(psig\Helpers\Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $pdf))<i class="fa fa-file-pdf-o fa-3x"></i>@endif
+               @if(psig\Helpers\Metodos::buscar_palabras($registro->gdreg_ruta_archivo, $ppt))<i class="fa fa-file-powerpoint-o fa-3x"></i>@endif
                @if($registro->gdreg_ruta_archivo=='')<i class="fa fa-file-o fa-3x"></i>@endif
             </div>
             <div class="user-detail">
