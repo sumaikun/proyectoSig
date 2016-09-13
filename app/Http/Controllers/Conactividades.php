@@ -274,4 +274,9 @@ class Conactividades extends Controller
         })->download('xlsx');
 
     }
+
+    public function excel()
+    {
+        return "reached";
+    }
 }

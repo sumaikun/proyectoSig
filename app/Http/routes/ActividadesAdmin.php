@@ -54,3 +54,9 @@ Route::post('actividades/registraractividad','conactividades@store');
 Route::get('actividades/edit/{id}', 'Conactividades@edit');
 
 Route::post('actividades/updateactividad','conactividades@update');
+
+Route::get('actividades/excel', function(){
+   return View::make('actividades.admin.excel');
+});
+
+Route::post('actividades/subirexcel','conactividades@excel');

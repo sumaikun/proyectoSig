@@ -14,7 +14,7 @@ Route::any('comunicaciones', function(){
 	else{
 		Session::put('anio_cc_consecutivo', date("Y"));
  
-
+	    }
 	$usuarios = psig\models\Modusuarios::orderby('usu_nombres')->get();
 	$contactos = psig\models\Modcccontactos::orderby('cccnt_nombres')->get();
 	$centroc = psig\models\Modcccentrocosto::all();

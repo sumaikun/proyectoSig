@@ -4,6 +4,7 @@ namespace psig\Http\Controllers;
 use psig\models\Modgdregistros;
 use psig\models\Modgdconsecutivos;
 use psig\models\Modgdpermisosregistros;
+use psig\Helpers\Metodos;
 use Input;
 use View;
 use Session;

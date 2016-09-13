@@ -2,6 +2,8 @@
 namespace psig\Http\Controllers;
 
 use psig\models\Modgeofertas;
+
+use psig\Helpers\Metodos;
 use Input;
 use View;
 use Session;

@@ -50,6 +50,14 @@
 	</a>
 </div>
 
+<div class="col-lg-2">
+	<a href="{{ url('admin/actividades/excel') }}">
+		<div class="thumbnail">
+			{{ HTML::image('admin/images/actividades/excel.png', 'categoria', array('class' => 'center-block')) }}
+			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Subida a Excel</span></button>
+		</div>
+	</a>
+</div>
 
 
 
