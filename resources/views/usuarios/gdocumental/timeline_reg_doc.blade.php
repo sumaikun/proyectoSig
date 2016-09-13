@@ -77,7 +77,7 @@
             </div>
          </div>
          <div class="qa-message-content"> 
-            <strong>Usuario: </strong> {{ Metodos::obtener_usuario_de_un_registro($registro->gdreg_id) }}
+            <strong>Usuario: </strong> {{ psig\Helpers\Metodos::obtener_usuario_de_un_registro($registro->gdreg_id) }}
          </div>
       </div>
    </div>
