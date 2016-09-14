@@ -275,8 +275,38 @@ class Conactividades extends Controller
 
     }
 
-    public function excel()
+    public function excel(Request $request)
     {
-        return "reached";
+        $archivo = $request->file('archivo');
+        $nombre_original=$archivo->getClientOriginalName();
+        $extension=$archivo->getClientOriginalExtension();
+        if($extension!='xlsx')
+        {
+            return "Formato no valido";
+        }
+
+        if($archivo->move('excel',$nombre_original))
+        {
+            
+             $ruta  = public_path('excel')."/".$nombre_original;
+
+             Excel::selectSheetsByIndex(0)->load($ruta, function($hoja) {
+
+                    $hoja->each(function() {
+                        echo 'go ';
+                    }); 
+
+
+              });
+
+
+
+
+        }
+        else
+        {
+            return "Ha ocurrido un error";
+        }    
+        
     }
 }
