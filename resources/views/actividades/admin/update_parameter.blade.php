@@ -44,7 +44,7 @@
       <div class="panel-footer">
          <div class="row">
             <div class="col-lg-6">
-               <a href="{{ URL::previous() }}" class="btn btn-warning btn-block"><i class="fa fa-reply"></i> Volver</a>
+               <a href="{{url('admin/actividades/parameters')}}" class="btn btn-warning btn-block"><i class="fa fa-reply"></i> Volver</a>
             </div>
             <div class="col-lg-6">
                <button type="submit" class="btn btn-success btn-block"><i class="fa fa-floppy-o"></i> Guardar</button>
