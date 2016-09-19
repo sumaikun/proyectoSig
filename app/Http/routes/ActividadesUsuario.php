@@ -28,10 +28,10 @@ Route::get('actividades/list', function(){
 });
 
 
-Route::post('actividades/registraractividad','conactividades@store');
+Route::post('actividades/registraractividad','Conactividades@store');
 
 Route::get('actividades/edit/{id}', 'Conactividades@edit');
 
-Route::post('actividades/updateactividad','conactividades@update');
+Route::post('actividades/updateactividad','Conactividades@update');
 
-Route::get('actividades/export_excel','conactividades@exportar_actividades');
+Route::get('actividades/export_excel','Conactividades@exportar_actividades');
