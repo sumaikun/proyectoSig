@@ -33,7 +33,7 @@ Route::any('actividades/parameters', function(){
    return View::make('actividades.admin.parametros', array('actividades' => $actividades,'empresas'=>$empresas));
 });
 
-Route::post('actividades/registraractividad', 'Conactividades@createAct');
+Route::post('actividades/registrartpact', 'Conactividades@createAct');
 
 Route::post('actividades/registrarempresa', 'Conactividades@createEmp');    
 

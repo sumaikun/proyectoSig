@@ -148,7 +148,7 @@ class Metodos{
 
 	public static function id_generator($table,$id){
 
-		$query = $table::lists($id)->last();
+		$query = $table::withTrashed()->lists($id)->last();
 		if($query!=null)
 		{
 			return $query+1;	
