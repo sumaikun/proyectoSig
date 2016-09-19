@@ -41,22 +41,22 @@ Route::get('actividades/editAct/{id}', 'Conactividades@showAct');
 
 Route::get('actividades/editEmp/{id}', 'Conactividades@showEmp');
 
-Route::post('actividades/updateAct','conactividades@updateAct');
+Route::post('actividades/updateAct','Conactividades@updateAct');
 
-Route::post('actividades/updateEmp','conactividades@updateEmp');
+Route::post('actividades/updateEmp','Conactividades@updateEmp');
 
-Route::get('actividades/destroyAct/{id}','conactividades@destroyAct');
+Route::get('actividades/destroyAct/{id}','Conactividades@destroyAct');
 
-Route::get('actividades/destroyEmp/{id}','conactividades@destroyEmp');
+Route::get('actividades/destroyEmp/{id}','Conactividades@destroyEmp');
 
-Route::post('actividades/registraractividad','conactividades@store');
+Route::post('actividades/registraractividad','Conactividades@store');
 
 Route::get('actividades/edit/{id}', 'Conactividades@edit');
 
-Route::post('actividades/updateactividad','conactividades@update');
+Route::post('actividades/updateactividad','Conactividades@update');
 
 Route::get('actividades/excel', function(){
    return View::make('actividades.admin.excel');
 });
 
-Route::post('actividades/subirexcel','conactividades@excel');
+Route::post('actividades/subirexcel','Conactividades@excel');
