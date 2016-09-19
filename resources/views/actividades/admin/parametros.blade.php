@@ -174,7 +174,7 @@
 </form>
 
 
-@include('cosas_generales.boton_info', array('imagen'=>'lista_cargos_admin'))
+
 </section>
 @stop
 

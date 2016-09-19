@@ -33,7 +33,7 @@
   @include('actividades.sub_views.edit')
 
 
-@include('cosas_generales.boton_info', array('imagen'=>'nuevo_usuario_admin'))
+
 </section>
 @stop
 

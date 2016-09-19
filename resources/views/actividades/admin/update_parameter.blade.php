@@ -61,7 +61,7 @@
 
 
 
-@include('cosas_generales.boton_info', array('imagen'=>'editar_cargo_admin'))
+
 </section>
 @stop
 

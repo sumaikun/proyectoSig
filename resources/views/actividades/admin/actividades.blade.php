@@ -62,6 +62,6 @@
 
 
 
-@include('cosas_generales.boton_info', array('imagen'=>'usuario_admin'))
+
 </section>
 @stop

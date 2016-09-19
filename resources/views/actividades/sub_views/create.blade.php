@@ -35,7 +35,7 @@
 
 
     	    <div class="form-group">
-					<label>Filial</label>
+					<label>Filial/Lugar</label>
 					<input class="form-control" name="filial" type="text" maxlength="30" placeholder="Filial" required/>
     	    </div>    	    
 

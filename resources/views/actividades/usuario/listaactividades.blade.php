@@ -33,7 +33,7 @@
    @include('actividades.sub_views.list')
 
 
-@include('cosas_generales.boton_info', array('imagen'=>'listado_usuario_admin'))
+
 </section>
 @stop
 
