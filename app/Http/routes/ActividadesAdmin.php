@@ -56,7 +56,8 @@ Route::get('actividades/edit/{id}', 'Conactividades@edit');
 Route::post('actividades/updateactividad','Conactividades@update');
 
 Route::get('actividades/excel', function(){
-   return View::make('actividades.admin.excel');
+   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
+   return View::make('actividades.admin.excel',compact('usuarios'));
 });
 
 Route::post('actividades/subirexcel','Conactividades@excel');

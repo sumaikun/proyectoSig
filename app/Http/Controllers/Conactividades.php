@@ -277,7 +277,9 @@ class Conactividades extends Controller
 
     public function excel(Request $request)
     {
+
         $archivo = $request->file('archivo');
+            
         $nombre_original=$archivo->getClientOriginalName();
         $extension=$archivo->getClientOriginalExtension();
         if($extension!='xlsx')
@@ -290,16 +292,79 @@ class Conactividades extends Controller
             
              $ruta  = public_path('excel')."/".$nombre_original;
 
-             Excel::selectSheetsByIndex(0)->load($ruta, function($hoja) {
+             Excel::selectSheetsByIndex(0)->load($ruta, function($hoja){           
 
-                    $hoja->each(function() {
-                        echo 'go ';
+                   
+                    $usuario = $_POST['usuario'];
+                    $pos = array('fecha','actividad','empresa','lugar','tema','horas','descripcion');   
+
+                    $hoja->each(function($fila)use($usuario,$pos){
+
+                        $condition = true;
+
+                     for ($i=0; $i <count($pos) ; $i++)
+                     { 
+                        $var = $pos[$i];
+
+                        //echo $var;
+                        //echo '<br>';
+                        //$var = 'horas';
+
+                        if($fila->$var==null or $fila->$var==' ')
+                        {
+                              //echo "encontre un nulo";
+
+                              $condition = false;
+                        }
+
+                          
+                        
+                     }
+                    /*  static $i=0;  
+                       
+                     if($fila->horas==null or $fila->horas==' ')
+                     {
+                        echo $i;
+                        echo "encontrado";
+                        echo '<br>';
+                     }   
+                      */  $i++;
+                    
+                     if($condition==true)
+                     { 
+
+                       $actividad = new modActividad;                      
+                        //echo  date_format($fila->fecha, 'Y-m-d');
+                        //echo var_dump($fila);
+                        $id = Metodos::id_generator($actividad,'id');
+                        $actividad->id = $id;
+                        $actividad->fecha=date_format($fila->fecha, 'Y-m-d');
+                        $fila->actividad=trim($fila->actividad);
+                        $fila->empresa=trim($fila->empresa);
+                         $tp_actividad=ListActivities::Where('nombre','=',$fila->actividad)->value('id');
+                         $tp_empresa=ListEnterprises::Where('nombre','LIKE','%'.$fila->empresa.'%')->value('id');
+                        $actividad->tp_actividad=$tp_actividad;
+                        $actividad->tp_empresa=$tp_empresa; 
+                        $actividad->filial=$fila->lugar;
+                        $actividad->subcontratista=$fila->tema;
+                        $actividad->horas=$fila->horas;
+                        $actividad->descripcion=$fila->descripcion;
+                        $actividad->usuario=$usuario;
+                        if($tp_actividad!=null&&$tp_empresa!=null)
+                        {
+                             $actividad->save();
+
+                        }//*/
+                                        
+                     }
+                        
                     }); 
 
 
               });
 
-
+            //return 'dsdsd';
+            return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');
 
 
         }

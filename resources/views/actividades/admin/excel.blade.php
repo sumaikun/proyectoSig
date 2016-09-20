@@ -45,9 +45,18 @@
       <div class="table-responsive ocultar_400px">
       <form action="subirexcel" method="post" enctype="multipart/form-data">
          <div class="form-group">
+            <label>Usuario</label>
+            <select class="form-control" name="usuario" required>
+              <option value="">Selecciona</option>
+                @foreach($usuarios as $usuario)
+                  <option value={{$usuario->usu_id}}>{{$usuario->usu_nombres}} {{$usuario->usu_apellido1}}</option>
+                @endforeach   
+            </select>
+         </div>
+         <div class="form-group">
             <label>Archivo</label>
             <input type="file" name="archivo" class="form-control" required>
-         </div>
+         </div>         
          <div class="col-lg-6 col-lg-offset-6 col-xs-12">
             <button type="submit" class="btn btn-success pull-right"><i class="fa fa-floppy-o"></i> <b>Guardar</b></button> 
             <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>       
