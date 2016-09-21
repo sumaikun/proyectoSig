@@ -5,9 +5,15 @@
          <h3 class="panel-title"><i class="fa fa-list"></i> Listado de actividades</h3>
          </div> 
           <div class="col-log-2">
+          @if(Session::get('rol_nombre')=='administrador')
+            <a class="btn btn-success "  data-toggle="modal" data-target="#myModal" href="">
+                <i class="fa fa-file-excel-o"></i> Exportar
+            </a>
+          @else
             <a class="btn btn-success " href="{{url('usuario/actividades/export_excel')}}">
                 <i class="fa fa-file-excel-o"></i> Exportar
             </a>
+          @endif  
          </div>
       </div>
       <div class="panel-body">
@@ -37,19 +43,26 @@
                <tr>
                   <td></td>
                   <td>{{ucwords($registro->fecha)}}</td>
-                  <td>{{ucwords($registro->usuarios->usu_nombres)}}</td>
+                  <td>{{ucwords($registro->usuarios->usu_nombres)}} {{ucwords($registro->usuarios->usu_apellido1)}}</td>
                   <td>{{ucwords ($registro->actividades->nombre)}}</td>              
                   <td>{{$registro->empresas->nombre}}</td>
                   <td>{{ucwords ($registro->filial)}}</td>
                   <td>{{ucwords ($registro->subcontratista)}}</td>
                   <td>{{ucwords ($registro->horas)}}</td>
                   <td>{{$registro->descripcion}}</td>
+                  @if(Session::get('rol_nombre')=='administrador')
                   <td>
                      <a class='btn btn-warning btn-xs' href="{{ url('admin/actividades/edit/'.$registro->id) }}">
                         <i class="fa fa-pencil-square-o"></i> Editar
                      </a> 
                   </td>
-
+                  @else
+                  <td>
+                     <a class='btn btn-warning btn-xs' href="{{ url('usuario/actividades/edit/'.$registro->id) }}">
+                        <i class="fa fa-pencil-square-o"></i> Editar
+                     </a> 
+                  </td>
+                  @endif
                </tr>
             
             @endforeach

@@ -47,7 +47,7 @@
   <a href="{{ url('usuario/actividades/list') }}">
     <div class="thumbnail">
       {{ HTML::image('admin/images/actividades/list.png', 'categoria', array('class' => 'center-block')) }}
-      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Resumen De Actividades</span></button>
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Resumen  Actividades</span></button>
     </div>
   </a>
 </div>

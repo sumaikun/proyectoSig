@@ -22,7 +22,7 @@ Route::get('actividades/create', function(){
 });
 
 Route::get('actividades/list', function(){
-	$registros = psig\models\modActividad::orderBy('fecha')->where('usuario','=',Session::get('usu_id'))->get();
+	$registros = psig\models\modActividad::orderBy('fecha','desc')->where('usuario','=',Session::get('usu_id'))->get();
   Session::put('usu_exportactividades',$registros);  
    return View::make('actividades.usuario.listaactividades',array('registros'=> $registros));
 });

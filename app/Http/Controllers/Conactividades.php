@@ -228,6 +228,14 @@ class Conactividades extends Controller
     public function exportar_actividades()
     {
 
+            Excel::load(public_path('excel').'\pruebaf.xlsx',function($sheet){
+
+                $sheet->setActiveSheetIndex(0)->setCellValue('B8', 'SEGURIDAD Y SALUD EN EL TRABAJO');  
+
+            })->export('xlsx');;
+            
+            return 'found';
+
         Excel::create('Reporte_Actividades', function($excel){
         $excel->sheet('reporte', function($sheet){
 
@@ -258,7 +266,7 @@ class Conactividades extends Controller
                 foreach ($registros as $registro) {
                     array_push($data, array(
                         $registro->fecha,
-                        $registro->usuarios->usu_nombres,
+                        $registro->usuarios->usu_nombres.' '.$registro->usuarios->usu_apellido1,
                         $registro->actividades->nombre,
                         $registro->empresas->nombre,
                         $registro->filial,
@@ -273,6 +281,35 @@ class Conactividades extends Controller
         });
         })->download('xlsx');
 
+    }
+
+    public function exportar_actividades_admin (Request $request)
+    {
+        if($request->nfilter=='on'){
+
+            return $this->exportar_actividades();
+
+        }
+
+       $datos = modActividad::where(function($query)use($request){
+            if ($request->empresa!=null)
+            {
+
+                 $query->where('tp_empresa',"=",$request->empresa);
+                 //echo  var_dump($query);
+            }
+            return $query;
+            })->where(function($query) use ($request){
+            if ($request->usuario!=null)
+            {
+                 $query->where('usuario',"=",$request->usuario);
+            }
+            return $query;
+         })->get();
+
+        return $datos;
+
+        return 'got it '.print_r($_POST);;
     }
 
     public function excel(Request $request)

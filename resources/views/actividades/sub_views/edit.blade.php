@@ -60,7 +60,7 @@
 
 			<div class="form-group">
 					<label>Descripción de actividad</label>
-					<textarea class="form-control" placeholder="Descripción de habilidad" maxlength="500" name="descripcion" cols="50" row="10" style="height:100px"></textarea>
+					<textarea class="form-control" placeholder="Descripción de habilidad" maxlength="500" name="descripcion" cols="50" row="10" style="height:100px">{{$registro->descripcion}}</textarea>
 			</div>						
 			<!-- <div class="col-lg-6 col-xs-12">
 				<div class="checkbox checkbox-warning">
