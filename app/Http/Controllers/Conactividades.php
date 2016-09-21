@@ -302,6 +302,8 @@ class Conactividades extends Controller
 
                         $condition = true;
 
+                        $cont = 0;
+
                      for ($i=0; $i <count($pos) ; $i++)
                      { 
                         $var = $pos[$i];
@@ -309,26 +311,37 @@ class Conactividades extends Controller
                         //echo $var;
                         //echo '<br>';
                         //$var = 'horas';
+                        
 
                         if($fila->$var==null or $fila->$var==' ')
                         {
                               //echo "encontre un nulo";
-
+                              $cont ++;  
                               $condition = false;
                         }
 
-                          
+                                              
                         
                      }
-                    /*  static $i=0;  
-                       
-                     if($fila->horas==null or $fila->horas==' ')
+
+
+
+                     if($cont>4)
+                     {
+                        return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');
+                     }
+
+                    /* static $i=0;  
+                    echo $i.'espacios '.$cont;   ;  
+                    echo '<br>'; 
+                    /* if($fila->horas==null or $fila->horas==' ')
                      {
                         echo $i;
                         echo "encontrado";
                         echo '<br>';
                      }   
-                      */  $i++;
+                      */  //
+                    // $i++;
                     
                      if($condition==true)
                      { 
@@ -363,7 +376,7 @@ class Conactividades extends Controller
 
               });
 
-            //return 'dsdsd';
+            
             return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');
 
 

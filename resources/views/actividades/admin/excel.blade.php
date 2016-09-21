@@ -58,7 +58,7 @@
             <input type="file" name="archivo" class="form-control" required>
          </div>         
          <div class="col-lg-6 col-lg-offset-6 col-xs-12">
-            <button type="submit" class="btn btn-success pull-right"><i class="fa fa-floppy-o"></i> <b>Guardar</b></button> 
+            <button type="submit" class="btn btn-success pull-right" onclick="validar()"><i class="fa fa-floppy-o"></i> <b>Guardar</b></button> 
             <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>       
       </div>   
       </form>
@@ -80,5 +80,11 @@
 
 @section('script')
 <script type="text/javascript">
+function validar()
+{
+   on_preload();
+   return true;
+}
+
 </script>
 @stop
