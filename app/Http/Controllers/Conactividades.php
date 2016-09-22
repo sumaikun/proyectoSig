@@ -12,6 +12,8 @@ use psig\models\ListEnterprises;
 
 use psig\models\modActividad;
 
+use psig\models\modusuarios;
+
 use psig\Http\Requests;
 
 use Cache;
@@ -23,6 +25,8 @@ use View;
 use Excel;
 
 use Session;
+
+use DB;
 
 class Conactividades extends Controller
 {
@@ -227,59 +231,51 @@ class Conactividades extends Controller
 
     public function exportar_actividades()
     {
+        $registros = Session::get('usu_exportactividades'); 
 
-            Excel::load(public_path('excel').'\pruebaf.xlsx',function($sheet){
+    
+            Excel::load(public_path('excel').'\pruebaf.xlsx',function($sheet)use($registros){
 
-                $sheet->setActiveSheetIndex(0)->setCellValue('B8', 'SEGURIDAD Y SALUD EN EL TRABAJO');  
+                $order = Array ('fecha','tp_actividad','tp_empresa','filial','subcontratista','horas','usuario','descripcion');
 
-            })->export('xlsx');;
-            
-            return 'found';
+                $row = 8;
+                  foreach($registros as $key => $temp) 
+               {
+                    $col = 0;
 
-        Excel::create('Reporte_Actividades', function($excel){
-        $excel->sheet('reporte', function($sheet){
+                    foreach($order as $value)
+                    {  
+                        if($value=='usuario'){
 
-            $sheet->mergeCells('A1:K4');
-                $sheet->row(1, function ($row) {
-                $row->setFontSize(15);
-                $row->setBackground('#A9E2F3');
-                   $row->setFontColor('#08088A');
-                   $row->setAlignment('center');
-                   $row->setValignment('center');
-                   $row->setFontWeight('bold');
-                });
+                            $usuario = modusuarios::where('usu_id','=',$temp[$value])->first();
+                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $usuario->usu_nombres.' '.$usuario->usu_apellido1);
+                            
+                        }
 
-                $sheet->row(1, array('Reporte Actividades'));
+                        elseif($value=='tp_actividad')
+                        {
+                            $actividad = ListActivities::Where('id','=',$temp[$value])->first()->value('nombre');
+                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $actividad);
+                        }    
 
-                $sheet->cells('A6:I6', function($cells)  {
-                    $cells->setBackground('#A9E2F3');
-                    $cells->setFontColor('#000000');
-                    $cells->setAlignment('left');
-                    $cells->setValignment('center');
-                    $cells->setFontWeight('bold');
-                });
-       
-            $data=[];
-                array_push($data, array('FECHA', 'USUARIO', 'ACTIVIDAD', 'EMPRESA', 'FILIAL', 'SUBCONTRATISTA', '#HORAS', 'DESC. ACTIVIDAD'));
+                        elseif($value=='tp_empresa')
+                        {
+                            $empresa = ListEnterprises::Where('id','=',$temp[$value])->first()->value('nombre');
+                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $empresa);
+                        }
 
-                $registros = Session::get('usu_exportactividades');
-                foreach ($registros as $registro) {
-                    array_push($data, array(
-                        $registro->fecha,
-                        $registro->usuarios->usu_nombres.' '.$registro->usuarios->usu_apellido1,
-                        $registro->actividades->nombre,
-                        $registro->empresas->nombre,
-                        $registro->filial,
-                        $registro->subcontratista,
-                        $registro->horas,                    
-                        $registro->descripcion,               
-                    ));
-                }
-                
-                $sheet->fromArray($data, null, 'A6', false, false);
+                        else {$sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $temp[$value]);}                         
 
-        });
-        })->download('xlsx');
+                        $col++; 
+
+                    }
+
+                   $row++;   
+               }
+               
+               
+
+            })->export('xlsx');  
 
     }
 
@@ -294,9 +290,7 @@ class Conactividades extends Controller
        $datos = modActividad::where(function($query)use($request){
             if ($request->empresa!=null)
             {
-
-                 $query->where('tp_empresa',"=",$request->empresa);
-                 //echo  var_dump($query);
+                 $query->where('tp_empresa',"=",$request->empresa);                 
             }
             return $query;
             })->where(function($query) use ($request){
@@ -305,12 +299,30 @@ class Conactividades extends Controller
                  $query->where('usuario',"=",$request->usuario);
             }
             return $query;
-         })->get();
+            })->where(function($query) use ($request){
+            if ($request->year!=null)
+            {
+                 $query->where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$request->year.'%');
+            }
+            return $query;
+            })->where(function($query) use ($request){
+            if ($request->month!=null)
+            {
+                 $query->where('fecha',"LIKE",'%'.$request->month.'%');
+            }
+            return $query;
+            })->get();
 
-        return $datos;
+        Session::put('usu_exportactividades',$datos); 
+        //return $request->month;
+       
+        return $this->exportar_actividades();
 
-        return 'got it '.print_r($_POST);;
     }
+
+    private $rute;
+
+    private $row='n';
 
     public function excel(Request $request)
     {
@@ -328,13 +340,15 @@ class Conactividades extends Controller
         {
             
              $ruta  = public_path('excel')."/".$nombre_original;
+             
+             
 
-             Excel::selectSheetsByIndex(0)->load($ruta, function($hoja){           
+             Excel::selectSheetsByIndex(0)->load($ruta, function($hoja) {           
 
                    
                     $usuario = $_POST['usuario'];
                     $pos = array('fecha','actividad','empresa','lugar','tema','horas','descripcion');   
-
+                    
                     $hoja->each(function($fila)use($usuario,$pos){
 
                         $condition = true;
@@ -365,12 +379,18 @@ class Conactividades extends Controller
 
                      if($cont>4)
                      {
-                        return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');
+                        return 'proceso terminado';
                      }
 
-                    /* static $i=0;  
-                    echo $i.'espacios '.$cont;   ;  
-                    echo '<br>'; 
+
+                     if($this->row!='n')
+                     {
+                        return 'proceso terminado';
+                     }
+
+                     static $i=0;                      
+                   //echo ($i+1).'espacios '.$cont;   
+                   // echo '<br>'; 
                     /* if($fila->horas==null or $fila->horas==' ')
                      {
                         echo $i;
@@ -378,7 +398,7 @@ class Conactividades extends Controller
                         echo '<br>';
                      }   
                       */  //
-                    // $i++;
+                    $i++;
                     
                      if($condition==true)
                      { 
@@ -388,7 +408,8 @@ class Conactividades extends Controller
                         //echo var_dump($fila);
                         $id = Metodos::id_generator($actividad,'id');
                         $actividad->id = $id;
-                        $actividad->fecha=date_format($fila->fecha, 'Y-m-d');
+                        $fecha=date_format($fila->fecha, 'Y-m-d'); 
+                        $actividad->fecha=$fecha;
                         $fila->actividad=trim($fila->actividad);
                         $fila->empresa=trim($fila->empresa);
                          $tp_actividad=ListActivities::Where('nombre','=',$fila->actividad)->value('id');
@@ -400,11 +421,31 @@ class Conactividades extends Controller
                         $actividad->horas=$fila->horas;
                         $actividad->descripcion=$fila->descripcion;
                         $actividad->usuario=$usuario;
-                        if($tp_actividad!=null&&$tp_empresa!=null)
+                        $exist = modActividad::Where('tp_empresa','=',$tp_empresa)->where('tp_actividad','=',$tp_actividad)->where('subcontratista','=',$fila->tema)->where('horas','=',$fila->horas)->where('fecha','=',$fecha)->get();
+                        /*if($exist=='[]')
                         {
-                             $actividad->save();
+                            echo ' no existe';
+                        }
+                        else{
+                            echo ' existe';
+                        } */   
+                            
+                        if($tp_actividad!=null&&$tp_empresa!=null&&$exist=='[]')
+                        {                           
+                            if($actividad->save())
+                            {
+                                //echo 'guardado';              
+                                $this->rute = true;
+                            }                          
 
-                        }//*/
+                        }
+                        elseif ($tp_actividad!=null or $tp_empresa!=null)
+                        {
+                            //echo 'no hay parametro';
+                            $this->row=$i;
+                            $this->rute = false;
+                            return '';
+                        }    
                                         
                      }
                         
@@ -413,8 +454,18 @@ class Conactividades extends Controller
 
               });
 
+            if($this->rute==true)
+            {
+                
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');    
+            }    
+
+            else
+            {
+                
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'un parametro de la linea '.($this->row+1).' no existe en el sistema');
+            }   
             
-            return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');
 
 
         }
