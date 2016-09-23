@@ -234,7 +234,7 @@ class Conactividades extends Controller
         $registros = Session::get('usu_exportactividades'); 
 
     
-            Excel::load(public_path('excel').'\pruebaf.xlsx',function($sheet)use($registros){
+            Excel::load(public_path('excel').'\GOLBMSFO12.xlsx',function($sheet)use($registros){
 
                 $order = Array ('fecha','tp_actividad','tp_empresa','filial','subcontratista','horas','usuario','descripcion');
 
@@ -339,7 +339,7 @@ class Conactividades extends Controller
         if($archivo->move('excel',$nombre_original))
         {
             
-             $ruta  = public_path('excel')."/".$nombre_original;
+             $ruta  ="public/excel/".$nombre_original;
              
              
 
@@ -439,13 +439,18 @@ class Conactividades extends Controller
                             }                          
 
                         }
-                        elseif ($tp_actividad!=null or $tp_empresa!=null)
+                        elseif ($tp_actividad==null or $tp_empresa==null)
                         {
                             //echo 'no hay parametro';
                             $this->row=$i;
                             $this->rute = false;
                             return '';
-                        }    
+                        }
+
+                         else
+                        {
+                            $this->rute = true;
+                        }     
                                         
                      }
                         
