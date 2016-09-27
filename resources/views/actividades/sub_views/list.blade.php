@@ -5,7 +5,16 @@
          <h3 class="panel-title"><i class="fa fa-list"></i> Listado de actividades</h3>
          </div> 
           <div class="col-log-2">
+      
           @if(Session::get('rol_nombre')=='administrador')
+         <form action='../actividades/list'  method="post">
+            <select name="year_list"  class="form-control" onchange="javascript: this.form.submit();">
+                   @for ($i = 2016; $i <= date('Y'); $i++)
+                      <option value="{{$i}}" @if($i == Session::get('usu_listy')) {{'selected'}} @endif>{{{$i}}}</option>
+                  @endfor
+            </select>
+         </form>   
+          
             <a class="btn btn-success "  data-toggle="modal" data-target="#myModal" href="">
                 <i class="fa fa-file-excel-o"></i> Exportar
             </a>

@@ -21,12 +21,24 @@ Route::get('actividades/create', function(){
    //return View::make('actividades.actividades');
 });
 
-Route::get('actividades/list', function(){
-	$registros = psig\models\modActividad::orderBy('usuario')->orderBy('fecha','desc')->get();
-  $empresas = psig\models\ListEnterprises::lists('nombre','id');
-  $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
-  Session::put('usu_exportactividades',$registros);  
-   return View::make('actividades.admin.listaactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
+Route::any('actividades/list', function(){
+
+  if(strpos(URL::previous(),'list'))
+  {
+    $year = Input::get('year_list');
+  }
+
+  else
+  {
+    $year = date('Y');
+  }    
+  	$registros = psig\models\modActividad::orderBy('usuario')->orderBy('fecha','desc')->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->get();
+    Session::put('usu_listy',$year);  
+    $empresas = psig\models\ListEnterprises::lists('nombre','id');
+    $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
+    Session::put('usu_exportactividades',$registros);  
+     return View::make('actividades.admin.listaactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
+
 });
 
 Route::any('actividades/parameters', function(){
