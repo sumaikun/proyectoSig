@@ -59,6 +59,14 @@
 	</a>
 </div>
 
+<div class="col-lg-2">
+	<a href="{{ url('admin/actividades/reports') }}">
+		<div class="thumbnail">
+			{{ HTML::image('admin/images/actividades/reports.png', 'categoria', array('class' => 'center-block')) }}
+			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Reportes</span></button>
+		</div>
+	</a>
+</div>
 
 
 

@@ -74,6 +74,24 @@ Route::get('actividades/excel', function(){
    return View::make('actividades.admin.excel',compact('usuarios'));
 });
 
+
+Route::any('actividades/reports',function(){
+  if(strpos(URL::previous(),'reports'))
+  {
+    $year = Input::get('year_list');
+  }
+
+  else
+  {
+    $year = date('Y');
+  } 
+
+  $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();
+  $usuarios = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->get();
+  
+  return View::make('actividades.admin.reports',compact('empresas','usuarios','year'));
+});
+
 Route::post('actividades/subirexcel','Conactividades@excel');
 
 Route::post('actividades/export_excel','Conactividades@exportar_actividades_admin');

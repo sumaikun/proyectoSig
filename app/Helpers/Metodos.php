@@ -9,7 +9,10 @@ use psig\models\Modpermisosfuncionalidades;
 use psig\models\Modgddescargas;
 use psig\models\Modgdregistros;
 use psig\models\Modusuarios;
+use psig\models\ModActividad;
 use Session;
+use DB;
+use psig\models\ListEnterprises;
 
 class Metodos{
 
@@ -158,6 +161,48 @@ class Metodos{
 		} 
 	}
 
+//todas estas clases pertenecen a reportes
+
+	public static function user_name($id){
+
+		$user = Modusuarios::Where('usu_id','=',$id)->first();
+
+		return $user->usu_nombres.' '.$user->usu_apellido1;
+
+	}
+
+	public static function ent_reports($id){
+		$empresas = ModActividad::select(DB::raw('Distinct tp_empresa'))->where('usuario','=',$id)->get();
+		return $empresas;
+	}
+
+	public static function ent_names($id){
+		$empresa = ListEnterprises::Where('id','=',$id)->first();
+		return $empresa->nombre;
+	}
+
+	public static function cal_month($id_usu,$id_ent,$date)
+	{
+		$total_horas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->Where('usuario','=',$id_usu)->sum('horas');
+		$horas_especificas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->Where('usuario','=',$id_usu)->where('tp_empresa','=',$id_ent)->sum('horas');
+		if($total_horas!=0)
+		{return number_format(($horas_especificas*100)/$total_horas,2); }
+		else {
+			return 0.0;
+		}	
+		 
+	}
+
+	public static function cal_year($id_usu,$id_ent,$date)
+	{
+		$total_horas = ModActividad::where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$date.'%')->Where('usuario','=',$id_usu)->sum('horas');
+		$horas_especificas = ModActividad::where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$date.'%')->Where('usuario','=',$id_usu)->where('tp_empresa','=',$id_ent)->sum('horas');
+		if($total_horas!=0)
+		{return number_format(($horas_especificas*100)/$total_horas,2); }
+		else {
+			return 0.0;
+		}
+	}
 
 
 }
