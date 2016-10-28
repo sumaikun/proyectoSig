@@ -109,10 +109,55 @@
    </div>
 </div>   
 </div>
-
 </div>
 
+<div class="col-lg-5">
+<div class="panel panel-primary">
+   <div class="panel-heading">
+      <h3 class="panel-title"><i class="fa fa-users"></i> Habilitar visualización completa</h3>
+   </div>
+   <div class="panel-body">
+      <div class="input-group">
+         <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="Filtrar" />
+         <span class="input-group-addon" id="basic-addon2">@grupo-sig.com</span>
+      </div>
+   </div>
+   
+   <div class="table-responsive ocultar_250px">
 
+   <form action="reg_visu_per" onsubmit="return validar()" id="form1" name="form1" method="post">
+      <table class="table table-hover table-condensed" id="dev-table">
+      <thead>
+         <tr class="active">
+            <th>#</th>
+            <th><strong>Nombres</strong></th>
+            <th><strong>Apellido1</strong></th>
+            <th><strong>Apellido2</strong></th>
+            <th><strong>Cargo</strong></th>
+            <!-- <th><strong>Usuario</strong></th> -->
+         </tr>
+      </thead>
+      <tbody>
+      @foreach($usuarios as $usuario)
+         <tr>
+            <td>
+               <input type="checkbox" name="{{$usuario->usu_id.'u'}}" id="{{$usuario->usu_id.'u'}}" class="checkall" value="{{$usuario->usu_id}}" >
+            </td>
+            <td>{{$usuario->usu_nombres}}</td>
+            <td>{{$usuario->usu_apellido1}}</td>
+            <td>{{$usuario->usu_apellido2}}</td>
+            <td>{{$usuario->cargos->carg_nombre}}</td>
+         </tr>
+      @endforeach
+      </tbody>
+      </table>
+   </div>
+   <div class="panel-footer">
+      <button type="submit" class="btn btn-success btn-block"><i class="fa fa-floppy-o"></i> Guardar</button>
+   </div>
+ </div>
+ </form>
+</div>
 
 </section>
 @stop
@@ -129,6 +174,30 @@ function validar(){
       return false;
    }
    return true;
+}
+
+function buscar_informacion(docid){
+
+   $.post("buscar_usu_rela",{docid:docid},function(data){
+
+      // esta linea es para activar el boton Restablecer permisos
+      /*$("#rest").prop('disabled', false);
+      
+      if(data.length == 0 ){
+            $('.checkall').attr("checked", false);
+      }else{
+         $.each(data,function(clave,valor) {
+            if(valor.gdperdoc_permiso==1){
+               $('#'+valor.usu_id+'u').prop('checked' , true);
+            }else{
+               $('#'+valor.usu_id+'u').prop('checked' , false);
+            }       
+         });
+
+      }*/
+
+   });
+
 }
 
 </script>

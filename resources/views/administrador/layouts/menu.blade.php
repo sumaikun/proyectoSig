@@ -28,7 +28,12 @@
       <a href="{{ url('admin/actividades') }}">
          <i class="fa fa-child"></i> <span><b>Reporte de Actividades</b></span>
       </a>
-   </li>   
+   </li>
+   <li @if($op=='facturacion') {{'class="active"'}} @endif>
+      <a href="{{ url('admin/facturacion') }}">
+         <i class="fa fa-calculator"></i> <span><b>Facturación</b></span>
+      </a>
+   </li>      
 
    
                <!--<li class="treeview">

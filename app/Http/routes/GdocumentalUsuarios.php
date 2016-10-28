@@ -71,7 +71,8 @@ Route::any('consultar_registros', function(){
 });
 
 // consultar linea de tiempo registros del usuario por documento
-Route::any('timeline_registro', function(){	
+Route::any('timeline_registro', function(){
+	
 	$registros = psig\models\Modgdregistros::join('gd_permisos_registros', 'gd_permisos_registros.gdreg_id', '=', 'gd_registros.gdreg_id')
       ->where('gd_registros.gddoc_id', '=', Input::get('gddoc_id'))
       ->where('gd_permisos_registros.usu_id', '=', Session::get('usu_id'))
