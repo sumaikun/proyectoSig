@@ -205,5 +205,40 @@ class Metodos{
 	}
 
 
+	public static function double_enterprises($enterprise,$int)
+	{
+		$check = ListEnterprises::Where('nombre','LIKE','%'.$enterprise->name.'%')->where('nit','=',$enterprise->nit)->get();
+		$count = ListEnterprises::Where('nombre','LIKE','%'.$enterprise->name.'%')->where('nit','=',$enterprise->nit)->count();
+
+		 
+		if ($int==1)
+		{
+			if($count>0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}	
+		}
+		elseif($int==2)
+		{
+			if($count>1)
+			{
+				return true;
+			}			
+			elseif($count==1&&$check[0]->id!=$enterprise->id)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}	
+		}	
+	} 
+
+
 }
 ?>

@@ -63,12 +63,12 @@
                <thead>
                   <tr class="active">                     
                      <th>ID</th>
-                     <th>Nombre</th>
-                     <th>Nit</th>
-                     <th>Telefono</th>
-                     <th>Dirección</th>
-                     <th>Ciudad</th>
-                     <th>Contacto</th>
+                     <th style="text-align:center">Nombre</th>
+                     <th style="text-align:center">Nit</th>
+                     <th style="text-align:center">Telefono</th>
+                     <th style="text-align:center">Dirección</th>
+                     <th style="text-align:center">Ciudad</th>
+                     <th style="text-align:center">Contacto</th>
                      <th></th>
                   </tr>
                </thead>
@@ -77,11 +77,11 @@
                      <tr>                        
                         <td> {{$cliente->id}} </td>
                         <td> {{$cliente->nombre}} </td>
-                        <td> {{$cliente->nit}} </td>
-                        <td> {{$cliente->telefono}} </td>
-                        <td> {{$cliente->direccion}} </td>
-                        <td> {{$cliente->ciudad}} </td>
-                        <td> {{$cliente->contacto}} </td>
+                        <td style="text-align:center"> {{$cliente->nit}} </td>
+                        <td style="text-align:center"> {{$cliente->telefono}} </td>
+                        <td style="text-align:center"> {{$cliente->direccion}} </td>
+                        <td style="text-align:center"> {{$cliente->ciudad}} </td>
+                        <td style="text-align:center"> {{$cliente->contacto}} </td>
                         <td align="right">
                            <a href="{{ url('admin/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
@@ -99,11 +99,11 @@
                      <tr>                     
                         <td> {{$empresa->id}} </td>
                         <td> {{$empresa->nombre}} </td>
-                        <td> {{$empresa->nit}} </td>
-                        <td> {{$empresa->telefono}} </td>
-                        <td> {{$empresa->direccion}} </td>
-                        <td> {{$empresa->ciudad}} </td>
-                        <td> {{$empresa->contacto}} </td>
+                        <td style="text-align:center"> {{$empresa->nit}} </td>
+                        <td style="text-align:center"> {{$empresa->telefono}} </td>
+                        <td style="text-align:center"> {{$empresa->direccion}} </td>
+                        <td style="text-align:center"> {{$empresa->ciudad}} </td>
+                        <td style="text-align:center"> {{$empresa->contacto}} </td>
                         <td align="right" >
                            <a href="{{ url('admin/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
@@ -130,7 +130,7 @@
          <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title" id="myModalLabel">
-               <i class="fa fa-plus-square-o"></i>Nueva cliente
+               <i class="fa fa-plus-square-o"></i>Nuevo cliente
             </h4>
          </div>
          <div class="modal-body">
@@ -138,13 +138,13 @@
             <div class="row">
                <div class="col-lg-12">
                   <label for="carg_nombre">Nombre</label>
-                  <input type="text" name="nombre"  class="form-control input-sm" placeholder="Actividad" autofocus required>
+                  <input type="text" name="nombre"  class="form-control input-sm" placeholder="Nombre" autofocus required>
                   <label for="carg_nombre">Nit</label>
-                  <input type="text" name="nit"  class="form-control input-sm" placeholder="Nit"  required>
+                  <input type="text" maxlength="11" minlength="10" name="nit" pattern="\d*[-,\/]?\d*" title="ejemplo:700569894-5" class="form-control input-sm" placeholder="Nit"  required>
                   <label for="carg_nombre">Teléfono</label>
-                  <input type="text" name="telefono"  class="form-control input-sm" placeholder="Telefono"  required>
+                  <input type="text" name="telefono"  class="form-control input-sm" pattern="\d*[-,\/]?\d*" title="ejemplo:4568978 - 3005648974 es posible poner como minimo el fijo." maxlength="20" minlength="7" placeholder="Telefono"  required>
                   <label for="carg_nombre">Dirección</label>
-                  <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección"  required>
+                  <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección" maxlength="100" minlength="10"  required>
                  <label for="carg_nombre">Ciudad</label>
                   <select name="ciudad"  class="form-control input-sm" required>
                      <option value="">Seleccion</option>
@@ -182,7 +182,7 @@
                      <option value="vichada">Vichada</option>
                   </select>
                   <label for="carg_nombre">Contacto</label>
-                  <input type="text" name="contacto"  class="form-control input-sm" placeholder="Contacto">
+                  <input type="text" name="contacto" minlength="10" maxlength="50" class="form-control input-sm" placeholder="Contacto">
                </div>
 
             </div>
@@ -214,16 +214,16 @@
             <div class="row">  
             <div class="col-lg-12">
                   <label for="carg_nombre">Nombre</label>
-                  <input type="text" name="nombre"  class="form-control input-sm" placeholder="Actividad" autofocus required>
+                  <input type="text" name="nombre"  class="form-control input-sm" placeholder="Nombre" autofocus required>
                   <label for="carg_nombre">Nit</label>
-                  <input type="text" name="nit"  class="form-control input-sm" placeholder="Nit"  required>
+                  <input type="text" name="nit" pattern="\d*[-,\/]?\d*" title="ejemplo:700569894-5" class="form-control input-sm" placeholder="Nit" maxlength="11" minlength="10" required>
                   <label for="carg_nombre">Teléfono</label>
-                  <input type="text" name="telefono"  class="form-control input-sm" placeholder="Telefono"  required>
+                  <input type="text" name="telefono"  class="form-control input-sm" pattern="\d*[-,\/]?\d*" title="ejemplo:4568978 - 3005648974 es posible poner como minimo el fijo." maxlength="20" minlength="7" placeholder="Telefono"  required>
                   <label for="carg_nombre">Dirección</label>
-                  <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección"  required>
+                  <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección" maxlength="100" minlength="10"  required>
                   <label for="carg_nombre">Ciudad</label>
                   <select name="ciudad"  class="form-control input-sm" required>
-                     <option value="">Seleccion</option>
+                     <option value="">Selecciona</option>
                      <option value="amazonas">Amazonas</option>
                      <option value="antioquia">Antioquia</option>
                      <option value="arauca">Arauca</option>
@@ -258,7 +258,7 @@
                      <option value="vichada">Vichada</option>
                   </select>
                   <label for="carg_nombre">Contacto</label>
-                  <input type="text" name="contacto"  class="form-control input-sm" placeholder="Contacto">
+                  <input type="text" name="contacto" minlength="10" maxlength="50"  class="form-control input-sm" placeholder="Contacto">
                </div>
             </div>
       

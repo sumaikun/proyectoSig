@@ -34,15 +34,16 @@
          <div class="row">
             <div class="col-lg-12">
                <label for="carg_nombre">Nombre</label>
-               <input type="text" name="nombre" id="nombre" class="form-control" value="{{$empresa->nombre}}" required>
+               <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre" value="{{$empresa->nombre}}">
                <label for="carg_nombre">Nit</label>
-               <input type="text" name="nit"  class="form-control input-sm" value="{{$empresa->nit}}" placeholder="Nit"  required>
+               <input type="text" name="nit"  class="form-control input-sm" value="{{$empresa->nit}}" maxlength="11" minlength="10" placeholder="Nit" pattern="\d*[-,\/]?\d*" title="ejemplo:700569894-5" required>
                <label for="carg_nombre">Teléfono</label>
-               <input type="text" name="telefono"  class="form-control input-sm" value="{{$empresa->telefono}}" placeholder="Telefono"  required>
+               <input type="text" name="telefono"  class="form-control input-sm" value="{{$empresa->telefono}}" placeholder="Telefono"  pattern="\d*[-,\/]?\d*" title="ejemplo:4568978 - 3005648974 es posible poner como minimo el fijo." maxlength="20" minlength="7" required>
                <label for="carg_nombre">Dirección</label>
-               <input type="text" name="direccion"  class="form-control input-sm" value="{{$empresa->direccion}}" placeholder="Dirección"  required>
+               <input type="text" name="direccion"  class="form-control input-sm" value="{{$empresa->direccion}}" placeholder="Dirección" maxlength="100" minlength="10" required>
                <label for="carg_nombre">Ciudad</label>
                <select name="ciudad"  class="form-control input-sm" required>
+                  <option value="">Selecciona</option>
                   <option value="amazonas">Amazonas</option>
                   <option value="antioquia">Antioquia</option>
                   <option value="arauca">Arauca</option>
@@ -77,7 +78,7 @@
                   <option value="vichada">Vichada</option>
                </select>
                <label for="carg_nombre">Contacto</label>
-               <input type="text" name="contacto"  class="form-control input-sm" value="{{$empresa->contacto}}" placeholder="Contacto">
+               <input type="text" name="contacto"  class="form-control input-sm" value="{{$empresa->contacto}}" minlength="10" maxlength="50" placeholder="Contacto">
                <label for="carg_nombre">Tipo de Entidad</label>
                <label>Empresa SIG</label>
                <input type="radio" name="tp_emp" value="0" checked>

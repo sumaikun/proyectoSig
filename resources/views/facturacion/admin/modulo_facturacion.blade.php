@@ -26,7 +26,7 @@
 
 
 <div class="col-lg-2">
-	<a href="{{ url('admin/actividades/create') }}">
+	<a href="{{ url('admin/facturacion/create') }}">
 	<div class="thumbnail">
 		{{ HTML::image('admin/images/actividades/create.png', 'categoria', array('class' => 'center-block')) }}
 		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Crear Factura</span></button>
@@ -34,7 +34,7 @@
 	</a>
 </div>
 <div class="col-lg-2">
-	<a href="{{ url('admin/actividades/list') }}">
+	<a href="{{ url('admin/facturacion/list') }}">
 		<div class="thumbnail">
 			{{ HTML::image('admin/images/actividades/list.png', 'categoria', array('class' => 'center-block')) }}
 			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Facturas</span></button>
@@ -51,7 +51,7 @@
 </div>
 
 <div class="col-lg-2">
-	<a href="{{ url('admin/actividades/excel') }}">
+	<a href="{{ url('admin/facturacion/excel') }}">
 		<div class="thumbnail">
 			{{ HTML::image('admin/images/actividades/excel.png', 'categoria', array('class' => 'center-block')) }}
 			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Plantillas</span></button>
@@ -60,7 +60,7 @@
 </div>
 
 <div class="col-lg-2">
-	<a href="{{ url('admin/actividades/reports') }}">
+	<a href="{{ url('admin/facturacion/reports') }}">
 		<div class="thumbnail">
 			{{ HTML::image('admin/images/actividades/reports.png', 'categoria', array('class' => 'center-block')) }}
 			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Reportes</span></button>

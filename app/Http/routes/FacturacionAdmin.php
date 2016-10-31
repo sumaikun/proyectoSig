@@ -13,11 +13,9 @@ Route::any('facturacion', function(){
    return View::make('facturacion.admin.modulo_facturacion');
 });
 
-Route::get('actividades/create', function(){
-	  
-  $actividades = psig\models\ListActivities::lists('nombre','id');
-  $empresas = psig\models\ListEnterprises::lists('nombre','id');
-  return View::make('actividades.admin.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas));
+Route::get('facturacion/create', function(){
+  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+  return View::make('facturacion.admin.nuevafactura',array('empresas'=>$empresas));
    //return View::make('actividades.actividades');
 });
 
