@@ -15,13 +15,14 @@ Route::any('facturacion', function(){
 
 Route::get('facturacion/create', function(){
   $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
-  return View::make('facturacion.admin.nuevafactura',array('empresas'=>$empresas));
+  $facturadoras = psig\models\ListEnterprises::Where('cliente','=',0)->lists('nombre','id');
+  return View::make('facturacion.admin.nuevafactura',array('empresas'=>$empresas,'facturadoras'=>$facturadoras));
    //return View::make('actividades.actividades');
 });
 
 Route::any('facturacion/list', function(){
 
-  return 'tomala bitch';
+  //return 'tomala bitch';
   if(strpos(URL::previous(),'list'))
   {
     $year = Input::get('year_list');
@@ -36,7 +37,7 @@ Route::any('facturacion/list', function(){
     $empresas = psig\models\ListEnterprises::lists('nombre','id');
     $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
     Session::put('usu_exportactividades',$registros);  
-     return View::make('actividades.admin.listaactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
+     return View::make('actividades.admin.listafacturas',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
 
 });
 
@@ -55,15 +56,9 @@ Route::get('facturacion/editEmp/{id}', 'Confactura@showEmp');
 
 Route::post('facturacion/updateEmp','Confactura@updateEmp');
 
-Route::get('facturacion/destroyAct/{id}','Conactividades@destroyAct');
-
-Route::get('facturacion/destroyEmp/{id}','Conactividades@destroyEmp');
-
-Route::post('facturacion/registraractividad','Conactividades@store');
+Route::post('facturacion/registrarfactura','Confactura@store');
 
 Route::get('facturacion/edit/{id}', 'Conactividades@edit');
-
-Route::post('facturacion/updateactividad','Conactividades@update');
 
 Route::get('facturacion/excel', function(){
    $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
@@ -88,6 +83,6 @@ Route::any('facturacion/reports',function(){
   return View::make('facturacion.admin.reports',compact('empresas','usuarios','year'));
 });
 
-Route::post('facturacion/subirexcel','Conactividades@excel');
+Route::get('facturacion/cliente/{id}','Confactura@get_customer_info');
 
 Route::post('facturacion/export_excel','Conactividades@exportar_actividades_admin');

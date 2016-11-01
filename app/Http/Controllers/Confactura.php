@@ -8,6 +8,8 @@ use psig\Http\Requests;
 
 use psig\models\ListEnterprises;
 
+use psig\models\Modfactura;
+
 use psig\Helpers\Metodos;
 
 use Cache;
@@ -135,6 +137,48 @@ class Confactura extends Controller
 
             return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
         }
+    }
+
+    public function store(Request $request)
+    {
+    	print_r($_POST);
+    	
+    	$factura = new Modfactura;    	
+    	$id = Metodos::id_generator($factura,'id');
+    	$factura->id = $id;
+    	$factura->fecha_elaboracion = Input::get('fecha_elaboracion');
+    	$factura->cliente = Input::get('cliente');
+    	$factura->facturadora = Input::get('facturadora');
+    	$factura->reembolso = Input::get('reembolso');
+    	$factura->fecha_vencimiento = Input::get('fecha_vencimiento');    	
+    	$cont = Input::get('cont');
+    	$desc = ' ';
+    	for($i=0;$i<$cont;$i++)
+    	{
+    		$desc  = $desc.Input::get('item'.($i+1)).',';
+    		$desc  = $desc.Input::get('cant'.($i+1)).',';
+    		$desc  = $desc.Input::get('valor'.($i+1)).',';
+    		if(Input::get('valor'.($i+1))!=null)
+    		{
+    			$desc = $desc.'con';
+    		}
+    		else{
+    			$desc = $desc.'sin';	
+    		}
+    		$desc = $desc.'|';	
+    	}	
+
+    	echo'<br>';
+    	echo $desc;
+    	echo'<br>';
+    	return $factura;
+
+    }
+
+    public function get_customer_info($id)
+    {
+    	$customer = ListEnterprises::where('id','=',$id)->first();
+    	return $customer;
     }
 
 }
