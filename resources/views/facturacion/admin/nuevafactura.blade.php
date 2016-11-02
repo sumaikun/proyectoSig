@@ -95,7 +95,7 @@
 
                <div class="form-group">      
                   <label>*Valor del iva</label>
-                  <input  class="form-control" name="iva" type="number" step="any" required/>            
+                  <input  class="form-control" name="iva" id="total_iva"  max="25" min="1" type="number" step="any" required/>            
               </div>
 
               <div class="form-group">      
@@ -105,7 +105,7 @@
 
                <div class="form-group">      
                   <label>*Reembolso de gastos no generados por iva</label>
-                  <input  class="form-control" name="reembolso" type="text" required/>            
+                  <input  class="form-control" max="9999000000" min="1000" name="reembolso"  id="reembolso" type="number" required/>            
               </div>              
 
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
@@ -177,29 +177,33 @@
                     <td><b>Valor Total</b></td>
                   </tr>
                   <tr>
-                    <td rowspan="6" id="pre_desc" style="font-size: 85%; max-width: 550px;" colspan="2"></td>
+                    <td rowspan="7" id="pre_desc" style="font-size: 85%; max-width: 550px;" colspan="2"></td>
                     <td id="pre_valor"></td>
                     <td id="pre_mult"></td>
                   </tr>  
                   <tr>                  
                     <td><b>Ingresos que generan iva</b></td>
-                    <td></td>                
+                    <td id="pre_iva"></td>                
+                  </tr>
+                  <tr>                  
+                    <td><b>Ingresos que no generan iva</b></td>
+                    <td id="pre_noiva"></td>                
                   </tr>
                   <tr>                  
                     <td><b>Reembolsados de gastos no generadores de iva</b></td>
-                    <td></td>                
+                    <td id="pre_reembolso"></td>                
                   </tr>
                   <tr>                  
                     <td><b>Subtotal</b></td>
-                    <td></td>                
+                    <td id="pre_subtotal"></td>                
                   </tr>
                   <tr>                  
                     <td><b>Iva</b></td>
-                    <td></td>                
+                    <td id="pre_valoriva"></td>                
                   </tr>
                   <tr>                  
                     <td><b>Total</b></td>
-                    <td></td>                
+                    <td id="pre_total"></td>                
                   </tr>
                 </tbody>
               </table>
@@ -224,7 +228,7 @@
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}
 <script type="text/javascript">
 var cont = 0;
-
+var reembolso = 0;
 function add_item()
 {
   event.preventDefault();
@@ -255,9 +259,10 @@ function add_item()
       div.appendChild(label);
       
       var input = document.createElement("input");
-      input.type = "text";
+      input.type = "number";
       input.className = "form-control";
       input.value = 1;
+      input.min = 1;
       input.id = "cant"+cont;
       input.name = "cant"+cont;
       div.appendChild(input);
@@ -268,7 +273,9 @@ function add_item()
       div.appendChild(label);
       
       var input = document.createElement("input");
-      input.type = "text";
+      input.type = "number";
+      input.min = "1000";
+      input.max = "9999000000";
       input.className = "form-control";
       input.name = "valor"+cont;
       input.id = "valor"+cont;
@@ -285,7 +292,17 @@ function add_item()
       input.className = "form-control";
       input.name = "check"+cont;
       input.id = "check"+cont;
-      input.checked = "checked"
+      input.value = "1";
+      input.checked = "checked";
+      input.onclick = function(){
+        if(this.value==1)
+        {
+          this.value=0;
+        }
+        else{
+          this.value=1; 
+        }  
+      }
       div.appendChild(input);
       
       container.appendChild(div);
@@ -318,8 +335,16 @@ function remove_item()
 
 function description()
 {
+  var total_iva = 0;
+  var total_noiva = 0;
   $("#pre_desc").empty();
   $("#pre_valor").empty();
+  $("#pre_mult").empty();
+  $("#pre_iva").empty();
+  $("#pre_noiva").empty();
+  $("#pre_subtotal").empty();
+  $("#pre_valoriva").empty();
+  $("#pre_total").empty();
 
   var content = '<ul>';
   var content2 = '<ul>';
@@ -331,7 +356,13 @@ function description()
     {
       content = content+'<li>'+$("#meti"+(parseInt(i)+1)).val()+'</li>';
       content2 = content2+'<li>'+$("#valor"+(parseInt(i)+1)).val()+'</li>';
-      content3 = content3+'<li>'+mult_items()+'</li>';
+      content3 = content3+'<li>'+mult_items($("#valor"+(parseInt(i)+1)).val(),$("#cant"+(parseInt(i)+1)).val())+'</li>';
+      if($("#check"+(parseInt(i)+1)).val()==1){
+        total_iva = parseInt(total_iva) + mult_items($("#valor"+(parseInt(i)+1)).val(),$("#cant"+(parseInt(i)+1)).val());
+      }
+      else{
+        total_noiva = parseInt(total_noiva) + mult_items($("#valor"+(parseInt(i)+1)).val(),$("#cant"+(parseInt(i)+1)).val()); 
+      }
     }
   }
 
@@ -339,14 +370,33 @@ function description()
   content2 = content2+'</ul>';
   content3 = content3+'</ul>';
 
+  subtotal = parseInt(total_noiva)+parseInt(total_iva)+parseInt(reembolso);
+
+  var iva = 0; 
+
+  if($("#total_iva").val()!='')
+  {
+    iva = parseFloat(iva) + (parseFloat($("#total_iva").val())*parseInt(total_iva))/100;
+    //console.log('valor del iva '+iva); 
+  }
+
+  var total = parseFloat(subtotal)+parseFloat(iva);
+
   $("#pre_desc").append(content);
   $("#pre_valor").append(content2);
   $("#pre_mult").append(content3);
+  $("#pre_iva").append(total_iva);
+  $("#pre_noiva").append(total_noiva);
+  $("#pre_subtotal").append(subtotal);
+  $("#pre_valoriva").append(iva);
+  $("#pre_total").append(total);
+  
 }
 
-function mult_items(){
-  return 'placeholder'; 
+function mult_items(a,b){
+  return (a*b); 
 }
+
 
 $(document).ready(function() {
 $("#customer").change(event => {
@@ -388,6 +438,15 @@ $(document).ready(function() {
 $("#fecha_vencimiento").change(event => {
   //console.log("Estoy llegando"+`${event.target.value}`);      
     $('#pre_final').append(`${event.target.value}`);
+  });
+
+});
+
+$(document).ready(function() {
+$("#reembolso").change(event => {
+  //console.log("Estoy llegando"+`${event.target.value}`);
+  reembolso =  parseInt(reembolso)+`${event.target.value}`;     
+    $('#pre_reembolso').append(`${event.target.value}`);
   });
 
 });

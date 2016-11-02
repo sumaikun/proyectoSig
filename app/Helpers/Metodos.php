@@ -10,6 +10,7 @@ use psig\models\Modgddescargas;
 use psig\models\Modgdregistros;
 use psig\models\Modusuarios;
 use psig\models\ModActividad;
+use psig\models\Modfactura;
 use Session;
 use DB;
 use psig\models\ListEnterprises;
@@ -147,7 +148,7 @@ class Metodos{
 		$usuario = Modusuarios::find($registro->usu_id);
 		return $usuario->usu_nombres." ".$usuario->usu_apellido1;
 	}
-
+// generador de id y generador de consecutivos para facturacion
 
 	public static function id_generator($table,$id){
 
@@ -155,6 +156,19 @@ class Metodos{
 		if($query!=null)
 		{
 			return $query+1;	
+		}	
+		else {
+			return 1;
+		} 
+	}
+
+	public static function cons_generator($ent){
+
+		$query = Modfactura::where('facturadora','=',$ent)->orderBy('id','desc')->first();
+		
+		if($query!=null)
+		{
+			return $query->consecutivo+1;	
 		}	
 		else {
 			return 1;
@@ -237,7 +251,43 @@ class Metodos{
 				return false;
 			}	
 		}	
-	} 
+	}
+
+	//elementos de la factura
+	public  static function factura($cadena,$parametro){
+
+        $array = explode('|', $cadena);
+        //print_r($array);
+        $size = count($array);
+        //echo('tamaño: '.$size);
+        $resultado = 0; 
+       
+          
+          for($i=0;$i<($size-1);$i++)
+          {
+            $string_pr = $array[$i];
+            //echo('string :'.$string_pr);
+            $product = explode(',', $string_pr);
+            //print_r($product);
+
+              	if($parametro == 'con_iva')
+              	{
+              		if($product[3]=='con')
+              		{
+              			$resultado = $resultado + ($product[1]*$product[2]); 
+              		}	
+              	}
+            	elseif ($parametro == 'sin_iva') {
+            		if($product[3]=='sin')
+              		{
+              			$resultado = $resultado + ($product[1]*$product[2]); 
+              		}			
+    			}
+          }
+          return $resultado;      
+    
+     
+    } 
 
 
 }

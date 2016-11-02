@@ -141,7 +141,7 @@ class Confactura extends Controller
 
     public function store(Request $request)
     {
-    	print_r($_POST);
+    	//print_r($_POST);
     	
     	$factura = new Modfactura;    	
     	$id = Metodos::id_generator($factura,'id');
@@ -150,15 +150,18 @@ class Confactura extends Controller
     	$factura->cliente = Input::get('cliente');
     	$factura->facturadora = Input::get('facturadora');
     	$factura->reembolso = Input::get('reembolso');
-    	$factura->fecha_vencimiento = Input::get('fecha_vencimiento');    	
+    	$factura->fecha_vencimiento = Input::get('fecha_vencimiento');
+    	$factura->iva = Input::get('iva');
+    	$cons = Metodos::cons_generator($factura->facturadora);    	
+    	$factura->consecutivo = $cons;
     	$cont = Input::get('cont');
-    	$desc = ' ';
+    	$desc = '';
     	for($i=0;$i<$cont;$i++)
     	{
     		$desc  = $desc.Input::get('item'.($i+1)).',';
     		$desc  = $desc.Input::get('cant'.($i+1)).',';
     		$desc  = $desc.Input::get('valor'.($i+1)).',';
-    		if(Input::get('valor'.($i+1))!=null)
+    		if(Input::get('valor'.($i+1))!=0)
     		{
     			$desc = $desc.'con';
     		}
@@ -168,10 +171,16 @@ class Confactura extends Controller
     		$desc = $desc.'|';	
     	}	
 
-    	echo'<br>';
-    	echo $desc;
-    	echo'<br>';
-    	return $factura;
+    	$factura->descripcion = $desc;
+    	$factura->status = 0;
+    	$factura->user = Session::get('usu_id');
+
+    	if($factura ->save()){
+            return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Factura creada con éxito!!');
+        } 
+        else{
+            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+        }   
 
     }
 
@@ -179,6 +188,18 @@ class Confactura extends Controller
     {
     	$customer = ListEnterprises::where('id','=',$id)->first();
     	return $customer;
+    }
+
+    public function get_bill_info($id)
+    {
+    	$bill = Modfactura::where('id','=',$id)->first();
+
+		  $bill->con_iva = Metodos::factura($bill->descripcion,'con_iva');
+	      $bill->sin_iva = Metodos::factura($bill->descripcion,'sin_iva');
+	      $bill->valor_iva = ($bill->iva*$bill->con_iva)/100;
+	      $bill->total = $bill->valor_iva+$bill->con_iva+$bill->sin_iva+$bill->reembolso;
+
+    	return $bill;
     }
 
 }

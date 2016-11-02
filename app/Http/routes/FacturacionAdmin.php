@@ -31,13 +31,28 @@ Route::any('facturacion/list', function(){
   else
   {
     $year = date('Y');
-  }    
-  	$registros = psig\models\modActividad::orderBy('usuario')->orderBy('fecha','desc')->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->get();
+  }
+
+
+  	$registros = psig\models\Modfactura::orderBy('fecha_elaboracion','desc')->Where(DB::raw('YEAR(fecha_elaboracion)'),"LIKE",'%'.$year.'%')->get();
+
+    foreach($registros as $registro)
+    {
+      //echo $registro->descripcion;
+      //echo '<br>';
+      $registro->con_iva = psig\Helpers\Metodos::factura($registro->descripcion,'con_iva');
+      $registro->sin_iva = psig\Helpers\Metodos::factura($registro->descripcion,'sin_iva');
+      $registro->valor_iva = ($registro->iva*$registro->con_iva)/100;
+      $registro->total = $registro->valor_iva+$registro->con_iva+$registro->sin_iva+$registro->reembolso;
+    }  
+
+
+    //return $registros;
+
     Session::put('usu_listy',$year);  
-    $empresas = psig\models\ListEnterprises::lists('nombre','id');
-    $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
+  
     Session::put('usu_exportactividades',$registros);  
-     return View::make('actividades.admin.listafacturas',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
+     return View::make('facturacion.admin.listafacturas',array('registros'=> $registros));
 
 });
 
@@ -57,8 +72,6 @@ Route::get('facturacion/editEmp/{id}', 'Confactura@showEmp');
 Route::post('facturacion/updateEmp','Confactura@updateEmp');
 
 Route::post('facturacion/registrarfactura','Confactura@store');
-
-Route::get('facturacion/edit/{id}', 'Conactividades@edit');
 
 Route::get('facturacion/excel', function(){
    $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
@@ -85,4 +98,4 @@ Route::any('facturacion/reports',function(){
 
 Route::get('facturacion/cliente/{id}','Confactura@get_customer_info');
 
-Route::post('facturacion/export_excel','Conactividades@exportar_actividades_admin');
+Route::get('facturacion/factura_info/{id}','Confactura@get_bill_info');
