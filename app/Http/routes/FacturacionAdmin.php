@@ -99,3 +99,11 @@ Route::any('facturacion/reports',function(){
 Route::get('facturacion/cliente/{id}','Confactura@get_customer_info');
 
 Route::get('facturacion/factura_info/{id}','Confactura@get_bill_info');
+
+Route::any('facturacion/anular_factura/{id}','Confactura@anular');
+
+Route::any('facturacion/pagar_factura/{id}','Confactura@pagar');
+
+Route::get('facturacion/pagada_info/{id}','Confactura@pagar_info');
+
+Route::get('facturacion/anulada_info/{id}','Confactura@anular_info');

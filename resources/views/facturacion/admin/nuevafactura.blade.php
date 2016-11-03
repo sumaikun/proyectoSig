@@ -105,7 +105,7 @@
 
                <div class="form-group">      
                   <label>*Reembolso de gastos no generados por iva</label>
-                  <input  class="form-control" max="9999000000" min="1000" name="reembolso"  id="reembolso" type="number" required/>            
+                  <input  class="form-control" max="9999000000" min="0" name="reembolso" value="0"  id="reembolso" type="number" required/>            
               </div>              
 
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
@@ -423,6 +423,7 @@ $("#customer").change(event => {
 
 $(document).ready(function() {
 $("#fecha_elaboracion").change(event => {
+  $('#pre_inicio').empty()    
   //console.log("Estoy llegando"+`${event.target.value}`);
     var min = `${event.target.value}`;
     var input = document.getElementById("fecha_vencimiento");
@@ -436,6 +437,7 @@ $("#fecha_elaboracion").change(event => {
 
 $(document).ready(function() {
 $("#fecha_vencimiento").change(event => {
+    $('#pre_final').empty();
   //console.log("Estoy llegando"+`${event.target.value}`);      
     $('#pre_final').append(`${event.target.value}`);
   });
@@ -444,6 +446,7 @@ $("#fecha_vencimiento").change(event => {
 
 $(document).ready(function() {
 $("#reembolso").change(event => {
+   $('#pre_reembolso').empty();
   //console.log("Estoy llegando"+`${event.target.value}`);
   reembolso =  parseInt(reembolso)+`${event.target.value}`;     
     $('#pre_reembolso').append(`${event.target.value}`);

@@ -43,28 +43,41 @@
                   <td>{{ucwords($registro->consecutivo)}}</td>
                   <td>{{ucwords($registro->facturadoras->nombre)}}</td>
                   <td>{{ucwords ($registro->clientes->nombre)}}</td>              
-                  <td style="text-align: center">{{$registro->total}}</td>
+                  <td style="text-align: center">${{$registro->total}}</td>
                   <td style="text-align: center">{{ucwords ($registro->fecha_elaboracion)}}</td>
                   <td style="text-align: center">{{ucwords ($registro->fecha_vencimiento)}}</td>
                   <td style="text-align: center">
                     @if($registro->status==0)
                       {{ucwords("PENDIENTE")}}
+                    @elseif($registro->status==1)
+                      {{ucwords("PAGADA")}}
                     @else
-                      {{ucwords("PAGADO")}}  
+                      {{ucwords("ANULADA")}}    
                     @endif                    
                   </td>
                   <td style="text-align: center"><button data-toggle="modal" data-target="#myModal" onclick="grab_data({{ $registro->id}})" id="detail_bill"><i class="fa fa-server" aria-hidden="true"></i></button></td>
                   @if(Session::get('rol_nombre')=='administrador')
                   <td>
-                     <a class='btn btn-warning btn-xs' href="{{ url('admin/actividades/edit/'.$registro->id) }}">
-                        <i class="fa fa-pencil-square-o"></i> Editar
-                     </a> 
+                     <!--<a class='btn btn-danger btn-xs' href="{{ url('admin/facturacion/cancel/'.$registro->id) }}">-->
+                      <button class='btn btn-danger btn-xs' id="anular" onclick="anular_pagar({{$registro->status}},{{$registro->id}},'anular')">  
+                        <i class="fa fa-pencil-square-o"></i> ANULAR
+                      </button>  
+                     <!--</a>--> 
+                  </td>
+                  <td>
+                     <!--<a class='btn btn-success btn-xs' href="{{ url('admin/facturacion/payed/'.$registro->id) }}">-->
+                      <button class='btn btn-success btn-xs' id="pagar" onclick="anular_pagar({{$registro->status}},{{$registro->id}},'pagar')">   
+                        <i class="fa fa-pencil-square-o"></i> Marcar Pagado
+                      </button>  
+                     <!--</a>--> 
                   </td>
                   @else
                   <td>
-                     <a class='btn btn-warning btn-xs' href="{{ url('usuario/actividades/edit/'.$registro->id) }}">
+                     <!--<a class='btn btn-warning btn-xs' href="{{ url('usuario/actividades/edit/'.$registro->id) }}">-->
+                      <button class='btn btn-warning btn-xs'>  
                         <i class="fa fa-pencil-square-o"></i> Editar
-                     </a> 
+                      </button>
+                     <!--</a>--> 
                   </td>
                   @endif
                </tr>
@@ -73,6 +86,5 @@
             </tbody>
          </table>
          </div>
-
    </div>
 </div>
