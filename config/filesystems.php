@@ -47,6 +47,11 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
         ],
+        
+        'plantillas_excel' => [
+            'driver' => 'local',
+            'root'   => storage_path('plantillas_excel'),
+        ],
 
         'public' => [
             'driver' => 'local',

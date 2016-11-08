@@ -11,6 +11,7 @@ use psig\models\Modgdregistros;
 use psig\models\Modusuarios;
 use psig\models\ModActividad;
 use psig\models\Modfactura;
+use psig\models\Modpermisosfac;
 use Session;
 use DB;
 use psig\models\ListEnterprises;
@@ -289,6 +290,29 @@ class Metodos{
      
     } 
 
-
+    public static function exist_fac_permission($id){
+    	$query = Modpermisosfac::where('user_id','=',$id)->first();
+    	//echo $query;
+    	if($query!=null)
+    	{
+	    	$array = explode(',', $query->permisos);
+	    	if(in_array('gene_factura', $array)){
+	    		 Session::put('gene_factura','gene_factura'); 
+	    	}
+	    	if(in_array('obs_factura', $array)){
+	    		 Session::put('obs_factura','obs_factura'); 
+	    	}
+	    	if(in_array('ver_pago', $array)){
+	    		 Session::put('ver_pago','ver_pago'); 
+	    	}	    	
+	    	if(in_array('ges_entidades', $array)){
+	    		 Session::put('ges_entidades','ges_entidades'); 
+	    	}
+    	
+    		return true;	
+    	}
+    
+    	
+    }
 }
 ?>

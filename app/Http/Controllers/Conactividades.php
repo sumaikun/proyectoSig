@@ -231,12 +231,21 @@ class Conactividades extends Controller
 
     public function exportar_actividades()
     {
-        $registros = Session::get('usu_exportactividades'); 
+        $registros = Session::get('usu_exportactividades');
+        $order = Array ('fecha','tp_actividad','tp_empresa','filial','subcontratista','horas','usuario','descripcion'); 
 
+            /*foreach($registros as $key => $temp) 
+            {
+                static $i = 0;
+                //echo $i;
+                echo $temp;
+                echo '<br>';
+                $i++;
+            }
+
+            return ' ';*/
     
-            Excel::load(public_path('excel').'\GOLBMSFO12.xlsx',function($sheet)use($registros){
-
-                $order = Array ('fecha','tp_actividad','tp_empresa','filial','subcontratista','horas','usuario','descripcion');
+            Excel::load(public_path('excel').'\GOLBMSFO12.xlsx',function($sheet)use($registros,$order){               
 
                 $row = 8;
                   foreach($registros as $key => $temp) 
@@ -254,14 +263,12 @@ class Conactividades extends Controller
 
                         elseif($value=='tp_actividad')
                         {
-                            $actividad = ListActivities::Where('id','=',$temp[$value])->first()->value('nombre');
-                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $actividad);
+                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $temp['actividades']->nombre);
                         }    
 
                         elseif($value=='tp_empresa')
                         {
-                            $empresa = ListEnterprises::Where('id','=',$temp[$value])->first()->value('nombre');
-                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $empresa);
+                            $sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $temp['empresas']->nombre);
                         }
 
                         else {$sheet->getActiveSheet()->setCellValueByColumnAndRow($col, $row, $temp[$value]);}                         

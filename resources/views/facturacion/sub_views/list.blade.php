@@ -56,7 +56,8 @@
                     @endif                    
                   </td>
                   <td style="text-align: center"><button data-toggle="modal" data-target="#myModal" onclick="grab_data({{ $registro->id}})" id="detail_bill"><i class="fa fa-server" aria-hidden="true"></i></button></td>
-                  @if(Session::get('rol_nombre')=='administrador')
+
+                  @if(Session::get('rol_nombre')=='administrador'||Session::get('ver_pago')!=null)
                   <td>
                      <!--<a class='btn btn-danger btn-xs' href="{{ url('admin/facturacion/cancel/'.$registro->id) }}">-->
                       <button class='btn btn-danger btn-xs' id="anular" onclick="anular_pagar({{$registro->status}},{{$registro->id}},'anular')">  
@@ -71,15 +72,11 @@
                       </button>  
                      <!--</a>--> 
                   </td>
-                  @else
-                  <td>
-                     <!--<a class='btn btn-warning btn-xs' href="{{ url('usuario/actividades/edit/'.$registro->id) }}">-->
-                      <button class='btn btn-warning btn-xs'>  
-                        <i class="fa fa-pencil-square-o"></i> Editar
-                      </button>
-                     <!--</a>--> 
-                  </td>
                   @endif
+                  <td>
+                     <a class="btn btn-warning btn-xs" href="descargar_factura/{{$registro->id}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Descargar</a> 
+                  </td>
+             
                </tr>
             
             @endforeach

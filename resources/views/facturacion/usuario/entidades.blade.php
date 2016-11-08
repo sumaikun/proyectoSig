@@ -1,8 +1,15 @@
-@extends('administrador.layouts.layout')
+@extends('usuarios.layouts.layout')
 
-@section('menu')
-    @include('administrador.layouts.menu', array('op'=>'cargos'))
+
+@section('barra_usuario')
+  @include('usuarios.layouts.barra_usuario', array('op'=>'inicio'))
 @stop
+
+
+@section('menu_lateral')
+  @include('usuarios.layouts.menu_lateral', array('op'=>'inicio'))
+@stop
+
 
 @section('css')
    {{ HTML::style('general/css/icono_info.css') }}
@@ -83,7 +90,7 @@
                         <td style="text-align:center"> {{$cliente->ciudad}} </td>
                         <td style="text-align:center"> {{$cliente->contacto}} </td>
                         <td align="right">
-                           <a href="{{ url('admin/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
+                           <a href="{{ url('usuario/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
                            <!--<a href="{{ url('admin/facturacion/destroyEmp/'.$cliente->id) }}" class="btn btn-danger btn-xs">
@@ -105,7 +112,7 @@
                         <td style="text-align:center"> {{$empresa->ciudad}} </td>
                         <td style="text-align:center"> {{$empresa->contacto}} </td>
                         <td align="right" >
-                           <a href="{{ url('admin/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
+                           <a href="{{ url('usuario/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
                            <!--<a href="{{ url('admin/facturacion/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">

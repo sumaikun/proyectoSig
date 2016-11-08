@@ -69,6 +69,14 @@
       </a>
    </li>
    @endif
+
+   @if(psig\Helpers\Metodos::exist_fac_permission(Session::get('usu_id'))==true)
+   <li class="active">
+      <a href="{{ url('usuario/facturacion') }}">
+         <i class="fa fa-calculator"></i> <span><b>Facturación</b></span>
+      </a>
+   </li>
+   @endif
  
 </ul>
       

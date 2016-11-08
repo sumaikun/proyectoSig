@@ -96,9 +96,9 @@
                            <a href="{{ url('admin/actividades/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
-                           <a href="{{ url('admin/actividades/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">
+                           <!--<a href="{{ url('admin/actividades/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">
                               <i class="fa fa-trash-o"></i> Eliminar
-                           </a>
+                           </a>-->
                         </td>
                      </tr>
                   @endforeach

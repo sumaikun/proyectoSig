@@ -12,9 +12,9 @@
 @section('contenido')
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-users"></i> Actividades <!-- <small>Nuevo usuario</small> --></h1>
+	<h1><i class="fa fa-users"></i> Facturación <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-   	<li><a href="#"><i class="fa fa-users"></i> Gestión de Actividades</a></li>
+   	<li><a href="#"><i class="fa fa-users"></i> Gestión de Facturación</a></li>
       <li class="active">Inicio</li>
     </ol>
     <!-- <hr> -->
@@ -28,7 +28,7 @@
 <div class="col-lg-2">
 	<a href="{{ url('admin/facturacion/create') }}">
 	<div class="thumbnail">
-		{{ HTML::image('admin/images/actividades/create.png', 'categoria', array('class' => 'center-block')) }}
+		{{ HTML::image('admin/images/facturacion/create.png', 'categoria', array('class' => 'center-block')) }}
 		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Crear Factura</span></button>
 	</div>
 	</a>
@@ -36,7 +36,7 @@
 <div class="col-lg-2">
 	<a href="{{ url('admin/facturacion/list') }}">
 		<div class="thumbnail">
-			{{ HTML::image('admin/images/actividades/list.png', 'categoria', array('class' => 'center-block')) }}
+			{{ HTML::image('admin/images/facturacion/list.png', 'categoria', array('class' => 'center-block')) }}
 			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Facturas</span></button>
 		</div>
 	</a>
@@ -60,10 +60,10 @@
 </div>
 
 <div class="col-lg-2">
-	<a href="{{ url('admin/facturacion/reports') }}">
+	<a href="{{ url('admin/facturacion/permission') }}">
 		<div class="thumbnail">
-			{{ HTML::image('admin/images/actividades/reports.png', 'categoria', array('class' => 'center-block')) }}
-			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Reportes</span></button>
+			{{ HTML::image('admin/images/facturacion/permission.png', 'categoria', array('class' => 'center-block')) }}
+			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de Permisos</span></button>
 		</div>
 	</a>
 </div>

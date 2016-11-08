@@ -10,19 +10,26 @@ _/ ____\____    _____/  |_ __ ______________    ____ |__| ____   ____
 //-------------------------------------------------------------------------------------------    
 
 Route::any('facturacion', function(){
-   return View::make('facturacion.admin.modulo_facturacion');
+   return View::make('facturacion.usuario.modulo_facturacion');
 });
 
 Route::get('facturacion/create', function(){
+  if(Session::get('gene_factura')==null){
+      return response(View::make('cosas_generales.page_error')->with('mensaje', 'Área restringida.'));
+    }
+
   $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
   $facturadoras = psig\models\ListEnterprises::Where('cliente','=',0)->lists('nombre','id');
-  return View::make('facturacion.admin.nuevafactura',array('empresas'=>$empresas,'facturadoras'=>$facturadoras));
+  return View::make('facturacion.usuario.nuevafactura',array('empresas'=>$empresas,'facturadoras'=>$facturadoras));
    //return View::make('actividades.actividades');
 });
 
 Route::any('facturacion/list', function(){
 
-  //return 'tomala bitch';
+  if(Session::get('obs_factura')==null){
+      return response(View::make('cosas_generales.page_error')->with('mensaje', 'Área restringida.'));
+    }
+
   if(strpos(URL::previous(),'list'))
   {
     $year = Input::get('year_list');
@@ -52,15 +59,17 @@ Route::any('facturacion/list', function(){
     Session::put('usu_listy',$year);  
   
     Session::put('usu_exportactividades',$registros);  
-     return View::make('facturacion.admin.listafacturas',array('registros'=> $registros));
+     return View::make('facturacion.usuario.listafacturas',array('registros'=> $registros));
 
 });
 
 Route::any('facturacion/parameters', function(){
-    
+  if(Session::get('ges_entidades')==null){
+      return response(View::make('cosas_generales.page_error')->with('mensaje', 'Área restringida.'));
+    }
    $clientes = psig\models\ListEnterprises::Where('cliente','=',1)->OrderBy('nombre')->get();
    $empresas = psig\models\ListEnterprises::Where('cliente','=',0)->OrderBy('nombre')->get();
-   return View::make('facturacion.admin.entidades', array('empresas'=>$empresas,'clientes'=>$clientes));
+   return View::make('facturacion.usuario.entidades', array('empresas'=>$empresas,'clientes'=>$clientes));
 });
 
 Route::post('facturacion/registrarcliente', 'Confactura@createCli');
@@ -72,40 +81,6 @@ Route::get('facturacion/editEmp/{id}', 'Confactura@showEmp');
 Route::post('facturacion/updateEmp','Confactura@updateEmp');
 
 Route::post('facturacion/registrarfactura','Confactura@store');
-
-Route::post('facturacion/subirexcel','Confactura@save_layout');
-
-Route::get('facturacion/downloadlayout/{file}','Confactura@download_layout');
-
-Route::get('facturacion/deletelayout/{file}','Confactura@delete_layout');
-
-Route::get('facturacion/excel', function(){
-   $empresas = psig\models\ListEnterprises::Where('cliente','=',0)->OrderBy('nombre')->get();
-   return View::make('facturacion.admin.excel',compact('empresas'));
-});
-
-Route::any('facturacion/permission',function(){
-   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->get();
-
-  return View::make('facturacion.admin.permission',compact('usuarios'));
-});
-
-Route::any('facturacion/reports',function(){
-  if(strpos(URL::previous(),'reports'))
-  {
-    $year = Input::get('year_list');
-  }
-
-  else
-  {
-    $year = date('Y');
-  } 
-
-  $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();
-  $usuarios = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->get();
-  
-  return View::make('facturacion.admin.reports',compact('empresas','usuarios','year'));
-});
 
 Route::get('facturacion/cliente/{id}','Confactura@get_customer_info');
 
@@ -121,6 +96,7 @@ Route::get('facturacion/anulada_info/{id}','Confactura@anular_info');
 
 Route::get('facturacion/descargar_factura/{id}','Confactura@download_bill');
 
-Route::post('facturacion/registrarpermiso','Confactura@assing_permission');
-
-Route::get('facturacion/permi_asoc/{id}','Confactura@check_permission');
+Route::any('facturacion/test',function(){
+  echo 'test';
+  psig\Helpers\Metodos::exist_fac_permission(Session::get('usu_id'));
+});
