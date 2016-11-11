@@ -24,4 +24,9 @@ class Modfactura extends Model
 
     	return $this->belongsTo('psig\models\Modusuarios','user');
     }
+
+    public function cuentas(){
+
+        return $this->belongsTo('psig\models\ListCuentas','cuenta');
+    }
 }

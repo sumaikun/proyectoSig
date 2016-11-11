@@ -106,6 +106,8 @@
                     <td id="pre_total"></td>                
                   </tr>
                 </tbody>
+                <strong>Cuenta a pagar:</strong>
+                <div id="pre_pagar"></div>
               </table>
               </div>
             </div>
@@ -224,7 +226,7 @@ function grab_data(id){
         $("#pre_cons").empty();
         $("#pre_valor").empty();
         $("#pre_mult").empty();
-
+        $("#pre_pagar").empty();
         $("#title_status").empty();
         $("#detail_status").empty();
 
@@ -235,6 +237,7 @@ function grab_data(id){
         $("#pre_inicio").append(res.fecha_elaboracion);
         $("#pre_final").append(res.fecha_vencimiento);
         $("#pre_reembolso").append('$'+res.reembolso);
+        $("#pre_pagar").append(res.banco.nombre+" "+res.cuenta.tipo+" "+res.cuenta.numero);
 
         //console.log('Descripción :'+res.descripcion);
         list_products(res.descripcion);

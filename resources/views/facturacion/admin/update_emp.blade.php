@@ -41,42 +41,19 @@
                <input type="text" name="telefono"  class="form-control input-sm" value="{{$empresa->telefono}}" placeholder="Telefono"  pattern="\d*[-,\/]?\d*" title="ejemplo:4568978 - 3005648974 es posible poner como minimo el fijo." maxlength="20" minlength="7" required>
                <label for="carg_nombre">Dirección</label>
                <input type="text" name="direccion"  class="form-control input-sm" value="{{$empresa->direccion}}" placeholder="Dirección" maxlength="100" minlength="10" required>
-               <label for="carg_nombre">Ciudad</label>
-               <select name="ciudad"  class="form-control input-sm" required>
-                  <option value="">Selecciona</option>
-                  <option value="amazonas">Amazonas</option>
-                  <option value="antioquia">Antioquia</option>
-                  <option value="arauca">Arauca</option>
-                  <option value="atlantico">Atl&aacute;ntico</option>
-                  <option value="bolivar">Bolivar</option>
-                  <option value="boyaca">Boyac&aacute;</option>
-                  <option value="caldas">Caldas</option>
-                  <option value="caqueta">Caquet&aacute;</option>
-                  <option value="casanare">Casanare</option>
-                  <option value="cauca">Cauca</option>
-                  <option value="cesar">Cesar</option>
-                  <option value="choco">Choc&oacute;</option>
-                  <option value="cordoba">C&oacute;rdoba</option>
-                  <option value="cundinamarca">Cundinamarca</option>
-                  <option value="guainia">Guain&iacute;ia</option>
-                  <option value="guaviare">Guaviare</option>
-                  <option value="huila">Huila</option>
-                  <option value="guajira">La Guajira</option>
-                  <option value="magadelan">Magdalena</option>
-                  <option value="meta">Meta</option>
-                  <option value="narino">Nari&ntilde;o</option>
-                  <option value="norte_santander">Norte de Santander</option>
-                  <option value="putumayo">Putumayo</option>
-                  <option value="quindio">Quind&iacute;io</option>
-                  <option value="risaralda">Risaralda</option>
-                  <option value="san_andres">San Andr&eacute;s y Providencia</option>
-                  <option value="santander">Santander</option>
-                  <option value="sucre">Sucre</option>
-                  <option value="tolima">Tolima</option>
-                  <option value="valle">Valle Del Cauca</option>
-                  <option value="vaupes">Vaup&eacute;s</option>
-                  <option value="vichada">Vichada</option>
-               </select>
+
+               <label for="carg_nombre">Departamento</label>
+                  <select class="form-control" name="departamento" id="ajax_depar1">
+                     <option value="">Selecciona</option>
+                     @foreach($departamentos as $key => $temp)
+                     <option value="{{$key}}">{{$temp}}</option>
+                     @endforeach
+                  </select>
+              <label for="carg_nombre">Ciudad</label>
+                 <select class="form-control" name="ciudad" id="ajax_city1" required>
+                     <option value="">Selecciona</option>
+                     <option value="{{$empresa->ciudad}}" selected>{{$empresa->ciudades["nombre"]}}</option>
+                  </select>
                <label for="carg_nombre">Contacto</label>
                <input type="text" name="contacto"  class="form-control input-sm" value="{{$empresa->contacto}}" minlength="10" maxlength="50" placeholder="Contacto">
                <label for="carg_nombre">Tipo de Entidad</label>
@@ -127,5 +104,26 @@ function validar_update(){
 }
 
 
+$(document).ready(function() {
+$("#ajax_depar1").change(event => {   
+      
+     if(event.target.value=="")
+     {
+      $("#ajax_city1").empty();
+      $("#ajax_city1").append('<option> Selecciona <option>');      
+     }
+     else
+     { 
+      $.get(`../ciudades/${event.target.value}`, function(res, sta){
+         $("#ajax_city1").empty();
+         $("#ajax_city1").append(`<option value="" selected> Selecciona </option>`);         
+         res.forEach(element => {
+            $("#ajax_city1").append(`<option value=${element.id}> ${element.nombre} </option>`);
+         });
+      });
+   }
+});
+
+});
 </script>
 @stop

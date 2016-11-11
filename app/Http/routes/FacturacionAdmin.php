@@ -57,10 +57,10 @@ Route::any('facturacion/list', function(){
 });
 
 Route::any('facturacion/parameters', function(){
-    
+    $departamentos = psig\models\ListDepartamentos::lists('nombre','id');
    $clientes = psig\models\ListEnterprises::Where('cliente','=',1)->OrderBy('nombre')->get();
    $empresas = psig\models\ListEnterprises::Where('cliente','=',0)->OrderBy('nombre')->get();
-   return View::make('facturacion.admin.entidades', array('empresas'=>$empresas,'clientes'=>$clientes));
+   return View::make('facturacion.admin.entidades', array('empresas'=>$empresas,'clientes'=>$clientes,'departamentos'=>$departamentos));
 });
 
 Route::post('facturacion/registrarcliente', 'Confactura@createCli');
@@ -124,3 +124,28 @@ Route::get('facturacion/descargar_factura/{id}','Confactura@download_bill');
 Route::post('facturacion/registrarpermiso','Confactura@assing_permission');
 
 Route::get('facturacion/permi_asoc/{id}','Confactura@check_permission');
+
+Route::get('facturacion/citys','Confactura@city_manager');
+
+Route::any('facturacion/crear_ciudad','Confactura@city_create');
+
+Route::any('facturacion/editar_ciudad/{id}','Confactura@city_edit');
+
+Route::get('facturacion/ciudades/{id}',function($id){
+  $ciudades = psig\models\ListCiudades::where('departamento_id','=',$id)->get();
+  return $ciudades;
+});
+
+Route::get('facturacion/accounts','Confactura@account_manager');
+
+Route::any('facturacion/crear_banco','Confactura@banco_create');
+
+Route::any('facturacion/crear_cuenta','Confactura@cuenta_create');
+
+Route::any('facturacion/editar_banco/{id}','Confactura@banco_edit');
+
+Route::any('facturacion/editar_cuenta/{id}','Confactura@cuenta_edit');
+
+Route::get('facturacion/cuentas/{id}','Confactura@cuenta_relations');
+
+Route::get('facturacion/cuenta_info/{id}','Confactura@cuenta_info');

@@ -18,7 +18,15 @@ use psig\models\Modfac_anulada;
 
 use psig\models\Modfac_pagada;
 
-use psig\models\Modpermisosfac; 
+use psig\models\Modpermisosfac;
+
+use psig\models\ListDepartamentos;
+
+use psig\models\ListCiudades;
+
+use psig\models\ListBancos;
+
+use psig\models\ListCuentas;  
 
 use Cache;
 
@@ -138,12 +146,14 @@ class Confactura extends Controller
     public function showEmp($id)
     {
         $empresa = ListEnterprises::find($id);
+        $departamentos = ListDepartamentos::lists('nombre','id');
+
         if(Session::get('rol_nombre')=='administrador')
         {
-            return View::make('facturacion.admin.update_emp',array('empresa'=>$empresa));
+            return View::make('facturacion.admin.update_emp',array('empresa'=>$empresa,'departamentos'=>$departamentos));
         }
         else{
-            return View::make('facturacion.usuario.update_emp',array('empresa'=>$empresa));   
+            return View::make('facturacion.usuario.update_emp',array('empresa'=>$empresa,'departamentos'=>$departamentos));   
         }
     }
 
@@ -212,6 +222,7 @@ class Confactura extends Controller
     	$factura->reembolso = Input::get('reembolso');
     	$factura->fecha_vencimiento = Input::get('fecha_vencimiento');
     	$factura->iva = Input::get('iva');
+        $factura->cuenta = Input::get('cuenta');
     	$cons = Metodos::cons_generator($factura->facturadora);    	
     	$factura->consecutivo = $cons;
     	$cont = Input::get('cont');
@@ -259,6 +270,7 @@ class Confactura extends Controller
     public function get_customer_info($id)
     {
     	$customer = ListEnterprises::where('id','=',$id)->first();
+        $customer->ciudad = $customer->ciudades["nombre"];  
     	return $customer;
     }
 
@@ -270,6 +282,15 @@ class Confactura extends Controller
 	      $bill->sin_iva = Metodos::factura($bill->descripcion,'sin_iva');
 	      $bill->valor_iva = ($bill->iva*$bill->con_iva)/100;
 	      $bill->total = $bill->valor_iva+$bill->con_iva+$bill->sin_iva+$bill->reembolso;
+
+          $bill->cuenta = $bill->cuentas;
+          $bill->banco = $bill->cuentas->bancos;
+           if($bill->cuenta->tipo==1){
+                $bill->cuenta->tipo = "Ahorros";
+            }
+            else{
+               $bill->cuenta->tipo = "Corriente";    
+            }   
 
     	return $bill;
     }
@@ -476,7 +497,7 @@ class Confactura extends Controller
             	$sheet->setActiveSheetIndex(0)->setCellValue('F12',$factura->clientes->nit);
             	$sheet->setActiveSheetIndex(0)->setCellValue('E13',$factura->clientes->direccion);
             	$sheet->setActiveSheetIndex(0)->setCellValue('K12',$factura->clientes->telefono);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('K13',$factura->clientes->ciudad);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('K13',$factura->clientes->ciudades->nombre);
             	$sheet->setActiveSheetIndex(0)->setCellValue('M29',$factura->con_iva);
             	$sheet->setActiveSheetIndex(0)->setCellValue('M30',$factura->sin_iva);
             	$sheet->setActiveSheetIndex(0)->setCellValue('M32',$factura->reembolso);
@@ -572,5 +593,186 @@ class Confactura extends Controller
         else {
             return 'inexistence';
         }        
+    }
+
+    public function city_manager(){
+        $ciudades = ListCiudades::All();
+        return view('facturacion.admin.citys',compact('ciudades'));
+    }
+
+    public function city_create(Request $request){
+
+        if($request->isMethod('post')){
+            $ciudad = new ListCiudades;
+            $id = Metodos::id_generator($ciudad,'id');
+            $ciudad->id = $id;
+            $ciudad->nombre = Input::get('nombre');
+            $ciudad->departamento_id = Input::get('departamento');
+                if($ciudad->save()){
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Ciudad creada con exito!!');
+                }
+                else{
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+         }    
+        
+        if($request->isMethod('get')){
+            $departamentos = ListDepartamentos::lists('nombre','id');
+            //return $departamentos;
+            return view('facturacion.ajax.ciudades.form_create',compact('departamentos'));
+        }
+    }
+
+    public function city_edit(Request $request, $id){        
+
+        if($request->isMethod('post')){
+            $ciudad = ListCiudades::find(Input::get('id'));
+            $ciudad->nombre = Input::get('nombre');
+            $ciudad->departamento_id = Input::get('departamento');
+                if($ciudad->save()){
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Ciudad editada con exito!!');
+                }
+                else{
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+         }    
+        
+        if($request->isMethod('get')){
+            $departamentos = ListDepartamentos::lists('nombre','id');
+            $ciudad = ListCiudades::where('id','=',$id)->first();    
+            //return $departamentos;
+            return view('facturacion.ajax.ciudades.form_edit',compact('departamentos','id','ciudad'));
+        }
+    }
+
+    public function account_manager(){
+        $bancos = ListBancos::All();
+        $cuentas = ListCuentas::All();
+        return view('facturacion.admin.accounts',compact('bancos','cuentas'));
+    }
+
+    public function banco_create(Request $request){
+
+        if($request->isMethod('post')){
+            
+            $banco = new ListBancos;
+            $id = Metodos::id_generator($banco,'id');
+            $banco->id = $id;
+            $banco->nombre = Input::get('nombre');
+                if($banco->save()){
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria creada con exito!!');
+                }
+                else{
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+         }    
+        
+        if($request->isMethod('get')){            
+            //return $departamentos;
+            return view('facturacion.ajax.banco.form_create');
+        }
+    }
+
+    public function banco_edit(Request $request,$id){
+
+        if($request->isMethod('post')){
+            
+            $banco =ListBancos::find(Input::get('id'));
+           
+            $banco->nombre = Input::get('nombre');
+                if($banco->save()){
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria editada con exito!!');
+                }
+                else{
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+         }    
+        
+        if($request->isMethod('get')){
+            $banco = ListBancos::find($id);
+            //return $banco;
+            return view('facturacion.ajax.banco.form_edit',compact('banco','id'));
+        }
+    }
+
+
+    public function cuenta_create(Request $request){
+
+        if($request->isMethod('post')){
+            
+            $cuenta = new ListCuentas;
+            $id = Metodos::id_generator($cuenta,'id');
+            $cuenta->id = $id;
+            $cuenta->numero = Input::get('cuenta');
+            $cuenta->banco_id = Input::get('banco');
+            $cuenta->fact_id = Input::get('empresa');
+            $cuenta->tipo = Input::get('tipo');
+            //1 es estado activo
+            $cuenta->estado = 1;
+
+                if($cuenta->save()){
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Cuenta creada con exito!!');
+                }
+                else{
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+         }    
+        
+        if($request->isMethod('get')){            
+            $empresas = ListEnterprises::Where('cliente','=',0)->lists('nombre','id');
+            $bancos = ListBancos::lists('nombre','id');
+            return view('facturacion.ajax.cuenta.form_create',compact('empresas','bancos'));
+        }
+    }
+
+    public function cuenta_edit(Request $request, $id){        
+
+        if($request->isMethod('post')){
+            $cuenta = ListCuentas::find(Input::get('id'));
+            $cuenta->numero = Input::get('cuenta');
+            $cuenta->banco_id = Input::get('banco');
+            $cuenta->fact_id = Input::get('empresa');
+            $cuenta->tipo = Input::get('tipo');
+            $cuenta->estado = Input::get('estado');
+                if($cuenta->save()){
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Cuenta editada con exito!!');
+                }
+                else{
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+         }    
+        
+        if($request->isMethod('get')){
+            $empresas = ListEnterprises::Where('cliente','=',0)->lists('nombre','id');
+            $bancos = ListBancos::lists('nombre','id');
+            $cuenta = ListCuentas::find($id);
+            return view('facturacion.ajax.cuenta.form_edit',compact('empresas','bancos','cuenta','id'));
+        }
+    }
+
+    public function cuenta_relations($id){
+        $cuentas = ListCuentas::where('fact_id','=',$id)->get();
+        foreach($cuentas as $cuenta){
+            $cuenta->banco_id = $cuenta->bancos["nombre"];
+            if($cuenta->tipo==1){
+                $cuenta->tipo = "Ahorros";
+            }
+            else{
+               $cuenta->tipo = "Corriente";    
+            } 
+        }
+        return $cuentas;
+    }
+
+    public function cuenta_info($id){
+        $cuenta = ListCuentas::find($id);
+        $cuenta->banco_id = $cuenta->bancos["nombre"];
+        if($cuenta->tipo==1){
+            $cuenta->tipo = "Ahorros";
+        }
+        else{
+           $cuenta->tipo = "Corriente";    
+        }
+        return $cuenta;
     }
 }

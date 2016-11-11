@@ -68,6 +68,23 @@
 	</a>
 </div>
 
+<div class="col-lg-2">
+	<a href="{{ url('admin/facturacion/citys') }}">
+		<div class="thumbnail">
+			{{ HTML::image('admin/images/facturacion/map.png', 'categoria', array('class' => 'center-block')) }}
+			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Manejo de Ciudades</span></button>
+		</div>
+	</a>
+</div>
+
+<div class="col-lg-2">
+	<a href="{{ url('admin/facturacion/accounts') }}">
+		<div class="thumbnail">
+			{{ HTML::image('admin/images/facturacion/bank.png', 'categoria', array('class' => 'center-block')) }}
+			<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Cuentas Bancarias</span></button>
+		</div>
+	</a>
+</div>
 
 
 

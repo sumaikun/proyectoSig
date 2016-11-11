@@ -30,9 +30,9 @@
 </style>
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-puzzle-piece"></i> Parametros <!-- <small>Nuevo usuario</small> --></h1>
+   <h1><i class="fa fa-puzzle-piece"></i> Parametros <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-   	<li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-puzzle-piece"></i> Facturación </a></li>
+      <li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-puzzle-piece"></i> Facturación </a></li>
       <li class="active">parametros</li>
     </ol>
     <!-- <hr> -->
@@ -87,10 +87,10 @@
                         <td style="text-align:center"> {{$cliente->nit}} </td>
                         <td style="text-align:center"> {{$cliente->telefono}} </td>
                         <td style="text-align:center"> {{$cliente->direccion}} </td>
-                        <td style="text-align:center"> {{$cliente->ciudad}} </td>
+                        <td style="text-align:center"> {{$cliente->ciudades["nombre"]}} </td>
                         <td style="text-align:center"> {{$cliente->contacto}} </td>
                         <td align="right">
-                           <a href="{{ url('usuario/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
+                           <a href="{{ url('admin/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
                            <!--<a href="{{ url('admin/facturacion/destroyEmp/'.$cliente->id) }}" class="btn btn-danger btn-xs">
@@ -109,10 +109,10 @@
                         <td style="text-align:center"> {{$empresa->nit}} </td>
                         <td style="text-align:center"> {{$empresa->telefono}} </td>
                         <td style="text-align:center"> {{$empresa->direccion}} </td>
-                        <td style="text-align:center"> {{$empresa->ciudad}} </td>
+                        <td style="text-align:center"> {{$empresa->ciudades["nombre"]}} </td>
                         <td style="text-align:center"> {{$empresa->contacto}} </td>
                         <td align="right" >
-                           <a href="{{ url('usuario/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
+                           <a href="{{ url('admin/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
                            <!--<a href="{{ url('admin/facturacion/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">
@@ -152,41 +152,17 @@
                   <input type="text" name="telefono"  class="form-control input-sm" pattern="\d*[-,\/]?\d*" title="ejemplo:4568978 - 3005648974 es posible poner como minimo el fijo." maxlength="20" minlength="7" placeholder="Telefono"  required>
                   <label for="carg_nombre">Dirección</label>
                   <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección" maxlength="100" minlength="10"  required>
+                  <label for="carg_nombre">Departamento</label>
+                  <select class="form-control" name="departamento" id="ajax_depar1" required>
+                     <option value="">Selecciona</option>
+                     @foreach($departamentos as $key => $temp)
+                     <option value="{{$key}}">{{$temp}}</option>
+                     @endforeach
+                  </select>
                  <label for="carg_nombre">Ciudad</label>
-                  <select name="ciudad"  class="form-control input-sm" required>
-                     <option value="">Seleccion</option>
-                     <option value="amazonas">Amazonas</option>
-                     <option value="antioquia">Antioquia</option>
-                     <option value="arauca">Arauca</option>
-                     <option value="atlantico">Atl&aacute;ntico</option>
-                     <option value="bolivar">Bolivar</option>
-                     <option value="boyaca">Boyac&aacute;</option>
-                     <option value="caldas">Caldas</option>
-                     <option value="caqueta">Caquet&aacute;</option>
-                     <option value="casanare">Casanare</option>
-                     <option value="cauca">Cauca</option>
-                     <option value="cesar">Cesar</option>
-                     <option value="choco">Choc&oacute;</option>
-                     <option value="cordoba">C&oacute;rdoba</option>
-                     <option value="cundinamarca">Cundinamarca</option>
-                     <option value="guainia">Guain&iacute;ia</option>
-                     <option value="guaviare">Guaviare</option>
-                     <option value="huila">Huila</option>
-                     <option value="guajira">La Guajira</option>
-                     <option value="magadelan">Magdalena</option>
-                     <option value="meta">Meta</option>
-                     <option value="narino">Nari&ntilde;o</option>
-                     <option value="norte_santander">Norte de Santander</option>
-                     <option value="putumayo">Putumayo</option>
-                     <option value="quindio">Quind&iacute;io</option>
-                     <option value="risaralda">Risaralda</option>
-                     <option value="san_andres">San Andr&eacute;s y Providencia</option>
-                     <option value="santander">Santander</option>
-                     <option value="sucre">Sucre</option>
-                     <option value="tolima">Tolima</option>
-                     <option value="valle">Valle Del Cauca</option>
-                     <option value="vaupes">Vaup&eacute;s</option>
-                     <option value="vichada">Vichada</option>
+                 <select class="form-control" name="ciudad" id="ajax_city1" required>
+                     <option value="">Selecciona</option>
+                     
                   </select>
                   <label for="carg_nombre">Contacto</label>
                   <input type="text" name="contacto" minlength="10" maxlength="50" class="form-control input-sm" placeholder="Contacto">
@@ -227,43 +203,19 @@
                   <label for="carg_nombre">Teléfono</label>
                   <input type="text" name="telefono"  class="form-control input-sm" pattern="\d*[-,\/]?\d*" title="ejemplo:4568978 - 3005648974 es posible poner como minimo el fijo." maxlength="20" minlength="7" placeholder="Telefono"  required>
                   <label for="carg_nombre">Dirección</label>
-                  <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección" maxlength="100" minlength="10"  required>
-                  <label for="carg_nombre">Ciudad</label>
-                  <select name="ciudad"  class="form-control input-sm" required>
+                  <input type="text" name="direccion"  class="form-control input-sm" placeholder="Dirección" maxlength="100" minlength="10"  required>                  
+                  <label for="carg_nombre">Departamento</label>
+                  <select class="form-control" name="departamento" id="ajax_depar2" required>
                      <option value="">Selecciona</option>
-                     <option value="amazonas">Amazonas</option>
-                     <option value="antioquia">Antioquia</option>
-                     <option value="arauca">Arauca</option>
-                     <option value="atlantico">Atl&aacute;ntico</option>
-                     <option value="bolivar">Bolivar</option>
-                     <option value="boyaca">Boyac&aacute;</option>
-                     <option value="caldas">Caldas</option>
-                     <option value="caqueta">Caquet&aacute;</option>
-                     <option value="casanare">Casanare</option>
-                     <option value="cauca">Cauca</option>
-                     <option value="cesar">Cesar</option>
-                     <option value="choco">Choc&oacute;</option>
-                     <option value="cordoba">C&oacute;rdoba</option>
-                     <option value="cundinamarca">Cundinamarca</option>
-                     <option value="guainia">Guain&iacute;ia</option>
-                     <option value="guaviare">Guaviare</option>
-                     <option value="huila">Huila</option>
-                     <option value="guajira">La Guajira</option>
-                     <option value="magadelan">Magdalena</option>
-                     <option value="meta">Meta</option>
-                     <option value="narino">Nari&ntilde;o</option>
-                     <option value="norte_santander">Norte de Santander</option>
-                     <option value="putumayo">Putumayo</option>
-                     <option value="quindio">Quind&iacute;io</option>
-                     <option value="risaralda">Risaralda</option>
-                     <option value="san_andres">San Andr&eacute;s y Providencia</option>
-                     <option value="santander">Santander</option>
-                     <option value="sucre">Sucre</option>
-                     <option value="tolima">Tolima</option>
-                     <option value="valle">Valle Del Cauca</option>
-                     <option value="vaupes">Vaup&eacute;s</option>
-                     <option value="vichada">Vichada</option>
+                     @foreach($departamentos as $key => $temp)
+                     <option value="{{$key}}">{{$temp}}</option>
+                     @endforeach
                   </select>
+                  <label for="carg_nombre">Ciudad</label>
+                  <select class="form-control" name="ciudad" id="ajax_city2" required>
+                     <option value="">Selecciona</option>
+                     
+                  </select>     
                   <label for="carg_nombre">Contacto</label>
                   <input type="text" name="contacto" minlength="10" maxlength="50"  class="form-control input-sm" placeholder="Contacto">
                </div>
@@ -287,12 +239,6 @@
 
 @section('script')
 <script type="text/javascript">
-
-
-
-
-
-
 
 (function(){
     'use strict';
@@ -355,5 +301,49 @@ $(function(){
          event.preventDefault(); 
       }
 
+$(document).ready(function() {
+$("#ajax_depar1").change(event => {   
+      
+     if(event.target.value=="")
+     {
+      $("#ajax_city1").empty();
+      $("#ajax_city1").append('<option> Selecciona <option>');      
+     }
+     else
+     { 
+      $.get(`ciudades/${event.target.value}`, function(res, sta){
+         $("#ajax_city1").empty();
+         $("#ajax_city1").append(`<option value="" selected> Selecciona </option>`);         
+         res.forEach(element => {
+            $("#ajax_city1").append(`<option value=${element.id}> ${element.nombre} </option>`);
+         });
+      });
+   }
+});
+
+});
+
+$(document).ready(function() {
+$("#ajax_depar2").change(event => {   
+      
+     if(event.target.value=="")
+     {
+      $("#ajax_city2").empty();
+      $("#ajax_city2").append('<option> Selecciona <option>');      
+     }
+     else
+     { 
+      $.get(`ciudades/${event.target.value}`, function(res, sta){
+         $("#ajax_city2").empty();
+         $("#ajax_city2").append(`<option value="" selected> Selecciona </option>`);         
+         res.forEach(element => {
+            $("#ajax_city2").append(`<option value=${element.id}> ${element.nombre} </option>`);
+         });
+      });
+   }
+});
+
+});
 </script>
 @stop
+
