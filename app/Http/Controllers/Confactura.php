@@ -681,6 +681,11 @@ class Confactura extends Controller
         if($request->isMethod('post')){
             $rules = ['nombre'=>'required'];
             $this->validate($request,$rules);
+            $repeat = ListBancos::where('nombre','=',Input::get('nombre'))->count();
+            if($repat>0)
+            {
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la entidad bancaria');
+            }
             $banco = new ListBancos;
             $id = Metodos::id_generator($banco,'id');
             $banco->id = $id;
@@ -705,7 +710,15 @@ class Confactura extends Controller
             $rules = ['nombre'=>'required'];
             $this->validate($request,$rules);
             $banco =ListBancos::find(Input::get('id'));
-           
+            $repeat = ListBancos::where('nombre','=',Input::get('nombre'))->get();
+            if(count($repat)>1)
+            {
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la entidad bancaria');
+            }
+            elseif($repat['id']!=Input::get('id')){
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la entidad bancaria');
+            }
+            
             $banco->nombre = Input::get('nombre');
                 if($banco->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria editada con exito!!');
@@ -878,7 +891,7 @@ class Confactura extends Controller
             {
                 $rules = ['id'=>'required|numeric'];
                 $this->validate($request,$rules);
-                
+
                 if($anulada->archivo!=""){
                     //echo 'condicion';
                     Storage::disk('soporte_anulada')->delete($anulada->archivo);
