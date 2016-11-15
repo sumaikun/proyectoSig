@@ -503,7 +503,8 @@ class Confactura extends Controller
             	$sheet->setActiveSheetIndex(0)->setCellValue('M32',$factura->reembolso);
             	$sheet->setActiveSheetIndex(0)->setCellValue('M34',$factura->valor_iva);
             	$sheet->setActiveSheetIndex(0)->setCellValue('M36',$factura->total);
-
+                if($factura->cuentas->tipo==1){$string = 'AHORROS';} else {$string = 'CORRIENTE';}                
+                $sheet->setActiveSheetIndex(0)->setCellValue('B31',strtoupper('CONSIGNAR A NOMBRE DE '.$factura->clientes->nombre.' '.$factura->cuentas->bancos->nombre.' '.'CUENTA DE '.$string.' '.$factura->cuentas->numero));
             	$array = explode('|', $factura->descripcion);
 		        $size = count($array);
 		        $resultado = 0; 
@@ -521,7 +522,7 @@ class Confactura extends Controller
 
 	    		$convertidor = new NumerosALetras;
 
-	    		$sheet->setActiveSheetIndex(0)->setCellValue('B33',strtoupper($convertidor-> traducir($factura->total).'PESOS MCTE'));
+	    		$sheet->setActiveSheetIndex(0)->setCellValue('B33',strtoupper($convertidor->traducir($factura->total).'PESOS MCTE'));
 
 	    		/*	$sheet->setActiveSheetIndex(0)->mergeCells('B33:J34');
 	    		$sheet->setActiveSheetIndex(0)->getCell('B33')->setValue(strtoupper($convertidor-> traducir($factura->total).'PESOS MCTE'))->setWrapText(true);*/
