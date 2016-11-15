@@ -212,7 +212,9 @@ class Confactura extends Controller
     public function store(Request $request)
     {
     	//print_r($_POST);
-    	
+    	$rules = ['fecha_elaboracion'=>'required|date','cliente'=>'required|numeric','facturadora'=>'required|numeric','reembolso'=>'required|numeric','fecha_vencimiento'=>'required|date','iva'=>'required|numeric','cuenta'=>'required|numeric'];
+        $this->validate($request,$rules);
+
     	$factura = new Modfactura;    	
     	$id = Metodos::id_generator($factura,'id');
     	$factura->id = $id;
@@ -298,6 +300,9 @@ class Confactura extends Controller
     public function anular(Request $request, $id){
     	if ($request->isMethod('post'))
 		{
+            $rules = ['id'=>'required|numeric'];
+            $this->validate($request,$rules);
+
 			$anulada = new Modfac_anulada;
 			$id = Metodos::id_generator($anulada,'id');
 			$anulada->id=$id;
@@ -305,6 +310,15 @@ class Confactura extends Controller
 			$anulada->factura_id = Input::get('id');
 			$this->change_status($anulada->factura_id,2);
 			$anulada->user = Session::get('usu_id');
+            if($request->file('archivo')!=null)
+            {
+                $archivo = $request->file('archivo');     
+                $nombre_original=$archivo->getClientOriginalName();
+                $upload=Storage::disk('soporte_anulada')->put($nombre_original,  \File::get($archivo));                
+                $anulada->archivo = $nombre_original;
+
+            } 
+
 
 	    	if($anulada ->save()){
                if(Session::get('rol_nombre')=='administrador')
@@ -342,6 +356,9 @@ class Confactura extends Controller
     public function pagar(Request $request, $id){
     	if ($request->isMethod('post'))
 		{
+            $rules = ['id'=>'required|numeric','rete_fuente'=>'required|numeric','rete_ica'=>'required|numeric','fecha_pago'=>'required|date','rete_cree'=>'required|numeric','rete_otras'=>'required|numeric','archivo'=>'required|file'];
+            $this->validate($request,$rules);
+
 			$pagado = new Modfac_pagada;
 			$id = Metodos::id_generator($pagado,'id');
 			$pagado->id = $id;
@@ -354,6 +371,13 @@ class Confactura extends Controller
 			$pagado->rete_cree = Input::get('rete_cree');
 			$pagado->rete_otras = Input::get('rete_otras');
 			$this->change_status($pagado->factura_id,1);
+            $archivo = $request->file('archivo');     
+            $nombre_original=$archivo->getClientOriginalName();
+            $upload=Storage::disk('soporte_pagada')->put($nombre_original,  \File::get($archivo));
+            if($pagado->archivo!=""){
+                Storage::disk('soporte_pagada')->delete($pagado->archivo);
+            } 
+            $pagado->archivo = $nombre_original;
 
 	    	if($pagado ->save()){
 	            if(Session::get('rol_nombre')=='administrador')
@@ -655,7 +679,8 @@ class Confactura extends Controller
     public function banco_create(Request $request){
 
         if($request->isMethod('post')){
-            
+            $rules = ['nombre'=>'required'];
+            $this->validate($request,$rules);
             $banco = new ListBancos;
             $id = Metodos::id_generator($banco,'id');
             $banco->id = $id;
@@ -677,7 +702,8 @@ class Confactura extends Controller
     public function banco_edit(Request $request,$id){
 
         if($request->isMethod('post')){
-            
+            $rules = ['nombre'=>'required'];
+            $this->validate($request,$rules);
             $banco =ListBancos::find(Input::get('id'));
            
             $banco->nombre = Input::get('nombre');
@@ -700,7 +726,9 @@ class Confactura extends Controller
     public function cuenta_create(Request $request){
 
         if($request->isMethod('post')){
-            
+            $rules = ['banco'=>'required|numeric','cuenta'=>'required','empresa'=>'required|numeric','tipo'=>'required'];
+            $this->validate($request,$rules);
+
             $cuenta = new ListCuentas;
             $id = Metodos::id_generator($cuenta,'id');
             $cuenta->id = $id;
@@ -729,6 +757,9 @@ class Confactura extends Controller
     public function cuenta_edit(Request $request, $id){        
 
         if($request->isMethod('post')){
+            $rules = ['banco'=>'required|numeric','cuenta'=>'required','empresa'=>'required|numeric','tipo'=>'required','banco'=>'required|numeric'];
+            $this->validate($request,$rules);
+
             $cuenta = ListCuentas::find(Input::get('id'));
             $cuenta->numero = Input::get('cuenta');
             $cuenta->banco_id = Input::get('banco');
@@ -775,5 +806,110 @@ class Confactura extends Controller
            $cuenta->tipo = "Corriente";    
         }
         return $cuenta;
+    }
+
+    public function edit_paid(Request $request,$id)
+    {
+        if($request->isMethod('get')){
+            $info = Modfac_pagada::find($id);
+            return view('facturacion.ajax.editpayment_cancel.edit_payed',compact('info','id'));
+        }
+        if($request->isMethod('post')){
+
+            $rules = ['id'=>'required|numeric','rete_fuente'=>'required|numeric','rete_ica'=>'required|numeric','fecha_pago'=>'required|date','rete_cree'=>'required|numeric','rete_otras'=>'required|numeric','archivo'=>'required|file'];
+            $this->validate($request,$rules);
+
+            $pagado = Modfac_pagada::find(Input::get('id'));
+            $pagado->detalles = Input::get('detalles');            
+            $pagado->user = Session::get('usu_id');
+            $pagado->fecha_pago = Input::get('fecha_pago');
+            $pagado->rete_fuente = Input::get('rete_fuente');
+            $pagado->rete_ica = Input::get('rete_ica');
+            $pagado->rete_cree = Input::get('rete_cree');
+            $pagado->rete_otras = Input::get('rete_otras');
+
+            if($request->file('archivo')!=null)
+            {
+                $archivo = $request->file('archivo');     
+                $nombre_original=$archivo->getClientOriginalName();
+                $upload=Storage::disk('soporte_pagada')->put($nombre_original,  \File::get($archivo));
+                if($pagado->archivo!=""){
+                    Storage::disk('soporte_pagada')->delete($pagado->archivo);
+                } 
+                $pagado->archivo = $nombre_original;
+
+            }    
+
+            if($pagado ->save()){
+                if(Session::get('rol_nombre')=='administrador')
+                {
+                    return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Procedimiento de pago editado !!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Procedimiento de pago editado!!');   
+                }    
+            } 
+            else{
+                if(Session::get('rol_nombre')=='administrador')
+                {
+                   return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');   
+                }   
+            }  
+
+        }    
+    }
+
+    public function edit_nulled(Request $request,$id)
+    {
+        if($request->isMethod('get')){
+            $info = Modfac_anulada::find($id);
+            return view('facturacion.ajax.editpayment_cancel.edit_cancel',compact('info','id'));
+        }
+        if($request->isMethod('post')){           
+
+            $anulada =  Modfac_anulada::find(Input::get('id'));         
+            $anulada->detalles = Input::get('detalles');          
+            $anulada->user = Session::get('usu_id');
+
+            if($request->file('archivo')!=null)
+            {
+                $rules = ['id'=>'required|numeric'];
+                $this->validate($request,$rules);
+                
+                if($anulada->archivo!=""){
+                    //echo 'condicion';
+                    Storage::disk('soporte_anulada')->delete($anulada->archivo);
+                } 
+
+                $archivo = $request->file('archivo');     
+                $nombre_original=$archivo->getClientOriginalName();
+                $upload=Storage::disk('soporte_anulada')->put($nombre_original,  \File::get($archivo));                
+                $anulada->archivo = $nombre_original;
+
+            } 
+              //return $anulada->archivo.'aca abajo';
+
+            if($anulada ->save()){
+               if(Session::get('rol_nombre')=='administrador')
+                { 
+                   return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Factura anulada editada con éxito!!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Factura anulada editada con éxito!!');   
+                }   
+            } 
+            else{
+                if(Session::get('rol_nombre')=='administrador')
+                {
+                   return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }
+                else {
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');    
+                }   
+            }
+        }    
     }
 }

@@ -149,3 +149,17 @@ Route::any('facturacion/editar_cuenta/{id}','Confactura@cuenta_edit');
 Route::get('facturacion/cuentas/{id}','Confactura@cuenta_relations');
 
 Route::get('facturacion/cuenta_info/{id}','Confactura@cuenta_info');
+
+Route::any('facturacion/editar_pago/{id}','Confactura@edit_paid');
+
+Route::get('facturacion/soporte_pago/{file}',function($file){
+  $file_path = storage_path('soporte_pagada/'.$file);
+            return response()->download($file_path);
+});
+
+Route::any('facturacion/editar_cancel/{id}','Confactura@edit_nulled');
+
+Route::get('facturacion/soporte_anulacion/{file}',function($file){
+  $file_path = storage_path('soporte_anulada/'.$file);
+            return response()->download($file_path);
+});

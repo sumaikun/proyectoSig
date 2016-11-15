@@ -1,3 +1,5 @@
+   <button class='btn btn-success btn-xs' id="pagar" onclick="editar_informacion({{$info->id}},'pago')">Editar</button> 
+   <a href="soporte_pago/{{$info->archivo}}">Soporte</a> 
 <table class="table table-bordered">
   <thead>
     <tr>

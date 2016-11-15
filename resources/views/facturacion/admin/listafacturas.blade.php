@@ -149,6 +149,35 @@
    </div>
 </div>
 </form>
+
+<!-- Modal3 -->
+ <form name="form1" id="form2" class='form_factura' action="" onsubmit="return validar()" method="post" enctype="multipart/form-data">
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>
+            </h4>
+         </div>
+         <div class="modal-body">
+         
+            <div class="row">  
+              <div class="col-lg-12">
+                <div id="ajax-content-2"></div>
+              </div>
+            </div>
+      
+         </div>
+         <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button"  class="btn btn-default" data-dismiss="modal">Cerrar</button>
+         </div>
+      </div>     
+   </div>
+</div>
+</form>
 </section>
 @stop
 
@@ -348,6 +377,23 @@ $("#detail_bill").click(function(){
   var ajax = $.get('pagar_factura/'+id, function(res, sta){$("#ajax-content").append(res);});
    ajax.done(function(res, sta){$('#myModal2').modal(); $("#form1").attr('action','pagar_factura/0');});
   }
+}
+
+function editar_informacion(id,type)
+{
+  console.log('existo');
+  $('#myModal').hide();
+  if(type=='pago')
+  {var ajax = $.get('editar_pago/'+id, function(res, sta){$("#ajax-content-2").append(res);});
+   ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','editar_pago/0');});
+  }
+  else if(type=='anulado')
+  {
+    var ajax = $.get('editar_cancel/'+id, function(res, sta){$("#ajax-content-2").append(res);});
+   ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','editar_cancel/0');});
+  }  
+  
+  //$('#myModal').modal();
 }
 
 function validar(){
