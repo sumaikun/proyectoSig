@@ -476,7 +476,7 @@ class Confactura extends Controller
             	//return 'existe';
               Excel::load('storage/plantillas_excel/'.$factura->facturadoras->nombre.'.xlsx',function($sheet)use($factura){  
               
-                 $sheet->setActiveSheetIndex(0)->setCellValue('E10',$factura->fecha_elaboracion);
+                 $sheet->setActiveSheetIndex(0)->setCellValue('C10',$factura->fecha_elaboracion);
                  $sheet->setActiveSheetIndex(0)->setCellValue('K10',$factura->fecha_vencimiento);
 
 	            $style = array(
@@ -493,9 +493,9 @@ class Confactura extends Controller
 
             	$sheet->setActiveSheetIndex(0)->setCellValue('M12',$factura->consecutivo);
             	$sheet->setActiveSheetIndex(0)->getStyle('M12')->applyFromArray($style);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('F11',$factura->clientes->nombre);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('F12',$factura->clientes->nit);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('E13',$factura->clientes->direccion);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('E11',$factura->clientes->nombre);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('C12',$factura->clientes->nit);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('D13',$factura->clientes->direccion);
             	$sheet->setActiveSheetIndex(0)->setCellValue('K12',$factura->clientes->telefono);
             	$sheet->setActiveSheetIndex(0)->setCellValue('K13',$factura->clientes->ciudades->nombre);
             	$sheet->setActiveSheetIndex(0)->setCellValue('M29',$factura->con_iva);
@@ -521,8 +521,8 @@ class Confactura extends Controller
 	    	      }
 
 	    		$convertidor = new NumerosALetras;
-
-	    		$sheet->setActiveSheetIndex(0)->setCellValue('B33',strtoupper($convertidor->traducir($factura->total).'PESOS MCTE'));
+                $factura->total = round($factura->total) ; 
+	    		$sheet->setActiveSheetIndex(0)->setCellValue('B33',mb_strtoupper($convertidor->traducir($factura->total).' PESOS MCTE'));
 
 	    		/*	$sheet->setActiveSheetIndex(0)->mergeCells('B33:J34');
 	    		$sheet->setActiveSheetIndex(0)->getCell('B33')->setValue(strtoupper($convertidor-> traducir($factura->total).'PESOS MCTE'))->setWrapText(true);*/
