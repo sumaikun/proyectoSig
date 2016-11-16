@@ -82,7 +82,7 @@
                      <!--</a>--> 
                   </td>
                   @endif
-                  @if(Session::get('gene_factura')!=null)
+                  @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
                   <td>
                      <a class="btn btn-warning btn-xs" href="descargar_factura/{{$registro->id}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Descargar</a> 
                   </td>
