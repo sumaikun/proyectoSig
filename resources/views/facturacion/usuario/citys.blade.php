@@ -32,7 +32,7 @@
 <section class="content-header">
   <h1><i class="fa fa-puzzle-piece"></i> Ciudades <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-    <li><a href="{{ url('admin/actividades') }}"><i class="fa fa-puzzle-piece"></i> Facturación </a></li>
+    <li><a href="{{ url('usuario/facturacion') }}"><i class="fa fa-puzzle-piece"></i> Facturación </a></li>
       <li class="active">Ciudades</li>
     </ol>
     <!-- <hr> -->

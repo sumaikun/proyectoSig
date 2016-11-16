@@ -38,7 +38,7 @@
 <section class="content-header">
   <h1><i class="fa fa-plus-circle"></i>Factura<!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-    <li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-child"></i> Facturación</a></li>
+    <li><a href="{{ url('usuario/facturacion') }}"><i class="fa fa-child"></i> Facturación</a></li>
       <li class="active">Factura</li>
     </ol>
     <!-- <hr> -->

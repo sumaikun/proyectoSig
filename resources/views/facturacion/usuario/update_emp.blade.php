@@ -20,7 +20,7 @@
 <section class="content-header">
    <h1><i class="fa fa-pencil-square-o"></i> Actualizar Parametros <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-      <li><a href="{{ url('admin/actividades/parameters') }}"><i class="fa fa-pencil-square-o"></i> Gestión de parametros</a></li>
+      <li><a href="{{ url('usuario/facturacion') }}"><i class="fa fa-pencil-square-o"></i> Gestión de parametros</a></li>
       <li class="active">Actualizar Parametros</li>
     </ol>
     <!-- <hr> -->
