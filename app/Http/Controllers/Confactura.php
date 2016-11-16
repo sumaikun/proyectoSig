@@ -682,7 +682,7 @@ class Confactura extends Controller
             $rules = ['nombre'=>'required'];
             $this->validate($request,$rules);
             $repeat = ListBancos::where('nombre','=',Input::get('nombre'))->count();
-            if($repat>0)
+            if($repeat>0)
             {
                 return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la entidad bancaria');
             }
@@ -711,11 +711,12 @@ class Confactura extends Controller
             $this->validate($request,$rules);
             $banco =ListBancos::find(Input::get('id'));
             $repeat = ListBancos::where('nombre','=',Input::get('nombre'))->get();
-            if(count($repat)>1)
+
+            if(count($repeat)>1)
             {
                 return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la entidad bancaria');
             }
-            elseif($repat['id']!=Input::get('id')){
+            elseif(count($repeat)==1&&$repeat[0]->id!=Input::get('id')){
                 return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la entidad bancaria');
             }
             
@@ -741,6 +742,12 @@ class Confactura extends Controller
         if($request->isMethod('post')){
             $rules = ['banco'=>'required|numeric','cuenta'=>'required','empresa'=>'required|numeric','tipo'=>'required'];
             $this->validate($request,$rules);
+
+             $repeat = ListCuentas::where('numero','=',Input::get('cuenta'))->count();
+            if($repeat>0)
+            {
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la cuenta bancaria');
+            }
 
             $cuenta = new ListCuentas;
             $id = Metodos::id_generator($cuenta,'id');
@@ -772,6 +779,16 @@ class Confactura extends Controller
         if($request->isMethod('post')){
             $rules = ['banco'=>'required|numeric','cuenta'=>'required','empresa'=>'required|numeric','tipo'=>'required','banco'=>'required|numeric'];
             $this->validate($request,$rules);
+            
+            $repeat = ListCuentas::where('numero','=',Input::get('cuenta'))->get();
+
+            if(count($repeat)>1)
+            {
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la cuenta bancaria');
+            }
+            elseif(count($repeat)==1&&$repeat[0]->id!=Input::get('id')){
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Ya existe la cuenta bancaria');
+            }
 
             $cuenta = ListCuentas::find(Input::get('id'));
             $cuenta->numero = Input::get('cuenta');
