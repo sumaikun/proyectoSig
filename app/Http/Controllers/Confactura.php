@@ -943,6 +943,9 @@ class Confactura extends Controller
         }
         if($request->isMethod('post')){           
 
+            $rules = ['id'=>'required|numeric'];
+            $this->validate($request,$rules);
+
             $anulada =  Modfac_anulada::find(Input::get('id'));         
             $anulada->detalles = Input::get('detalles');          
             $anulada->user = Session::get('usu_id');

@@ -33,7 +33,3 @@
           <input  class="form-control" max="9999000000" min="0" value="{{$info->rete_otras}}" name="rete_otras" value="0"  type="number" required/>            
       </div>
 
-      <div class="form-group">
-            <label>Archivo</label>
-            <input type="file" name="archivo" class="form-control">
-     </div>     
