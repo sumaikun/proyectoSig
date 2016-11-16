@@ -30,13 +30,13 @@
                   <th style="text-align: center"><strong>valor factura</strong></th>
                   <th style="text-align: center"><strong>fecha de elaboracion</strong></th>
                   <th style="text-align: center"><strong>fecha de vencimiento</strong></th>
-                  @if(Session::get('ver_pago')!=null)
+                  @if(Session::get('rol_nombre')=='administrador'||Session::get('ver_pago')!=null)
                   <th style="text-align: center"><strong>status</strong></th>
                   @endif
                   <th style="text-align: center"><strong>informacion detallada</strong></th>
                   <th></th>
                   <th></th>
-                  @if(Session::get('gene_factura')!=null)
+                  @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
                   <th></th>
                   <th></th>
                   @endif
@@ -53,7 +53,7 @@
                   <td style="text-align: center">${{$registro->total}}</td>
                   <td style="text-align: center">{{ucwords ($registro->fecha_elaboracion)}}</td>
                   <td style="text-align: center">{{ucwords ($registro->fecha_vencimiento)}}</td>
-                   @if(Session::get('ver_pago')!=null)
+                   @if(Session::get('rol_nombre')=='administrador'||Session::get('ver_pago')!=null)
                   <td style="text-align: center">
                     @if($registro->status==0)
                       {{ucwords("PENDIENTE")}}
