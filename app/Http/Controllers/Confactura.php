@@ -283,8 +283,8 @@ class Confactura extends Controller
 
 		  $bill->con_iva = Metodos::factura($bill->descripcion,'con_iva');
 	      $bill->sin_iva = Metodos::factura($bill->descripcion,'sin_iva');
-	      $bill->valor_iva = ($bill->iva*$bill->con_iva)/100;
-	      $bill->total = $bill->valor_iva+$bill->con_iva+$bill->sin_iva+$bill->reembolso;
+	      $bill->valor_iva = (int) ($bill->iva*$bill->con_iva)/100;
+	      $bill->total = (int) $bill->valor_iva+$bill->con_iva+$bill->sin_iva+$bill->reembolso;
 
           $bill->cuenta = $bill->cuentas;
           $bill->banco = $bill->cuentas->bancos;
