@@ -48,7 +48,7 @@ class Confactura extends Controller
 {
     public function createCli(Request $request)
     {
-    	$rules = ['nombre'=>'required','nit'=>'required|max:11|min:10','telefono'=>'required|min:7|max:20','direccion'=>'required|min:10|max:100','ciudad'=>'required|min:4'];
+    	$rules = ['nombre'=>'required','nit'=>'required|max:11|min:10','telefono'=>'required|min:7|max:20','direccion'=>'required|min:10|max:100','ciudad'=>'required|numeric'];
     	$this->validate($request,$rules);
     	//return 'llego';
     	$empresa = new ListEnterprises;
@@ -96,7 +96,7 @@ class Confactura extends Controller
 
     public function createEmp(Request $request)
     {
-		$rules = ['nombre'=>'required','nit'=>'required|max:11|min:10','telefono'=>'required|min:7|max:20','direccion'=>'required|min:10|max:100','ciudad'=>'required|min:4'];
+		$rules = ['nombre'=>'required','nit'=>'required|max:11|min:10','telefono'=>'required|min:7|max:20','direccion'=>'required|min:10|max:100','ciudad'=>'required|numeric'];
     	$this->validate($request,$rules);
     	
     	$empresa = new ListEnterprises;
@@ -161,7 +161,7 @@ class Confactura extends Controller
 
     public function updateEmp(Request $request)
     {
-    	$rules = ['nombre'=>'required','nit'=>'required|max:11|min:10','telefono'=>'required|min:7|max:20','direccion'=>'required|min:10|max:100','ciudad'=>'required|min:4','tp_emp'=>'required'];
+    	$rules = ['nombre'=>'required','nit'=>'required|max:11|min:10','telefono'=>'required|min:7|max:20','direccion'=>'required|min:10|max:100','ciudad'=>'required|numeric','tp_emp'=>'required'];
     	$this->validate($request,$rules);
     	//return 'tipo empresa '.Input::get('tp_emp');
         $id = Input::get('id');
