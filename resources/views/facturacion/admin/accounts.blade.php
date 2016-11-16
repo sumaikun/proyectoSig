@@ -54,13 +54,13 @@
                   <th></th>                  
                  </tr>
               </thead>
-                <tr>
-                  @foreach($bancos as $banco)
+                @foreach($bancos as $banco)
+                <tr>                  
                   <td>{{$banco->id}}</td>
                   <td>{{$banco->nombre}}</td>                  
-                  <td style="text-align: center;"><button class="btn btn-danger"  onclick="cuenta_bancaria({{$banco->id}},'editar_banco')">Editar</button></td>                  
-                  @endforeach
+                  <td style="text-align: center;"><button class="btn btn-danger"  onclick="cuenta_bancaria({{$banco->id}},'editar_banco')">Editar</button></td>                 
                 </tr>
+                @endforeach
            </table>
            </div>
         </div>

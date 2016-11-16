@@ -53,13 +53,13 @@
                   <th></th>                  
                  </tr>
               </thead>
-                <tr>
-                  @foreach($ciudades as $ciudad)
+                @foreach($ciudades as $ciudad)
+                <tr>             
                   <td>{{$ciudad->departamento->nombre}}</td>
                   <td>{{$ciudad->nombre}}</td>
-                  <td><button class="btn btn-danger"  onclick="ciudades({{$ciudad->id}},'editar')">Editar</button></td>                  
-                  @endforeach
+                  <td><button class="btn btn-danger"  onclick="ciudades({{$ciudad->id}},'editar')">Editar</button></td>             
                 </tr>
+                @endforeach
            </table>
            </div>
         </div>
