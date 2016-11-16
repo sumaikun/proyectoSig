@@ -67,9 +67,10 @@ Route::any('facturacion/parameters', function(){
   if(Session::get('ges_entidades')==null){
       return response(View::make('cosas_generales.page_error')->with('mensaje', 'Área restringida.'));
     }
+     $departamentos = psig\models\ListDepartamentos::lists('nombre','id');
    $clientes = psig\models\ListEnterprises::Where('cliente','=',1)->OrderBy('nombre')->get();
    $empresas = psig\models\ListEnterprises::Where('cliente','=',0)->OrderBy('nombre')->get();
-   return View::make('facturacion.usuario.entidades', array('empresas'=>$empresas,'clientes'=>$clientes));
+   return View::make('facturacion.usuario.entidades', array('empresas'=>$empresas,'clientes'=>$clientes,'departamentos'=>$departamentos));
 });
 
 Route::post('facturacion/registrarcliente', 'Confactura@createCli');
@@ -99,4 +100,52 @@ Route::get('facturacion/descargar_factura/{id}','Confactura@download_bill');
 Route::any('facturacion/test',function(){
   echo 'test';
   psig\Helpers\Metodos::exist_fac_permission(Session::get('usu_id'));
+});
+Route::get('facturacion/citys',function(){
+   $ciudades = psig\models\ListCiudades::All();
+        return view('facturacion.usuario.citys',compact('ciudades'));
+});
+
+Route::any('facturacion/crear_ciudad','Confactura@city_create');
+
+Route::any('facturacion/editar_ciudad/{id}','Confactura@city_edit');
+
+Route::get('facturacion/ciudades/{id}',function($id){
+  $ciudades = psig\models\ListCiudades::where('departamento_id','=',$id)->get();
+  return $ciudades;
+});
+
+Route::get('facturacion/accounts',function(){
+        $bancos = psig\models\ListBancos::All();
+        $cuentas = psig\models\ListCuentas::All();
+        return view('facturacion.usuario.accounts',compact('bancos','cuentas'));
+});
+
+Route::any('facturacion/crear_banco','Confactura@banco_create');
+
+Route::any('facturacion/crear_cuenta','Confactura@cuenta_create');
+
+Route::any('facturacion/editar_banco/{id}','Confactura@banco_edit');
+
+Route::any('facturacion/editar_cuenta/{id}','Confactura@cuenta_edit');
+
+Route::get('facturacion/cuentas/{id}','Confactura@cuenta_relations');
+
+Route::get('facturacion/cuenta_info/{id}','Confactura@cuenta_info');
+
+Route::any('facturacion/editar_pago/{id}','Confactura@edit_paid');
+
+Route::any('facturacion/editar_cancel/{id}','Confactura@edit_nulled');
+
+Route::any('facturacion/anexar_soporte/{id}','Confactura@add_support');
+
+Route::get('facturacion/descargar_soporte/{file}',function($file){
+  
+  $file_path = storage_path('soporte/'.$file);
+  if(file_exists($file_path))
+  {return response()->download($file_path);}
+  else{
+    return 'el servidor tiene problemas con la verificacion de existencia de documentos';
+  }
+            
 });

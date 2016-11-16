@@ -267,7 +267,8 @@ function grab_data(id){
         $("#pre_final").append(res.fecha_vencimiento);
         $("#pre_reembolso").append('$'+res.reembolso);
         $("#pre_pagar").append(res.banco.nombre+" "+res.cuenta.tipo+" "+res.cuenta.numero);
-
+        if(res.soporte!=""){$("#pre_pagar").append(' '+'<a href="descargar_soporte/'+res.soporte+'" >Soporte</a>');}  
+        
         //console.log('Descripción :'+res.descripcion);
         list_products(res.descripcion);
 
@@ -381,8 +382,9 @@ $("#detail_bill").click(function(){
 
 function editar_informacion(id,type)
 {
-  console.log('existo');
+  
   $('#myModal').hide();
+  $("#ajax-content-2").empty();
   if(type=='pago')
   {var ajax = $.get('editar_pago/'+id, function(res, sta){$("#ajax-content-2").append(res);});
    ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','editar_pago/0');});
@@ -394,6 +396,14 @@ function editar_informacion(id,type)
   }  
   
   //$('#myModal').modal();
+}
+
+function anexar_soporte(id)
+{  
+  $("#ajax-content-2").empty();
+  var ajax = $.get('anexar_soporte/'+id, function(res, sta){$("#ajax-content-2").append(res);});
+   ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','anexar_soporte/0');});  
+  
 }
 
 function validar(){

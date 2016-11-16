@@ -46,7 +46,7 @@
       
       <div class="panel-body">
          <a href="#"  class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal"><b>+</b> Agregar nuevo cliente</a>          
-         <a href="#" style="margin-right:5px;" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal2"><b>+</b> Agregar nueva Empresa</a>        
+         <a href="#" style="margin-right:5px;" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal2"><b>+</b> Agregar nueva Facturadora</a>        
             
             <p><br></p>  
             <p><br></p>    

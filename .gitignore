@@ -3,8 +3,7 @@
 /public/storage
 /public/excel
 /storage/plantillas_excel
-/storage/soporte_anulada
-/storage/soporte_pagada
+/storage/soporte
 Homestead.yaml
 Homestead.json
 .env

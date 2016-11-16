@@ -30,9 +30,9 @@
 </style>
 <!-- header de la pagina -->
 <section class="content-header">
-   <h1><i class="fa fa-puzzle-piece"></i> Parametros <!-- <small>Nuevo usuario</small> --></h1>
+  <h1><i class="fa fa-puzzle-piece"></i> Parametros <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-      <li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-puzzle-piece"></i> Facturación </a></li>
+    <li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-puzzle-piece"></i> Facturación </a></li>
       <li class="active">parametros</li>
     </ol>
     <!-- <hr> -->
@@ -53,7 +53,7 @@
       
       <div class="panel-body">
          <a href="#"  class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal"><b>+</b> Agregar nuevo cliente</a>          
-         <a href="#" style="margin-right:5px;" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal2"><b>+</b> Agregar nueva Empresa</a>        
+         <a href="#" style="margin-right:5px;" class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#myModal2"><b>+</b> Agregar nueva Facturadora</a>        
             
             <p><br></p>  
             <p><br></p>    

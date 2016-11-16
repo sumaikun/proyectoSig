@@ -25,9 +25,9 @@
     }​
 }
 </style>
-	<h1><i class="fa fa-plus-circle"></i> Facturas Registradas  <!-- <small>Nuevo usuario</small> --></h1>
+  <h1><i class="fa fa-plus-circle"></i> Facturas Registradas  <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-   	<li><a href="{{ url('admin/actividades') }}""><i class="fa fa-users"></i> Facturas</a></li>
+    <li><a href="{{ url('admin/actividades') }}""><i class="fa fa-users"></i> Facturas</a></li>
       <li class="active">registros</li>
     </ol>
     <!-- <hr> -->
@@ -113,12 +113,14 @@
                     <td id="pre_total"></td>                
                   </tr>
                 </tbody>
+                <strong>Cuenta a pagar:</strong>
+                <div id="pre_pagar"></div>
               </table>
               </div>
             </div>
             @if(Session::get('ver_pago')!=null)
-              <span id="title_status" style="font-weight: bold; color:red;"></span>
-                <div id="detail_status"></div>
+            <span id="title_status" style="font-weight: bold; color:red;"></span>
+              <div id="detail_status"></div>
             @endif          
          </div>
          <div class="modal-footer">
@@ -144,6 +146,35 @@
             <div class="row">  
               <div class="col-lg-12">
                 <div id="ajax-content"></div>
+              </div>
+            </div>
+      
+         </div>
+         <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="button"  class="btn btn-default" data-dismiss="modal">Cerrar</button>
+         </div>
+      </div>     
+   </div>
+</div>
+</form>
+
+<!-- Modal3 -->
+ <form name="form1" id="form2" class='form_factura' action="" onsubmit="return validar()" method="post" enctype="multipart/form-data">
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-md">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>
+            </h4>
+         </div>
+         <div class="modal-body">
+         
+            <div class="row">  
+              <div class="col-lg-12">
+                <div id="ajax-content-2"></div>
               </div>
             </div>
       
@@ -233,7 +264,7 @@ function grab_data(id){
         $("#pre_cons").empty();
         $("#pre_valor").empty();
         $("#pre_mult").empty();
-
+        $("#pre_pagar").empty();
         $("#title_status").empty();
         $("#detail_status").empty();
 
@@ -244,7 +275,9 @@ function grab_data(id){
         $("#pre_inicio").append(res.fecha_elaboracion);
         $("#pre_final").append(res.fecha_vencimiento);
         $("#pre_reembolso").append('$'+res.reembolso);
-
+        $("#pre_pagar").append(res.banco.nombre+" "+res.cuenta.tipo+" "+res.cuenta.numero);
+        if(res.soporte!=""){$("#pre_pagar").append(' '+'<a href="descargar_soporte/'+res.soporte+'" >Soporte</a>');}  
+        
         //console.log('Descripción :'+res.descripcion);
         list_products(res.descripcion);
 
@@ -354,6 +387,32 @@ $("#detail_bill").click(function(){
   var ajax = $.get('pagar_factura/'+id, function(res, sta){$("#ajax-content").append(res);});
    ajax.done(function(res, sta){$('#myModal2').modal(); $("#form1").attr('action','pagar_factura/0');});
   }
+}
+
+function editar_informacion(id,type)
+{
+  
+  $('#myModal').hide();
+  $("#ajax-content-2").empty();
+  if(type=='pago')
+  {var ajax = $.get('editar_pago/'+id, function(res, sta){$("#ajax-content-2").append(res);});
+   ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','editar_pago/0');});
+  }
+  else if(type=='anulado')
+  {
+    var ajax = $.get('editar_cancel/'+id, function(res, sta){$("#ajax-content-2").append(res);});
+   ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','editar_cancel/0');});
+  }  
+  
+  //$('#myModal').modal();
+}
+
+function anexar_soporte(id)
+{  
+  $("#ajax-content-2").empty();
+  var ajax = $.get('anexar_soporte/'+id, function(res, sta){$("#ajax-content-2").append(res);});
+   ajax.done(function(res, sta){$('#myModal3').modal(); $("#form2").attr('action','anexar_soporte/0');});  
+  
 }
 
 function validar(){

@@ -308,6 +308,12 @@ class Metodos{
 	    	if(in_array('ges_entidades', $array)){
 	    		 Session::put('ges_entidades','ges_entidades'); 
 	    	}
+	    	if(in_array('ges_cuentas', $array)){
+	    		 Session::put('ges_cuentas','ges_cuentas'); 
+	    	}
+	    	if(in_array('ges_ciudades', $array)){
+	    		 Session::put('ges_ciudades','ges_ciudades'); 
+	    	}
     	
     		return true;	
     	}

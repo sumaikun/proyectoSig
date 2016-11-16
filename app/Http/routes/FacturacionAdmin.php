@@ -152,14 +152,17 @@ Route::get('facturacion/cuenta_info/{id}','Confactura@cuenta_info');
 
 Route::any('facturacion/editar_pago/{id}','Confactura@edit_paid');
 
-Route::get('facturacion/soporte_pago/{file}',function($file){
-  $file_path = storage_path('soporte_pagada/'.$file);
-            return response()->download($file_path);
-});
-
 Route::any('facturacion/editar_cancel/{id}','Confactura@edit_nulled');
 
-Route::get('facturacion/soporte_anulacion/{file}',function($file){
-  $file_path = storage_path('soporte_anulada/'.$file);
-            return response()->download($file_path);
+Route::any('facturacion/anexar_soporte/{id}','Confactura@add_support');
+
+Route::get('facturacion/descargar_soporte/{file}',function($file){
+  
+  $file_path = storage_path('soporte/'.$file);
+  if(file_exists($file_path))
+  {return response()->download($file_path);}
+  else{
+    return 'el servidor tiene problemas con la verificacion de existencia de documentos';
+  }
+            
 });

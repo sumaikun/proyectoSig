@@ -64,8 +64,26 @@
   </a>
 </div>
 @endif
-
-
+@if(Session::get('ges_ciudades')!=null)
+<div class="col-lg-2">
+  <a href="{{ url('usuario/facturacion/citys') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/facturacion/map.png', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Manejo de Ciudades</span></button>
+    </div>
+  </a>
+</div>
+@endif
+@if(Session::get('ges_cuentas')!=null)
+<div class="col-lg-2">
+  <a href="{{ url('usuario/facturacion/accounts') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/facturacion/bank.png', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Cuentas Bancarias</span></button>
+    </div>
+  </a>
+</div>
+@endif
 
 @include('cosas_generales.boton_info', array('imagen'=>'inicio_usuario'))
 @stop

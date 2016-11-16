@@ -94,7 +94,7 @@
               <input type="hidden" value="0" id="cont_items" name="cont">
 
                <div class="form-group">      
-                  <label>*Valor del iva</label>
+                  <label>*Valor del iva (Escribir el valor en el % correspondiente)</label>
                   <input  class="form-control" name="iva" id="total_iva"  max="25" min="1" type="number" step="any" required/>            
               </div>
 

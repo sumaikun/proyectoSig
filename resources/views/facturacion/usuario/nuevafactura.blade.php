@@ -36,9 +36,9 @@
 </style>
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-plus-circle"></i>Factura<!-- <small>Nuevo usuario</small> --></h1>
+  <h1><i class="fa fa-plus-circle"></i>Factura<!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-   	<li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-child"></i> Facturación</a></li>
+    <li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-child"></i> Facturación</a></li>
       <li class="active">Factura</li>
     </ol>
     <!-- <hr> -->
@@ -74,7 +74,7 @@
 
               <div class="form-group">
                     <label>*facturadora</label>
-                    <select class="form-control" name="facturadora" required>
+                    <select class="form-control" name="facturadora" id="facturadora" required>
                       <option value="">Selecciona</option>
                     @foreach($facturadoras as $key=>$value)
                       <option value={{$key}}>{{$value}}</option>
@@ -99,7 +99,7 @@
               <input type="hidden" value="0" id="cont_items" name="cont">
 
                <div class="form-group">      
-                  <label>*Valor del iva</label>
+                  <label>*Valor del iva (Escribir el valor en el % correspondiente)</label>
                   <input  class="form-control" name="iva" id="total_iva"  max="25" min="1" type="number" step="any" required/>            
               </div>
 
@@ -111,7 +111,15 @@
                <div class="form-group">      
                   <label>*Reembolso de gastos no generados por iva</label>
                   <input  class="form-control" max="9999000000" min="0" name="reembolso" value="0"  id="reembolso" type="number" required/>            
-              </div>              
+              </div> 
+
+              <div class="form-group">
+                <label>*Cuenta</label>
+                <select class="form-control" name="cuenta" id="cuenta" required>
+                  <option value="">Selecciona</option>
+                      
+                </select>
+              </div>             
 
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
                 <a href="#" data-toggle="modal" data-target="#myModal" onclick="description()" class="btn btn-success pull-right">
@@ -211,6 +219,8 @@
                     <td id="pre_total"></td>                
                   </tr>
                 </tbody>
+                <strong>Cuenta a pagar:</strong>
+                <div id="pre_pagar"></div>
               </table>
               </div>
             </div>
@@ -425,6 +435,26 @@ $("#customer").change(event => {
 
 });
 
+$(document).ready(function() {
+$("#cuenta").change(event => {
+  //console.log("Estoy llegando");
+    $("#pre_pagar").empty();      
+     if(event.target.value=="")
+     {
+      
+     }
+     else
+     { 
+      $.get(`cuenta_info/${event.target.value}`, function(res, sta){
+       // console.log(res);
+        $("#pre_pagar").append(res.banco_id+" "+res.tipo+" "+res.numero);        
+            
+    });
+  }
+});
+
+});
+
 
 $(document).ready(function() {
 $("#fecha_elaboracion").change(event => {
@@ -456,6 +486,28 @@ $("#reembolso").change(event => {
   reembolso =  parseInt(reembolso)+`${event.target.value}`;     
     $('#pre_reembolso').append(`${event.target.value}`);
   });
+
+});
+
+$(document).ready(function() {
+$("#facturadora").change(event => {   
+      
+     if(event.target.value=="")
+     {
+      $("#cuenta").empty();
+      $("#cuenta").append('<option> Selecciona <option>');      
+     }
+     else
+     { 
+      $.get(`cuentas/${event.target.value}`, function(res, sta){
+         $("#cuenta").empty();
+         $("#cuenta").append(`<option value="" selected> Selecciona </option>`);         
+         res.forEach(element => {
+            $("#cuenta").append(`<option value=${element.id}> ${element.banco_id} ${element.tipo} ${element.numero} </option>`);
+         });
+      });
+   }
+});
 
 });
 </script>

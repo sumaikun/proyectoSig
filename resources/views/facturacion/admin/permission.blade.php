@@ -64,7 +64,11 @@
                           <label for="carg_nombre">ver información de pagos</label>
                           <input type="checkbox" name="permiso3"  value="ver_pago">
                           <label for="carg_nombre">gestion de entidades</label>
-                          <input type="checkbox" name="permiso4"  value="ges_entidades">
+                          <input type="checkbox" name="permiso4"  value="ges_entidades">                         
+                          <label for="carg_nombre">gestion de cuentas</label>
+                          <input type="checkbox" name="permiso5"  value="ges_cuentas">
+                          <label for="carg_nombre">manejo de ciudades</label>
+                          <input type="checkbox" name="permiso6"  value="ges_ciudades">
                         </div>                     
                     </div>  
               </div>

@@ -53,14 +53,9 @@ return [
             'root'   => storage_path('plantillas_excel'),
         ],
 
-        'soporte_anulada' => [
+        'soporte' => [
             'driver' => 'local',
-            'root'   => storage_path('soporte_anulada'),
-        ],
-
-        'soporte_pagada' => [
-            'driver' => 'local',
-            'root'   => storage_path('soporte_pagada'),
+            'root'   => storage_path('soporte'),
         ],
 
         'public' => [

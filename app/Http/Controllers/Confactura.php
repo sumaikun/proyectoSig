@@ -213,6 +213,7 @@ class Confactura extends Controller
     {
     	//print_r($_POST);
     	$rules = ['fecha_elaboracion'=>'required|date','cliente'=>'required|numeric','facturadora'=>'required|numeric','reembolso'=>'required|numeric','fecha_vencimiento'=>'required|date','iva'=>'required|numeric','cuenta'=>'required|numeric'];
+
         $this->validate($request,$rules);
 
     	$factura = new Modfactura;    	
@@ -310,14 +311,7 @@ class Confactura extends Controller
 			$anulada->factura_id = Input::get('id');
 			$this->change_status($anulada->factura_id,2);
 			$anulada->user = Session::get('usu_id');
-            if($request->file('archivo')!=null)
-            {
-                $archivo = $request->file('archivo');     
-                $nombre_original=$archivo->getClientOriginalName();
-                $upload=Storage::disk('soporte_anulada')->put($nombre_original,  \File::get($archivo));                
-                $anulada->archivo = $nombre_original;
-
-            } 
+          
 
 
 	    	if($anulada ->save()){
@@ -371,13 +365,7 @@ class Confactura extends Controller
 			$pagado->rete_cree = Input::get('rete_cree');
 			$pagado->rete_otras = Input::get('rete_otras');
 			$this->change_status($pagado->factura_id,1);
-            $archivo = $request->file('archivo');     
-            $nombre_original=$archivo->getClientOriginalName();
-            $upload=Storage::disk('soporte_pagada')->put($nombre_original,  \File::get($archivo));
-            if($pagado->archivo!=""){
-                Storage::disk('soporte_pagada')->delete($pagado->archivo);
-            } 
-            $pagado->archivo = $nombre_original;
+            
 
 	    	if($pagado ->save()){
 	            if(Session::get('rol_nombre')=='administrador')
@@ -589,7 +577,7 @@ class Confactura extends Controller
 
         $chain = '';
 
-        for($i=1;$i<5;$i++)
+        for($i=1;$i<7;$i++)
         {
             if($request['permiso'.$i]!=null)
             {
@@ -633,12 +621,23 @@ class Confactura extends Controller
             $ciudad->id = $id;
             $ciudad->nombre = Input::get('nombre');
             $ciudad->departamento_id = Input::get('departamento');
+            if(Session::get('rol_nombre')=='administrador')
+            {     
                 if($ciudad->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Ciudad creada con exito!!');
                 }
                 else{
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
                 }
+            }
+            else {
+                if($ciudad->save()){
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Ciudad creada con exito!!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                } 
+            }    
          }    
         
         if($request->isMethod('get')){
@@ -654,12 +653,23 @@ class Confactura extends Controller
             $ciudad = ListCiudades::find(Input::get('id'));
             $ciudad->nombre = Input::get('nombre');
             $ciudad->departamento_id = Input::get('departamento');
+            if(Session::get('rol_nombre')=='administrador')
+            {
                 if($ciudad->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Ciudad editada con exito!!');
                 }
                 else{
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
                 }
+            }
+            else{
+                if($ciudad->save()){
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Ciudad editada con exito!!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }   
+            }    
          }    
         
         if($request->isMethod('get')){
@@ -690,12 +700,24 @@ class Confactura extends Controller
             $id = Metodos::id_generator($banco,'id');
             $banco->id = $id;
             $banco->nombre = Input::get('nombre');
-                if($banco->save()){
+            if(Session::get('rol_nombre')=='administrador')
+            {
+               if($banco->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria creada con exito!!');
                 }
                 else{
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                } 
+            }
+            else{
+                if($banco->save()){
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria creada con exito!!');
                 }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }    
+            }    
+                
          }    
         
         if($request->isMethod('get')){            
@@ -721,12 +743,23 @@ class Confactura extends Controller
             }
             
             $banco->nombre = Input::get('nombre');
+            if(Session::get('rol_nombre')=='administrador')
+            {
                 if($banco->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria editada con exito!!');
                 }
                 else{
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
                 }
+            }
+            else{
+                if($banco->save()){
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Entidad bancaria editada con exito!!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }   
+            }    
          }    
         
         if($request->isMethod('get')){
@@ -758,13 +791,23 @@ class Confactura extends Controller
             $cuenta->tipo = Input::get('tipo');
             //1 es estado activo
             $cuenta->estado = 1;
-
+            if(Session::get('rol_nombre')=='administrador')
+            {
                 if($cuenta->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Cuenta creada con exito!!');
                 }
                 else{
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
                 }
+            }
+            else{
+                if($cuenta->save()){
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Cuenta creada con exito!!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }   
+            }    
          }    
         
         if($request->isMethod('get')){            
@@ -796,12 +839,23 @@ class Confactura extends Controller
             $cuenta->fact_id = Input::get('empresa');
             $cuenta->tipo = Input::get('tipo');
             $cuenta->estado = Input::get('estado');
+            if(Session::get('rol_nombre')=='administrador')
+            { 
                 if($cuenta->save()){
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Cuenta editada con exito!!');
                 }
                 else{
                     return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
                 }
+            }
+            else{
+                if($cuenta->save()){
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Cuenta editada con exito!!');
+                }
+                else{
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+                }   
+            }    
          }    
         
         if($request->isMethod('get')){
@@ -858,18 +912,7 @@ class Confactura extends Controller
             $pagado->rete_cree = Input::get('rete_cree');
             $pagado->rete_otras = Input::get('rete_otras');
 
-            if($request->file('archivo')!=null)
-            {
-                $archivo = $request->file('archivo');     
-                $nombre_original=$archivo->getClientOriginalName();
-                $upload=Storage::disk('soporte_pagada')->put($nombre_original,  \File::get($archivo));
-                if($pagado->archivo!=""){
-                    Storage::disk('soporte_pagada')->delete($pagado->archivo);
-                } 
-                $pagado->archivo = $nombre_original;
-
-            }    
-
+            
             if($pagado ->save()){
                 if(Session::get('rol_nombre')=='administrador')
                 {
@@ -904,22 +947,6 @@ class Confactura extends Controller
             $anulada->detalles = Input::get('detalles');          
             $anulada->user = Session::get('usu_id');
 
-            if($request->file('archivo')!=null)
-            {
-                $rules = ['id'=>'required|numeric'];
-                $this->validate($request,$rules);
-
-                if($anulada->archivo!=""){
-                    //echo 'condicion';
-                    Storage::disk('soporte_anulada')->delete($anulada->archivo);
-                } 
-
-                $archivo = $request->file('archivo');     
-                $nombre_original=$archivo->getClientOriginalName();
-                $upload=Storage::disk('soporte_anulada')->put($nombre_original,  \File::get($archivo));                
-                $anulada->archivo = $nombre_original;
-
-            } 
               //return $anulada->archivo.'aca abajo';
 
             if($anulada ->save()){
@@ -941,5 +968,47 @@ class Confactura extends Controller
                 }   
             }
         }    
+    }
+
+    public function add_support(Request $request,$id)
+    {
+         if($request->isMethod('get')){           
+            return view('facturacion.ajax.support',compact('id'));
+        }
+        if($request->isMethod('post')){
+
+            $factura = Modfactura::find(Input::get('id'));
+            $archivo = $request->file('archivo');     
+            $nombre_original=$archivo->getClientOriginalName();
+            $extension = $archivo->getClientOriginalExtension();
+            //return $extension;
+
+            if($extension!='jpg' && $extension!='jpeg' && $extension!='pdf')
+            {
+                if(Session::get('rol_nombre')=='administrador')
+                {
+                   return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Formato no valido , solo JPG o PDF');
+                }
+                else {
+                    return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Formato no valido , solo JPG o PDF');    
+                }
+            } 
+
+            $upload=Storage::disk('soporte')->put($nombre_original,  \File::get($archivo));
+            if($factura->archivo!=""){
+                Storage::disk('soporte_pagada')->delete($factura->archivo);
+            } 
+            $factura->soporte = $nombre_original;
+            $factura->save();
+
+            if(Session::get('rol_nombre')=='administrador')
+            { 
+               return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Soporte guardado con éxito!!');
+            }
+            else{
+                return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Soporte guardado con éxito!!');   
+            }
+
+        }  
     }
 }
