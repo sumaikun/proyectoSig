@@ -350,7 +350,7 @@ class Confactura extends Controller
     public function pagar(Request $request, $id){
     	if ($request->isMethod('post'))
 		{
-            $rules = ['id'=>'required|numeric','rete_fuente'=>'required|numeric','rete_ica'=>'required|numeric','fecha_pago'=>'required|date','rete_cree'=>'required|numeric','rete_otras'=>'required|numeric','archivo'=>'required|file'];
+            $rules = ['id'=>'required|numeric','rete_fuente'=>'required|numeric','rete_ica'=>'required|numeric','fecha_pago'=>'required|date','rete_cree'=>'required|numeric','rete_otras'=>'required|numeric'];
             $this->validate($request,$rules);
 
 			$pagado = new Modfac_pagada;
@@ -900,7 +900,7 @@ class Confactura extends Controller
         }
         if($request->isMethod('post')){
 
-            $rules = ['id'=>'required|numeric','rete_fuente'=>'required|numeric','rete_ica'=>'required|numeric','fecha_pago'=>'required|date','rete_cree'=>'required|numeric','rete_otras'=>'required|numeric','archivo'=>'required|file'];
+            $rules = ['id'=>'required|numeric','rete_fuente'=>'required|numeric','rete_ica'=>'required|numeric','fecha_pago'=>'required|date','rete_cree'=>'required|numeric','rete_otras'=>'required|numeric'];
             $this->validate($request,$rules);
 
             $pagado = Modfac_pagada::find(Input::get('id'));
