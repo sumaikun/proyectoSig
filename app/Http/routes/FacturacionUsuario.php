@@ -41,7 +41,7 @@ Route::any('facturacion/list', function(){
   }
 
 
-  	$registros = psig\models\Modfactura::orderBy('fecha_elaboracion','desc')->Where(DB::raw('YEAR(fecha_elaboracion)'),"LIKE",'%'.$year.'%')->get();
+  	$registros = psig\models\Modfactura::orderBy('facturadora','desc')->orderBy('consecutivo','desc')->Where(DB::raw('YEAR(fecha_elaboracion)'),"LIKE",'%'.$year.'%')->get();
 
     foreach($registros as $registro)
     {
@@ -58,7 +58,6 @@ Route::any('facturacion/list', function(){
 
     Session::put('usu_listy',$year);  
   
-    Session::put('usu_exportactividades',$registros);  
      return View::make('facturacion.usuario.listafacturas',array('registros'=> $registros));
 
 });
