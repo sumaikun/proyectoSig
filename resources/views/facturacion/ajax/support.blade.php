@@ -5,5 +5,5 @@
       
 	<div class="form-group">
         <label class="form-control">Archivo</label>
-        <input type="file" name="archivo" class="form-control">
+        <input type="file" name="archivo" class="form-control" required>
     </div>  

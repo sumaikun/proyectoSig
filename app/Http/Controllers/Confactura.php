@@ -510,11 +510,11 @@ class Confactura extends Controller
             	$sheet->setActiveSheetIndex(0)->setCellValue('D13',$factura->clientes->direccion);
             	$sheet->setActiveSheetIndex(0)->setCellValue('K12',$factura->clientes->telefono);
             	$sheet->setActiveSheetIndex(0)->setCellValue('K13',$factura->clientes->ciudades->nombre);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('M29',$factura->con_iva);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('M30',$factura->sin_iva);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('M32',$factura->reembolso);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('M34',$factura->valor_iva);
-            	$sheet->setActiveSheetIndex(0)->setCellValue('M36',$factura->total);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('M30',$factura->con_iva);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('M31',$factura->sin_iva);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('M33',$factura->reembolso);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('M35',$factura->valor_iva);
+            	$sheet->setActiveSheetIndex(0)->setCellValue('M37',$factura->total);
                 if($factura->cuentas->tipo==1){$string = 'AHORROS';} else {$string = 'CORRIENTE';}                
                 $sheet->setActiveSheetIndex(0)->setCellValue('B32',strtoupper('CONSIGNAR A NOMBRE DE '.$factura->clientes->nombre.' '.$factura->cuentas->bancos->nombre.' '.'CUENTA DE '.$string.' '.$factura->cuentas->numero));
             	$array = explode('|', $factura->descripcion);
@@ -534,7 +534,7 @@ class Confactura extends Controller
 
 	    		$convertidor = new NumerosALetras;
                 $factura->total = round($factura->total) ; 
-	    		$sheet->setActiveSheetIndex(0)->setCellValue('B34',mb_strtoupper($convertidor->traducir($factura->total).' PESOS MCTE'));
+	    		$sheet->setActiveSheetIndex(0)->setCellValue('B34','SON: '.mb_strtoupper($convertidor->traducir($factura->total).' PESOS MCTE'));
 
 	    		/*	$sheet->setActiveSheetIndex(0)->mergeCells('B33:J34');
 	    		$sheet->setActiveSheetIndex(0)->getCell('B33')->setValue(strtoupper($convertidor-> traducir($factura->total).'PESOS MCTE'))->setWrapText(true);*/
@@ -979,6 +979,9 @@ class Confactura extends Controller
             return view('facturacion.ajax.support',compact('id'));
         }
         if($request->isMethod('post')){
+
+            $rules = ['archivo'=>'required|file'];
+            $this->validate($request,$rules);
 
             $factura = Modfactura::find(Input::get('id'));
             $archivo = $request->file('archivo');     
