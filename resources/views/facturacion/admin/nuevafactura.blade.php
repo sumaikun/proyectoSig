@@ -392,15 +392,14 @@ function description()
   }
 
   var total = parseFloat(subtotal)+parseFloat(iva);
-
   $("#pre_desc").append(content);
   $("#pre_valor").append(content2);
   $("#pre_mult").append(content3);
-  $("#pre_iva").append(total_iva);
-  $("#pre_noiva").append(total_noiva);
-  $("#pre_subtotal").append(subtotal);
-  $("#pre_valoriva").append(iva);
-  $("#pre_total").append(total);
+  $("#pre_iva").append(parseInt(total_iva));
+  $("#pre_noiva").append(parseInt(total_noiva));
+  $("#pre_subtotal").append(parseInt(subtotal));
+  $("#pre_valoriva").append(parseInt(iva));
+  $("#pre_total").append(parseInt(total));
   
 }
 
