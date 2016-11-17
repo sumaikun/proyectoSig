@@ -148,3 +148,30 @@ Route::get('facturacion/descargar_soporte/{file}',function($file){
   }
             
 });
+
+Route::get('facturacion/editarfactura/{id}',function($id){
+
+  if(Session::get('gene_factura')==null){
+      return response(View::make('cosas_generales.page_error')->with('mensaje', 'Área restringida.'));
+    }
+
+  $factura = psig\models\Modfactura::find($id);
+
+  $products = array();
+
+  $array = explode('|', $factura->descripcion);
+   $size = count($array);
+
+      for($i=0;$i<($size-1);$i++)
+      {
+        $string_pr = $array[$i];
+        $product = explode(',', $string_pr);
+        $pr = array('id'=>($i+1),'producto'=>$product[0],'cantidad'=>$product[1],'valor'=>$product[2],'iva'=>$product[3]);
+        array_push($products, $pr);                 
+      }
+      
+
+  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+  $facturadoras = psig\models\ListEnterprises::Where('cliente','=',0)->lists('nombre','id');
+  return view('facturacion.usuario.editarfactura',compact('factura','empresas','facturadoras','products'));
+  });

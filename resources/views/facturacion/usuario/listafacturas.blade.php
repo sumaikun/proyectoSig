@@ -55,7 +55,9 @@
               <div class="col-lg-12">
                <table class="table table-bordered">
                 <thead>
-                 
+                @if(Session::get('gene_factura')!=null)
+                   <a class="btn btn-danger" id="edit_factura">Editar</a>
+                @endif
                 </thead>
                 <tbody>
                   <tr>

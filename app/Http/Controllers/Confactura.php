@@ -270,6 +270,63 @@ class Confactura extends Controller
 
     }
 
+    public function edit(Request $request){
+
+        $rules = ['id'=>'required|numeric','fecha_elaboracion'=>'required|date','cliente'=>'required|numeric','facturadora'=>'required|numeric','reembolso'=>'required|numeric','fecha_vencimiento'=>'required|date','iva'=>'required|numeric','cuenta'=>'required|numeric'];
+
+        $this->validate($request,$rules);
+
+        $factura =  Modfactura::find(Input::get('id'));      
+        $factura->fecha_elaboracion = Input::get('fecha_elaboracion');
+        $factura->cliente = Input::get('cliente');
+        $factura->facturadora = Input::get('facturadora');
+        $factura->reembolso = Input::get('reembolso');
+        $factura->fecha_vencimiento = Input::get('fecha_vencimiento');
+        $factura->iva = Input::get('iva');
+        $factura->cuenta = Input::get('cuenta');
+       
+        $cont = Input::get('cont');
+        $desc = '';
+        for($i=0;$i<$cont;$i++)
+        {
+            $desc  = $desc.Input::get('item'.($i+1)).',';
+            $desc  = $desc.Input::get('cant'.($i+1)).',';
+            $desc  = $desc.Input::get('valor'.($i+1)).',';
+            if(Input::get('valor'.($i+1))!=0)
+            {
+                $desc = $desc.'con';
+            }
+            else{
+                $desc = $desc.'sin';    
+            }
+            $desc = $desc.'|';  
+        }   
+
+        $factura->descripcion = $desc;
+        $factura->status = 0;
+        $factura->user = Session::get('usu_id');
+
+        if($factura ->save()){
+            if(Session::get('rol_nombre')=='administrador')
+            {  
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Factura editada con éxito!! Consecutivo: '.$factura->consecutivo);
+            }
+            else{
+                return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Factura editada con éxito!! Consecutivo: '.$factura->consecutivo);   
+            }    
+        } 
+        else{
+            if(Session::get('rol_nombre')=='administrador')
+            {
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error,');
+            }
+            else{
+                return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error,');   
+            }    
+        }   
+
+    } 
+
     public function get_customer_info($id)
     {
     	$customer = ListEnterprises::where('id','=',$id)->first();
@@ -519,7 +576,7 @@ class Confactura extends Controller
                 $sheet->setActiveSheetIndex(0)->setCellValue('B32',strtoupper('CONSIGNAR A NOMBRE DE '.$factura->clientes->nombre.' '.$factura->cuentas->bancos->nombre.' '.'CUENTA DE '.$string.' '.$factura->cuentas->numero));
             	$array = explode('|', $factura->descripcion);
 		        $size = count($array);
-		        $resultado = 0; 
+		        //$resultado = 0; 
 
 	        		for($i=0;$i<($size-1);$i++)
 		          {

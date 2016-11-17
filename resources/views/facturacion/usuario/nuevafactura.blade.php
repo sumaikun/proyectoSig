@@ -278,6 +278,7 @@ function add_item()
       input.className = "form-control";
       input.value = 1;
       input.min = 1;
+      input.step = 'any';
       input.id = "cant"+cont;
       input.name = "cant"+cont;
       div.appendChild(input);

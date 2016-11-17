@@ -31,10 +31,10 @@
 </style>
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-plus-circle"></i>Factura<!-- <small>Nuevo usuario</small> --></h1>
+	<h1><i class="fa fa-plus-circle"></i>Editar-Factura<!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
    	<li><a href="{{ url('admin/facturacion') }}"><i class="fa fa-child"></i> Facturación</a></li>
-      <li class="active">Factura</li>
+      <li class="active">Factura Edición</li>
     </ol>
     <!-- <hr> -->
 </section>
@@ -48,21 +48,23 @@
        </div>
        <div class="panel-body">
         <div class="ocultar" style="max-height: 420px !important">
-        <form name="form1" id="form1" class='form_factura' action="registrarfactura" onsubmit="return validar()" method="post" enctype="multipart/form-data">
+        <form name="form1" id="form1" class='form_factura' action="../editBill" onsubmit="return validar()" method="post" enctype="multipart/form-data">
+        
+        <input type="hidden" value="{{$factura->id}}" id="id" name="id">
 
         <div class="col-lg-9">
           
               <div class="form-group">      
                     <label>*Fecha Elaboración</label>
-                    <input  class="form-control" id="fecha_elaboracion" name="fecha_elaboracion" type="date" required/>            
+                    <input  class="form-control" id="fecha_elaboracion" value="{{$factura->fecha_elaboracion}}" name="fecha_elaboracion" type="date" required/>            
               </div>         
 
               <div class="form-group">
                     <label>*Cliente</label>
-                    <select class="form-control" id="customer" name="cliente" required>
+                    <select class="form-control" id="customer"   name="cliente" required>
                       <option value="">Selecciona</option>
                     @foreach($empresas as $key=>$value)
-                      <option value={{$key}}>{{$value}}</option>
+                      <option value={{$key}} @if($key==$factura->cliente) {{'selected'}} @endif>{{$value}}</option>
                     @endforeach   
                     </select>
               </div>
@@ -72,7 +74,7 @@
                     <select class="form-control" name="facturadora" id="facturadora" required>
                       <option value="">Selecciona</option>
                     @foreach($facturadoras as $key=>$value)
-                      <option value={{$key}}>{{$value}}</option>
+                      <option value={{$key}} @if($key==$factura->facturadora) {{'selected'}} @endif>{{$value}}</option>
                     @endforeach   
                     </select>
               </div>       
@@ -88,29 +90,42 @@
                     </a>
                     <hr>
                     <div id="container">
+                      @foreach($products as $product)
+                        <div class="form-group" id="item{{$product['id']}}">
+                        <label style="color: rgb(170,170,170);">{{'item'.$product['id']}}</label>
+                        <input type="text" class="form-control" name="{{'item'.$product['id']}}" id="{{'meti'.$product['id']}}" value="{{$product['producto']}}">
+                        <label style="color: rgb(170,170,170);">Cantidad</label>
+                        <input type="number" min="1" class="form-control" name="{{'cant'.$product['id']}}" id="{{'cant'.$product['id']}}" step="any" value="{{$product['cantidad']}}">
+                        <label style="color: rgb(170,170,170);">Valor</label>
+                        <input type="number" min="1000" max="9999000000" class="form-control"  name="{{'valor'.$product['id']}}" id="{{'valor'.$product['id']}}" value="{{$product['valor']}}">
+                        <label style="color: rgb(170,170,170);">¿Genera Iva?</label>
+                        <input type="checkbox" class="form-control"  name="{{'check'.$product['id']}}" id="{{'check'.$product['id']}}" onclick="help_check(this)" @if($product['iva']=='con') {{'checked'}} value="1" @else value="0"  @endif>                         
+                        </div>
+                        <hr id="{{'item'.(100+$product['id'])}}">                                       
+                      @endforeach
                     </div>
               </div>
               
-              <input type="hidden" value="0" id="cont_items" name="cont">
+              <input type="hidden" value="{{count($products)}}" id="cont_items" name="cont">
 
                <div class="form-group">      
                   <label>*Valor del iva (Escribir el valor en el % correspondiente)</label>
-                  <input  class="form-control" name="iva" id="total_iva"  max="25" min="0" type="number" step="any" required/>            
+                  <input  class="form-control" name="iva" id="total_iva"  max="25" min="0" type="number" step="any" value="{{$factura->iva}}" required/>            
               </div>
 
               <div class="form-group">      
                   <label>*Fecha de vencimiento</label>
-                  <input  class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" type="date" required/>            
+                  <input  class="form-control" value="{{$factura->fecha_vencimiento}}" id="fecha_vencimiento" name="fecha_vencimiento" type="date" required/>            
               </div>
 
                <div class="form-group">      
                   <label>*Reembolso de gastos no generados por iva</label>
-                  <input  class="form-control" max="9999000000" min="0" name="reembolso" value="0"  id="reembolso" type="number" required/>            
+                  <input  class="form-control" max="9999000000" min="0" name="reembolso" value="0"  id="reembolso" type="number"  value="{{$factura->reembolso}}" required/>            
               </div> 
 
               <div class="form-group">
                 <label>*Cuenta</label>
-                <select class="form-control" name="cuenta" id="cuenta" required>
+                <select class="form-control"  name="cuenta" id="cuenta" required>
                   <option value="">Selecciona</option>
                       
                 </select>
@@ -237,7 +252,9 @@
 @section('script')
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}
 <script type="text/javascript">
-var cont = 0;
+load_process();
+
+var cont = parseInt($("#cont_items").val());
 var reembolso = 0;
 function add_item()
 {
@@ -335,9 +352,10 @@ function remove_item()
     //console.log('este es '+pointer);
     document.getElementById("item"+pointer).remove();
     pointer= 100+parseInt(pointer);
-    //console.log(pointer);
+    console.log(pointer);
     document.getElementById("item"+pointer).remove();
     cont -= 1;
+    console.log('valor cont '+cont);
     document.getElementById("cont_items").value = cont;
 
   }  
@@ -418,7 +436,7 @@ $("#customer").change(event => {
      }
      else
      { 
-      $.get(`cliente/${event.target.value}`, function(res, sta){
+      $.get(`../cliente/${event.target.value}`, function(res, sta){
        // console.log(res);
         $("#pre_nit").append(res.nit);
         $("#pre_nombre").append(res.nombre);
@@ -429,7 +447,10 @@ $("#customer").change(event => {
   }
 });
 
+
+
 });
+
 
 $(document).ready(function() {
 $("#cuenta").change(event => {
@@ -441,7 +462,7 @@ $("#cuenta").change(event => {
      }
      else
      { 
-      $.get(`cuenta_info/${event.target.value}`, function(res, sta){
+      $.get(`../cuenta_info/${event.target.value}`, function(res, sta){
        // console.log(res);
         $("#pre_pagar").append(res.banco_id+" "+res.tipo+" "+res.numero);        
             
@@ -495,7 +516,7 @@ $("#facturadora").change(event => {
      }
      else
      { 
-      $.get(`cuentas/${event.target.value}`, function(res, sta){
+      $.get(`../cuentas/${event.target.value}`, function(res, sta){
          $("#cuenta").empty();
          $("#cuenta").append(`<option value="" selected> Selecciona </option>`);         
          res.forEach(element => {
@@ -506,5 +527,42 @@ $("#facturadora").change(event => {
 });
 
 });
+
+function load_process(){
+console.log('proceso onload');    
+    $.get('../cliente/'+$("#customer").val(), function(res, sta){
+     // console.log(res);
+      $("#pre_nit").append(res.nit);
+      $("#pre_nombre").append(res.nombre);
+      $("#pre_direccion").append(res.direccion);
+      $("#pre_telefono").append(res.telefono);
+      $("#pre_ciudad").append(res.ciudad);
+      $('#pre_inicio').append($("#fecha_elaboracion").val());
+      $('#pre_final').append($("#fecha_vencimiento").val());
+      $('#pre_reembolso').append($("#reembolso").val()); 
+
+  });
+
+   $.get('../cuentas/'+$("#facturadora").val(), function(res, sta){
+         $("#cuenta").empty();
+         $("#cuenta").append(`<option value="" selected> Selecciona </option>`);         
+         res.forEach(element => {
+            $("#cuenta").append(`<option value=${element.id}> ${element.banco_id} ${element.tipo} ${element.numero} </option>`);
+         });
+      });  
+}
+
+function help_check(object){
+  console.log('here i am'); 
+  if(object.value==1)
+  {
+    object.value=0;
+  }
+  else{
+    object.value=1; 
+  }
+}    
+
+
 </script>
 @stop
