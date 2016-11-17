@@ -51,7 +51,7 @@ Route::any('facturacion/list', function(){
 
     Session::put('usu_listy',$year);  
   
-    Session::put('usu_exportactividades',$registros);  
+    //Session::put('usu_exportactividades',$registros);  
      return View::make('facturacion.admin.listafacturas',array('registros'=> $registros));
 
 });
