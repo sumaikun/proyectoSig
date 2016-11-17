@@ -90,7 +90,7 @@
                         <td style="text-align:center"> {{$cliente->ciudades["nombre"]}} </td>
                         <td style="text-align:center"> {{$cliente->contacto}} </td>
                         <td align="right">
-                           <a href="{{ url('admin/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
+                           <a href="{{ url('usuario/facturacion/editEmp/'.$cliente->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
                            <!--<a href="{{ url('admin/facturacion/destroyEmp/'.$cliente->id) }}" class="btn btn-danger btn-xs">
@@ -112,7 +112,7 @@
                         <td style="text-align:center"> {{$empresa->ciudades["nombre"]}} </td>
                         <td style="text-align:center"> {{$empresa->contacto}} </td>
                         <td align="right" >
-                           <a href="{{ url('admin/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
+                           <a href="{{ url('usuario/facturacion/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
                            <!--<a href="{{ url('admin/facturacion/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">
