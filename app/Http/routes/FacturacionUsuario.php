@@ -120,6 +120,8 @@ Route::get('facturacion/accounts',function(){
         return view('facturacion.usuario.accounts',compact('bancos','cuentas'));
 });
 
+Route::post('facturacion/editBill','Confactura@edit');
+
 Route::any('facturacion/crear_banco','Confactura@banco_create');
 
 Route::any('facturacion/crear_cuenta','Confactura@cuenta_create');
