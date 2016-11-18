@@ -273,6 +273,7 @@ function grab_data(id){
   $.get('factura_info/'+id, function(res, sta){
 
         min_string = "  CONSECUTIVO "+res.consecutivo;
+        $("#edit_factura").attr("href", "editarfactura/"+res.id);
         $("#pre_cons").append(min_string);
         $("#pre_inicio").append(res.fecha_elaboracion);
         $("#pre_final").append(res.fecha_vencimiento);
