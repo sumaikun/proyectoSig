@@ -266,6 +266,7 @@ function add_item()
       input.className = "form-control";
       input.name = "item"+cont;
       input.id = "meti"+cont;
+      input.required = "required";
       div.appendChild(input);
       var label = document.createElement("label");
       var text = document.createTextNode("Cantidad");
@@ -281,6 +282,7 @@ function add_item()
       input.step = 'any';
       input.id = "cant"+cont;
       input.name = "cant"+cont;
+      input.required = "required";
       div.appendChild(input);
       var label = document.createElement("label");
       var text = document.createTextNode("Valor");
@@ -295,6 +297,7 @@ function add_item()
       input.className = "form-control";
       input.name = "valor"+cont;
       input.id = "valor"+cont;
+      input.required = "required";
       div.appendChild(input);
 
       var label = document.createElement("label");
@@ -371,8 +374,8 @@ function description()
     for(var i =0 ; i<cont ; i++ )
     {
       content = content+'<li>'+$("#meti"+(parseInt(i)+1)).val()+'</li>';
-      content2 = content2+'<li>'+$("#valor"+(parseInt(i)+1)).val()+'</li>';
-      content3 = content3+'<li>'+mult_items($("#valor"+(parseInt(i)+1)).val(),$("#cant"+(parseInt(i)+1)).val())+'</li>';
+      content2 = content2+'<li> $'+parseInt($("#valor"+(parseInt(i)+1)).val()).format()+'</li>';
+      content3 = content3+'<li> $'+parseInt(mult_items($("#valor"+(parseInt(i)+1)).val(),$("#cant"+(parseInt(i)+1)).val())).format()+'</li>';
       if($("#check"+(parseInt(i)+1)).val()==1){
         total_iva = parseInt(total_iva) + mult_items($("#valor"+(parseInt(i)+1)).val(),$("#cant"+(parseInt(i)+1)).val());
       }
@@ -401,11 +404,11 @@ function description()
   $("#pre_desc").append(content);
   $("#pre_valor").append(content2);
   $("#pre_mult").append(content3);
-  $("#pre_iva").append(parseInt(total_iva));
-  $("#pre_noiva").append(parseInt(total_noiva));
-  $("#pre_subtotal").append(parseInt(subtotal));
-  $("#pre_valoriva").append(parseInt(iva));
-  $("#pre_total").append(parseInt(total));
+  $("#pre_iva").append('$'+parseInt(total_iva).format());
+  $("#pre_noiva").append('$'+parseInt(total_noiva).format());
+  $("#pre_subtotal").append('$'+parseInt(subtotal).format());
+  $("#pre_valoriva").append('$'+parseInt(iva).format());
+  $("#pre_total").append('$'+parseInt(total).format());;
   
 }
 
@@ -511,5 +514,10 @@ $("#facturadora").change(event => {
 });
 
 });
+
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
 </script>
 @stop

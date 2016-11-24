@@ -232,17 +232,20 @@ class Confactura extends Controller
     	$desc = '';
     	for($i=0;$i<$cont;$i++)
     	{
-    		$desc  = $desc.Input::get('item'.($i+1)).',';
-    		$desc  = $desc.Input::get('cant'.($i+1)).',';
-    		$desc  = $desc.Input::get('valor'.($i+1)).',';
-    		if(Input::get('valor'.($i+1))!=0)
-    		{
-    			$desc = $desc.'con';
-    		}
-    		else{
-    			$desc = $desc.'sin';	
-    		}
-    		$desc = $desc.'|';	
+            if(Input::get('item'.($i+1))!=null)
+            {
+                $desc  = $desc.Input::get('item'.($i+1)).'Ç';
+                $desc  = $desc.Input::get('cant'.($i+1)).'Ç';
+                $desc  = $desc.Input::get('valor'.($i+1)).'Ç';
+                if(Input::get('valor'.($i+1))!=0)
+                {
+                    $desc = $desc.'con';
+                }
+                else{
+                    $desc = $desc.'sin';    
+                }
+                $desc = $desc.'|';
+            }   			
     	}	
 
     	$factura->descripcion = $desc;
@@ -289,17 +292,20 @@ class Confactura extends Controller
         $desc = '';
         for($i=0;$i<$cont;$i++)
         {
-            $desc  = $desc.Input::get('item'.($i+1)).',';
-            $desc  = $desc.Input::get('cant'.($i+1)).',';
-            $desc  = $desc.Input::get('valor'.($i+1)).',';
-            if(Input::get('valor'.($i+1))!=0)
+            if(Input::get('item'.($i+1))!=null)
             {
-                $desc = $desc.'con';
-            }
-            else{
-                $desc = $desc.'sin';    
-            }
-            $desc = $desc.'|';  
+                $desc  = $desc.Input::get('item'.($i+1)).'Ç';
+                $desc  = $desc.Input::get('cant'.($i+1)).'Ç';
+                $desc  = $desc.Input::get('valor'.($i+1)).'Ç';
+                if(Input::get('valor'.($i+1))!=0)
+                {
+                    $desc = $desc.'con';
+                }
+                else{
+                    $desc = $desc.'sin';    
+                }
+                $desc = $desc.'|';
+            }      
         }   
 
         $factura->descripcion = $desc;

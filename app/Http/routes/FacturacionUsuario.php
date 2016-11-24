@@ -50,7 +50,7 @@ Route::any('facturacion/list', function(){
       $registro->con_iva = psig\Helpers\Metodos::factura($registro->descripcion,'con_iva');
       $registro->sin_iva = psig\Helpers\Metodos::factura($registro->descripcion,'sin_iva');
       $registro->valor_iva = ($registro->iva*$registro->con_iva)/100;
-      $registro->total = $registro->valor_iva+$registro->con_iva+$registro->sin_iva+$registro->reembolso;
+      $registro->total = (int)$registro->valor_iva+$registro->con_iva+$registro->sin_iva+$registro->reembolso;
     }  
 
 
@@ -167,7 +167,7 @@ Route::get('facturacion/editarfactura/{id}',function($id){
       for($i=0;$i<($size-1);$i++)
       {
         $string_pr = $array[$i];
-        $product = explode(',', $string_pr);
+        $product = explode('Ç', $string_pr);
         $pr = array('id'=>($i+1),'producto'=>$product[0],'cantidad'=>$product[1],'valor'=>$product[2],'iva'=>$product[3]);
         array_push($products, $pr);                 
       }

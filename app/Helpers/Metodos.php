@@ -268,7 +268,8 @@ class Metodos{
           {
             $string_pr = $array[$i];
             //echo('string :'.$string_pr);
-            $product = explode(',', $string_pr);
+            $product = explode('Ç', $string_pr);
+            //return $product[3];
             //print_r($product);
 
               	if($parametro == 'con_iva')
@@ -286,7 +287,7 @@ class Metodos{
     			}
           }
           return $resultado;      
-    
+   
      
     } 
 
@@ -320,5 +321,9 @@ class Metodos{
     
     	
     }
+
+    public static function asDollars($value) {
+  		return '$' . number_format($value, 0);
+	}
 }
 ?>

@@ -50,7 +50,7 @@
                   <td>{{ucwords($registro->consecutivo)}}</td>
                   <td>{{ucwords($registro->facturadoras->nombre)}}</td>
                   <td>{{ucwords ($registro->clientes->nombre)}}</td>              
-                  <td style="text-align: center">${{$registro->total}}</td>
+                  <td style="text-align: right">{{psig\Helpers\Metodos::asDollars($registro->total)}}</td>
                   <td style="text-align: center">{{ucwords ($registro->fecha_elaboracion)}}</td>
                   <td style="text-align: center">{{ucwords ($registro->fecha_vencimiento)}}</td>
                    @if(Session::get('rol_nombre')=='administrador'||Session::get('ver_pago')!=null)

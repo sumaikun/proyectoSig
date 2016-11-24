@@ -15,6 +15,19 @@
    {{ HTML::style('general/css/icono_info.css') }}
 @stop
 
+<style type="text/css">
+ .table {
+font-size: 13px 
+}
+  .ocultar_400px {
+    overflow: auto;
+    width: 100%;
+    max-height: 400px;
+
+  }  
+
+</style>
+
 @section('contenido')
 
 <!-- header de la pagina -->
@@ -23,7 +36,7 @@
  .ui-datepicker-calendar {
     display: none;
     }​
-}
+
 </style>
   <h1><i class="fa fa-plus-circle"></i> Facturas Registradas  <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
@@ -35,9 +48,9 @@
          
 <!-- Cuerpo de la pagina -->
 <section class="content">
-
+ 
    @include('facturacion.sub_views.list')
-
+   
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -296,12 +309,12 @@ function grab_data(id){
         //$("#pre_desc").append(content);
         //$("#pre_valor").append(content2);
         //$("#pre_mult").append(content3);
-        $("#pre_iva").append('$'+res.con_iva);
-        $("#pre_noiva").append('$'+res.sin_iva);
+        $("#pre_iva").append('$'+parseInt(res.con_iva).format());
+        $("#pre_noiva").append('$'+parseInt(res.sin_iva).format());
         subtotal = parseInt(res.con_iva)+parseInt(res.sin_iva)+parseInt(res.reembolso);
-        $("#pre_subtotal").append('$'+subtotal);
-        $("#pre_valoriva").append('$'+res.valor_iva);
-        $("#pre_total").append('$'+res.total);
+        $("#pre_subtotal").append('$'+parseInt(subtotal).format());
+        $("#pre_valoriva").append('$'+parseInt(res.valor_iva).format());
+        $("#pre_total").append('$'+parseInt(res.total).format());
 
       $.get('cliente/'+res.cliente, function(res, sta){
 
@@ -321,7 +334,7 @@ function neto(){
   retenciones = parseInt(($("#rete_fuente").html()).slice(1))+parseInt(($("#rete_ica").html()).slice(1))+parseInt(($("#rete_cree").html()).slice(1))+parseInt(($("#rete_otras").html()).slice(1));
   //console.log('retenciones '+retenciones);
   total = parseInt(($("#pre_total").html()).slice(1)) - retenciones;
-  $("#pago_neto").append('$'+total);
+  $("#pago_neto").append('$'+total.format());
 }
  
 function list_products(products){
@@ -334,10 +347,10 @@ function list_products(products){
   for(var i = 0 ; i<size ; i++)
   {
     
-    product_array = products_array[i].split(",");
+    product_array = products_array[i].split("Ç");
     html = html+'<li>'+product_array[0]+'</li>';
-    html2 = html2+'<li>$'+product_array[2]+'</li>';
-    html3 = html3+'<li>$'+(product_array[1]*product_array[2])+'</li>';
+    html2 = html2+'<li>$'+parseInt(product_array[2]).format()+'</li>';
+    html3 = html3+'<li>$'+parseInt(product_array[1]*product_array[2]).format()+'</li>';
 
   }
   html = html + '</ul>';
@@ -425,6 +438,12 @@ function validar(){
    return true;
 }
 
+Number.prototype.format = function(n, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+    return this.toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+};
 </script>
+
+
 
 @stop
