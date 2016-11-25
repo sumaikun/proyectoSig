@@ -36,10 +36,7 @@
                   <th style="text-align: center"><strong>informacion detallada</strong></th>
                   <th></th>
                   <th></th>
-                  @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
-                  <th></th>
-                  <th></th>
-                  @endif
+                
                </tr>
             </thead>
             <tbody>
@@ -71,25 +68,24 @@
                      <!--<a class='btn btn-danger btn-xs' href="{{ url('admin/facturacion/cancel/'.$registro->id) }}">-->
                       <button class='btn btn-danger btn-xs' id="anular" onclick="anular_pagar({{$registro->status}},{{$registro->id}},'anular')">  
                         <i class="fa fa-pencil-square-o"></i> ANULAR
-                      </button>  
+                      </button>
+                       @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
+                       <a class="btn btn-warning btn-xs" href="descargar_factura/{{$registro->id}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Descargar</a>
+                        @endif   
                      <!--</a>--> 
                   </td>
                   <td>
                      <!--<a class='btn btn-success btn-xs' href="{{ url('admin/facturacion/payed/'.$registro->id) }}">-->
                       <button class='btn btn-success btn-xs' id="pagar" onclick="anular_pagar({{$registro->status}},{{$registro->id}},'pagar')">   
                         <i class="fa fa-pencil-square-o"></i> Marcar Pagado
-                      </button>  
+                      </button>
+                       @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
+                       <button class="btn btn-primary btn-xs" onclick="anexar_soporte({{$registro->id}})"><i class="fa fa-file" aria-hidden="true"></i> Anex. Soporte</button>
+                       @endif   
                      <!--</a>--> 
                   </td>
                   @endif
-                  @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
-                  <td>
-                     <a class="btn btn-warning btn-xs" href="descargar_factura/{{$registro->id}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Descargar</a> 
-                  </td>
-                  <td>
-                     <button class="btn btn-primary btn-xs" onclick="anexar_soporte({{$registro->id}})"><i class="fa fa-file" aria-hidden="true"></i> Anex. Soporte</button> 
-                  </td>
-                  @endif
+                          
                </tr>
             
             @endforeach
