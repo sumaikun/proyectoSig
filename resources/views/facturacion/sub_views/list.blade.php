@@ -70,7 +70,8 @@
                         <i class="fa fa-pencil-square-o"></i> ANULAR
                       </button>
                        @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
-                       <a class="btn btn-warning btn-xs" href="descargar_factura/{{$registro->id}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Descargar</a>
+                       
+                       <a style="margin-top: 10px" class="btn btn-warning btn-xs" href="descargar_factura/{{$registro->id}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Descargar</a>
                         @endif   
                      <!--</a>--> 
                   </td>
@@ -80,7 +81,8 @@
                         <i class="fa fa-pencil-square-o"></i> Marcar Pagado
                       </button>
                        @if(Session::get('rol_nombre')=='administrador'||Session::get('gene_factura')!=null)
-                       <button class="btn btn-primary btn-xs" onclick="anexar_soporte({{$registro->id}})"><i class="fa fa-file" aria-hidden="true"></i> Anex. Soporte</button>
+
+                       <button style="margin-top: 10px" class="btn btn-primary btn-xs" onclick="anexar_soporte({{$registro->id}})"><i class="fa fa-file" aria-hidden="true"></i> Anex. Soporte</button>
                        @endif   
                      <!--</a>--> 
                   </td>
