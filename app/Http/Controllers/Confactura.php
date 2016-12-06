@@ -587,7 +587,7 @@ class Confactura extends Controller
 	        		for($i=0;$i<($size-1);$i++)
 		          {
 		            $string_pr = $array[$i];
-		            $product = explode(',', $string_pr);
+		            $product = explode('Ç', $string_pr);
 
 		          	  $sheet->setActiveSheetIndex(0)->setCellValue('B'.(17+$i),$product[0]);
 		          	  $sheet->setActiveSheetIndex(0)->setCellValue('k'.(17+$i),$product[2]);
