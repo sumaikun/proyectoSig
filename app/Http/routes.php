@@ -19,13 +19,15 @@ Route::get('/', function(){
 		if(Auth::check() && Session::get('rol_nombre')=='usuario'){
 			return Redirect::guest('/usuario/inicio');
 		}else{
-			return Redirect::guest('login');
+			return Redirect::guest('/login');
 		}
 	}
 	
 });
 
+
 Route::get('login', function(){
+   
 	return View::make('cosas_generales.login');	
 });
 

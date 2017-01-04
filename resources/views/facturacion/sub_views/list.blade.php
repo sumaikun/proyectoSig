@@ -5,7 +5,7 @@
          <h3 class="panel-title"><i class="fa fa-list"></i> Facturas</h3>
          </div> 
           <div class="col-log-2">
-             <form action='../actividades/list'  method="post">
+             <form action='../facturacion/list'  method="post">
               <select name="year_list"  class="form-control" onchange="javascript: this.form.submit();">
                    @for ($i = 2016; $i <= date('Y'); $i++)
                       <option value="{{$i}}" @if($i == Session::get('usu_listy')) {{'selected'}} @endif>{{{$i}}}</option>
