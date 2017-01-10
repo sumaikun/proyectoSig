@@ -8,7 +8,7 @@ Route::any('ofertas', function(){
 		Session::put('anio_ofertas', date("Y"));
 	}
 
-	$usuarios = psig\models\Modusuarios::orderby('usu_nombres')->get();
+	$usuarios = psig\models\Modusuarios::orderby('usu_nombres')->where('usu_estado','!=','inactivo')->get();
 	$ofertas = psig\models\Modgeofertas::whereRaw ('YEAR( created_at ) = ?', array(Session::get('anio_ofertas')))->get();
 	return View::make('administrador.modulos.ofertas.ofertas', array('ofertas' => $ofertas, 'usuarios' => $usuarios));
 });
