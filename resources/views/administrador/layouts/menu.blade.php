@@ -34,6 +34,11 @@
          <i class="fa fa-child"></i> <span><b>Reporte de Actividades</b></span>
       </a>
    </li>
+   <li>
+      <a href="{{ url('admin/inventario') }}">
+         <i class="fa fa-folder-open"></i> <span><b>Inventario</b></span>
+      </a>
+   </li>
      
 
    
