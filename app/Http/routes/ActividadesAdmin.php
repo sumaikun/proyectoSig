@@ -79,17 +79,28 @@ Route::any('actividades/reports',function(){
   if(strpos(URL::previous(),'reports'))
   {
     $year = Input::get('year_list');
+    $userid = Input::get('userid');
+    if($userid==0)
+    {
+      $usuarios = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->where('fecha','like','%'.$year.'%')->get();
+    }
+    else{
+      $usuarios = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->where('fecha','like','%'.$year.'%')->where('usuario','=',$userid)->get();
+    }
+    
   }
 
   else
   {
     $year = date('Y');
+    $usuarios = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->where('fecha','like','%'.$year.'%')->get();
   } 
 
-  $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();
-  $usuarios = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->get();
+  $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();  
+  $users = DB::SELECT(DB::raw("select DISTINCT usuario as id, u.usu_nombres as nombres , u.usu_apellido1 as apellido from reg_actividades as reg inner JOIN usuarios as u on reg.usuario = u.usu_id  where fecha like '%".$year."%'"));
+  //return $users;
   
-  return View::make('actividades.admin.reports',compact('empresas','usuarios','year'));
+  return View::make('actividades.admin.reports',compact('empresas','usuarios','year','users'));
 });
 
 Route::post('actividades/subirexcel','Conactividades@excel');

@@ -132,6 +132,8 @@ class Conactividades extends Controller
 
     public function store()
     {
+
+
         $Actividad = new modActividad;
         $id = Metodos::id_generator($Actividad,'id');
         $Actividad->id = $id;
@@ -140,7 +142,8 @@ class Conactividades extends Controller
         $Actividad->tp_empresa = Input::get('empresa');
         $Actividad->filial = Input::get('filial');
         $Actividad->subcontratista = Input::get('subcontratista');
-        $Actividad->horas = Input::get('horas');
+        $Actividad->horas = round((Input::get('minutos')/60),1)+Input::get('horas');
+        //return $Actividad->horas;
         $Actividad->descripcion = Input::get('descripcion');
         $Actividad->usuario = Session::get('usu_id');
 
@@ -151,8 +154,8 @@ class Conactividades extends Controller
             }
             else
             {
-                $key=$id;
-                Cache::put($key,Session::get('usu_id'),30);
+                //$key=$id;
+                //Cache::put($key,Session::get('usu_id'),30);
 
              return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada, tiene 30 minutos si desea editarla!!');
             }       
@@ -181,14 +184,14 @@ class Conactividades extends Controller
           return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));    
         }
         else{
-            if(Cache::get($id)==Session::get('usu_id'))
-            {
+            //if(Cache::get($id)==Session::get('usu_id'))
+            //{
                  return View::make('actividades.usuario.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));  
-            }
+            /*}
             else{
 
                  return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'No puede editarse');
-            }
+            }*/
 
         }    
         

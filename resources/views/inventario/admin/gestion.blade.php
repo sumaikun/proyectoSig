@@ -39,38 +39,33 @@
          </div>
       </div>
       <div class="panel-body">
-         <!--<a href="{{ url('admin/nuevousuario') }}" class="btn btn-primary btn-xs pull-right"><b>+</b> Agregar Usuario</a>-->
-         <input type="text" class="form-control" id="dev-table-filter" data-action="filter" data-filters="#dev-table" placeholder="buscador" />
-      </div>
-         
-         <div class="table-responsive ocultar_400px">
-         <table class="table table-hover table-condensed" id="dev-table">
+          
+         <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                <tr class="active">
                   <th>#</th>
                   <th><strong>Codigo</strong></th>
                   <th><strong>Descripción</strong></th>                                 
-                  <th><strong>Seriales</strong></th>
-                  <th><strong>Categoria</strong></th>
-                  <th><strong>Estado</strong></th>
+                  <th><strong>Cantidad</strong></th>
+                  <th><strong>Categoria</strong></th>                  
                   <th><strong>Opciones</strong></th>
                </tr>
             </thead>
             <tbody>
               @foreach($elementos as $elemento)
                 <tr>  
-                  <td> {{$elemento->cod}} </td>
-                  <td> {{$elemento->codigo}} </td>
+                  <td> {{$elemento->id}} </td>
+                  <td style="width:110px;"> {{$elemento->codigo}} </td>
                   <td> {{$elemento->descripcion}}</td>             
-                  <td> {{$elemento->serial}}</td>                  
-                  <td> {{$elemento->categoria}}</td>
-                  <td> {{$elemento->status}}</td>
-                  <td> <abbr title="Editar"><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i></abbr> <abbr title="Borrar"><a href="#" data-toggle="modal" data-target="#myModal2" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></abbr><abbr title="alquilar"><a href="#" data-toggle="modal" data-target="#myModal3" style="margin-left: 5px;"><i class="fa fa-briefcase" aria-hidden="true"></i></a></abbr><abbr title="detalles"><a href="#" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a></abbr></td>                 
+                  <td style="text-align: center;"> {{$elemento->cantidad}}</td>                  
+                  <td> {{$elemento->categoria}}</td>                  
+                  <td> <abbr title="Editar"><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i></abbr> <abbr title="Borrar"><a href="#" data-toggle="modal" data-target="#myModal2" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></abbr><abbr title="Gestión"><a href="#" data-toggle="modal" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a></abbr>
+                  </td>  
                 </tr>  
               @endforeach
             </tbody>
          </table>
-         </div>
+      </div>      
    </div>
 </div>
 
@@ -185,6 +180,51 @@
   </div>
 </div>
 
+<div id="myModal4" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
 
+    <!-- Modal content-->
+    <div class="modal-content panel-success">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Gestión</h4>
+      </div>
+      <div class="modal-body">
+        <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+               <tr class="active">
+                  <th>#</th>
+                  <th><strong>Serial</strong></th>
+                  <th><strong>Status</strong></th>                                 
+                  <th><strong>Opciones</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                   <td><abbr title="alquilar"><a href="#" data-toggle="modal" data-target="#myModal3" style="margin-left: 5px;"><i class="fa fa-briefcase" aria-hidden="true"></i></a></abbr><abbr title="detalles"><a href="#" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a></abbr>
+                   </td> 
+                </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#example').DataTable({
+       "bSort": false
+      });
+  });
+
+</script>
 
 @stop

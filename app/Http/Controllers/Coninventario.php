@@ -42,9 +42,8 @@ class Coninventario extends Controller
         $foid = $id;
         $element->id = $id;
         $element->codigo = $request->codigo;
-        $element->descripcion = $request->descripcion;
-        $element->cantidad = $request->cantidad;        
-        
+        $element->descripcion = $request->descripcion;          
+        $element->cantidad = $request->cantidad;
         for($i=1; $i<=$request->cantidad;$i++ )
         {
 
@@ -53,13 +52,12 @@ class Coninventario extends Controller
             $serial->valor = $request['item'.$i];
             $serial->id = $id;
             $serial->id_elementos = $foid;
+            $serial->id_status = 1;      
             $serial->save();
             
-        }
+        }        
         
-        
-        $element->categoria = $request->categoria;
-        $element->status = $request->status;        
+        $element->categoria = $request->categoria;         
 
         if($element->save())
         {
@@ -71,16 +69,7 @@ class Coninventario extends Controller
                return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Elemento creado con éxito!!'); 
             }  
          }
-         else
-         {
-            if(Session::get('rol_nombre')=='administrador')
-            {
-             return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-            }
-            else{
-               return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error'); 
-            } 
-         }
+ 
 
 
     }

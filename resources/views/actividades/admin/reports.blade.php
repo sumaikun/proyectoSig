@@ -38,8 +38,16 @@
                 <form action='../actividades/reports'  method="post">
                   <select name="year_list"  class="form-control" onchange="javascript: this.form.submit();">
                          @for ($i = 2015; $i <= date('Y'); $i++)
-                            <option value="{{$i}}" @if($i == $year) {{'selected'}} @endif>{{{$i}}}</option>
+                            <option onclick=" validar()" value="{{$i}}" @if($i == $year) {{'selected'}} @endif>{{{$i}}}</option>
                         @endfor
+                  </select>
+                  <label>Usuarios</label>
+                  <select name="userid"  class="form-control" onchange="javascript: this.form.submit();">
+                      <option  value="0">Selecciona</option>
+                      <option  value="0">Sin filtros</option> 
+                        @foreach ($users as $user)
+                        <option onclick=" validar()" value="{{$user->id}}">{{$user->nombres}} {{$user->apellido}}</option>
+                        @endforeach
                   </select>
                 </form>   
                   <tr class="active">

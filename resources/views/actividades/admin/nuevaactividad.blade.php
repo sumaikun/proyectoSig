@@ -23,14 +23,13 @@
 </section>
          
 <!-- Cuerpo de la pagina -->
-<section class="content">
 
 
+<section class="content" style="max-width: 800px;" >
 	@include('actividades.sub_views.create')
-
-
-
 </section>
+
+
 @stop
 
 

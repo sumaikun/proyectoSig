@@ -21,9 +21,8 @@ Route::get('inventario/create', function(){
    return View::make('inventario.admin.create',compact("categorias","estados"));
 });
 
-Route::get('inventario/Gestion', function(){
-	$elementos = DB::statement(DB::raw("SET @serial=0;"));
-	$elementos = DB::select(DB::raw("Select  @serial := @serial+1 AS cod ,e.id as id, e.codigo as codigo , e.descripcion as descripcion , s.valor as serial , c.nombre as categoria , st.nombre as `status` from inventario_elementos as e inner join inventario_seriales as s on s.id_elementos = e.id INNER JOIN inventario_categorias as c on e.categoria = c.id INNER JOIN inventario_status as st on st.id = e.`status` order By cod")); 
+Route::get('inventario/Gestion', function(){	
+	$elementos = DB::select(DB::raw("select e.id,e.codigo,e.descripcion,e.cantidad,c.nombre as categoria from inventario_elementos as e INNER JOIN inventario_categorias as c on e.categoria = c.id ")); 
 
     //return $elementos;
    $categorias = psig\models\InvCategorias::lists('nombre','id');

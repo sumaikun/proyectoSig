@@ -55,7 +55,8 @@
                   <div id="container">
                   </div>  
               </div>
-
+              
+              <!--
               <div class="form-group">      
                   <label>Status</label>
                   <select class="form-control" name="status" id="status"  required>
@@ -66,7 +67,7 @@
                     <option value='new'>+ NUEVO STATUS</button></option>
                   </select> 
               </div>
-
+              -->
                <div class="form-group">      
                   <label>Categoria</label>
                   <select class="form-control" name="categoria" id="categoria"  required>
@@ -131,6 +132,7 @@
    </div>
 </div>
 
+<!--
 <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -157,7 +159,7 @@
       </div>
    </div>
 </div>
-
+-->
  
 
 @section('script')
