@@ -19,6 +19,14 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
+
+        {{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js') }}
+        {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js') }}
+
+        <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+
+        
    </head>
 
 <body class="skin-black">
@@ -336,8 +344,6 @@
    </div><!-- ./wrapper -->
 
 
-{{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js') }}
-{{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js') }}
 
 @yield('script')
 

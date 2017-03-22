@@ -53,6 +53,11 @@ return [
             'root'   => storage_path('plantillas_excel'),
         ],
 
+        'cap_documentos' => [
+            'driver' => 'local',
+            'root'   => storage_path('cap_documentos'),
+        ],
+
         'soporte' => [
             'driver' => 'local',
             'root'   => storage_path('soporte'),

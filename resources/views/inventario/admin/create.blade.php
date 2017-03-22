@@ -35,7 +35,8 @@
      
 
         <div class="col-lg-9">
-              
+          <form action="addElemento" onsubmit="return validar()" method="post" enctype="multipart/form-data">    
+
               <input type="hidden" value="0" id="cont_items" name="cont">
 
                <div class="form-group">      
@@ -57,7 +58,13 @@
 
               <div class="form-group">      
                   <label>Status</label>
-                  <input  class="form-control" name="cantidad" id="cantidad" type="number"  required/>  
+                  <select class="form-control" name="status" id="status"  required>
+                    <option value=''>Selecciona</button></option>
+                    @foreach($estados as  $key=>$value)
+                      <option value={{$key}}>{{$value}}</option>
+                    @endforeach
+                    <option value='new'>+ NUEVO STATUS</button></option>
+                  </select> 
               </div>
 
                <div class="form-group">      
@@ -72,12 +79,13 @@
               </div>          
 
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
-                <a href="#" data-toggle="modal" data-target="#myModal" onclick="description()" class="btn btn-success pull-right">
+                <button type="submit" onclick="clicked();" class="btn btn-success">
                       <i class="fa fa-floppy-o"></i> <b>Insertar</b>
-                </a>
+                </button>
                 <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>      
-              </div>  
+              </div>
 
+          </form>
         </div>
 
         
@@ -102,7 +110,7 @@
          <div class="modal-header">
             
             <h4 class="modal-title" id="myModalLabel">
-               <i class="fa fa-plus-square-o"></i>Factura
+               <i class="fa fa-plus-square-o"></i>Categorias
             </h4>
          </div>
          <div class="modal-body">              
@@ -117,7 +125,34 @@
          </div>
          <div class="modal-footer">
             <button type="button"  id="close_category" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="submit" id="save_category" class="btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</button>
+            <button type="submit" id="save_category"   class="btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Status
+            </h4>
+         </div>
+         <div class="modal-body">              
+            <div class="row">  
+              <div class="col-lg-12">
+                <div class="form-group">      
+                  <label>INGRESE EL NOMBRE DEL NUEVO STATUS</label>
+                  <input  class="form-control" name="new_status" id="new_status" type="text"  required/>            
+                </div>
+              </div>
+            </div>      
+         </div>
+         <div class="modal-footer">
+            <button type="button"  id="close_status" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" id="save_status"   class="btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</button>
          </div>
       </div>
    </div>
@@ -127,6 +162,7 @@
 
 @section('script')
 <script type="text/javascript">
+
 $('select[name=categoria]').change(function() {
     if ($(this).val() == 'new')
     {
@@ -134,6 +170,15 @@ $('select[name=categoria]').change(function() {
        
     }
 });
+
+$('select[name=status]').change(function() {
+    if ($(this).val() == 'new')
+    {
+        $('#myModal2').modal('show');
+       
+    }
+});
+
 $('#save_category').click(function(){
    $.get('insertar_categoria/'+$('#new_category').val(), function(res){
             
@@ -148,7 +193,22 @@ $('#save_category').click(function(){
         $('select[name=categoria]').val(res);
       });
 });
+$('#save_status').click(function(){
+   $.get('insertar_status/'+$('#new_status').val(), function(res){
+            
+      
+        var newValue = $('option', $('select[name=status]')).length;
+        $('<option>')
+            .text($('#new_status').val())
+            .attr('value', res)
+            .insertBefore($('option[value=new]', $('select[name=status]')));
+        
+        $('#myModal').modal('hide');
+        $('select[name=status]').val(res);
+      });
+});
 $('#close_category').click(function(){$('select[name=categoria]').val('');});
+$('#close_status').click(function(){$('select[name=categoria]').val('');});
 
 function generate_serials(){
 
@@ -159,7 +219,7 @@ function generate_serials(){
         div.className = "form-group";
         div.id = "item";  
         var label = document.createElement("label");
-        var text = document.createTextNode("Item");
+        var text = document.createTextNode("serial "+(i+1));
         label.appendChild(text);
         label.style = 'color:#aaaaaa';
         div.appendChild(label);
@@ -167,7 +227,7 @@ function generate_serials(){
         var input = document.createElement("input");
         input.type = "text";
         input.className = "form-control";
-        input.name = "item";
+        input.name = "item"+(i+1);
         input.id = "meti";
         input.required = "required"
         div.appendChild(input);
@@ -175,6 +235,15 @@ function generate_serials(){
       }
       
 }
+
+ function clicked() {
+   if (confirm('¿Desea continuar?'))
+    {
+           return true;
+    } else {
+           return false;
+       }
+  }
 
 </script>
 @stop

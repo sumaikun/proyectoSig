@@ -10,7 +10,12 @@
    {{ HTML::style('usuarios/css/style.css') }}
    @yield('css')
    {{ HTML::style('general/css/animate.css') }}
-   {{ HTML::style('general/css/preload.css') }}
+   {{ HTML::style('general/css/preload.css') }}   
+  {{ HTML::script('http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js') }}
+  {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js') }}
+
+  <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+  <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 </head>
 <body>
 
@@ -41,8 +46,7 @@
 </div>
 
 
-{{ HTML::script('http://code.jquery.com/jquery-1.11.0.min.js') }}
-{{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js') }}
+
 {{ HTML::script('usuarios/js/main.js') }}
 {{ HTML::script('general/js/main.js') }}
 @yield('script')

@@ -28,30 +28,20 @@
 <div class="col-lg-2">
 	<a href="{{ url('admin/inventario/create') }}">
 	<div class="thumbnail">
-		{{ HTML::image('admin/images/facturacion/create.png', 'categoria', array('class' => 'center-block')) }}
+		{{ HTML::image('admin/images/inventarios/create.png', 'categoria', array('class' => 'center-block')) }}
 		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Ingresar Elemento</span></button>
 	</div>
 	</a>
 </div>
 
 <div class="col-lg-2">
-	<a href="{{ url('admin/facturacion/create') }}">
+	<a href="{{ url('admin/inventario/Gestion') }}">
 	<div class="thumbnail">
-		{{ HTML::image('admin/images/facturacion/create.png', 'categoria', array('class' => 'center-block')) }}
-		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Categoria de elementos</span></button>
+		{{ HTML::image('admin/images/inventarios/list.png', 'categoria', array('class' => 'center-block')) }}
+		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de Inventario</span></button>
 	</div>
 	</a>
 </div>
-
-<div class="col-lg-2">
-	<a href="{{ url('admin/facturacion/create') }}">
-	<div class="thumbnail">
-		{{ HTML::image('admin/images/facturacion/create.png', 'categoria', array('class' => 'center-block')) }}
-		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Inventario</span></button>
-	</div>
-	</a>
-</div>
-
 
 
 </section>

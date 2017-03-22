@@ -39,6 +39,11 @@
          <i class="fa fa-folder-open"></i> <span><b>Inventario</b></span>
       </a>
    </li>
+   <li>
+      <a href="{{ url('admin/capacitacion') }}">
+         <i class="fa fa-comment"></i> <span><b>Capacitacion</b></span>
+      </a>
+   </li>
      
 
    

@@ -4,10 +4,11 @@
       <a href="{{ url('usuario/inicio') }}"><i class="fa fa-home"></i>Inicio <span class="sr-only">(current)</span></a>
    </li>
 
-   @if(Session::get('reporte_actividades'))
-      <li @if($op=='reporte') {{'class="active"'}} @endif>
-         <a href="{{ url('usuario/reporte_actividades') }}">
-            <i class="fa fa-child"></i> Reporte de Actividades
+
+   @if(Session::get('capacitacion'))
+      <li @if($op=='capacitacion') {{'class="active"'}} @endif>
+         <a href="{{ url('usuario/capacitacion') }}">
+            <i class="fa fa-child"></i> Capacitaciones
          </a>
       </li>
    @endif
@@ -20,6 +21,13 @@
    </li>
    @endif
  
+   @if(Session::get('actividades'))
+   <li @if($op=='actividades') {{'class="active"'}} @endif>
+      <a href="{{ url('usuario/actividades') }}">
+         <i class="fa fa-child"></i> Reporte de Actividades
+      </a>
+   </li>
+   @endif
 
    @if(Session::get('comunicaciones_cliente'))
    <li @if($op=='comunicaciones') {{'class="active"'}} @endif>
@@ -62,18 +70,11 @@
    </li>
    @endif
 
-   @if(Session::get('actividades'))
-   <li @if($op=='actividades') {{'class="active"'}} @endif>
-      <a href="{{ url('usuario/actividades') }}">
-         <i class="fa fa-child"></i> <span><b>Reporte de Actividades</b></span>
-      </a>
-   </li>
-   @endif
 
    @if(psig\Helpers\Metodos::exist_fac_permission(Session::get('usu_id'))==true)
    <li class="active">
       <a href="{{ url('usuario/facturacion') }}">
-         <i class="fa fa-calculator"></i> <span><b>Facturación</b></span>
+         <i class="fa fa-calculator"></i> Facturación
       </a>
    </li>
    @endif
