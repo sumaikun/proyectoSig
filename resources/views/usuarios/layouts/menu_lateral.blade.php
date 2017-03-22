@@ -5,29 +5,14 @@
    </li>
 
 
-   @if(Session::get('capacitacion'))
-      <li @if($op=='capacitacion') {{'class="active"'}} @endif>
-         <a href="{{ url('usuario/capacitacion') }}">
-            <i class="fa fa-child"></i> Capacitaciones
-         </a>
-      </li>
-   @endif
-
    @if(Session::get('gdocumental'))
    <li @if($op=='gdocumental') {{'class="active"'}} @endif>
       <a href="{{ url('usuario/gdocumental') }}">
          <i class="fa fa-file-text-o"></i> Gestión documental
       </a>
    </li>
-   @endif
- 
-   @if(Session::get('actividades'))
-   <li @if($op=='actividades') {{'class="active"'}} @endif>
-      <a href="{{ url('usuario/actividades') }}">
-         <i class="fa fa-child"></i> Reporte de Actividades
-      </a>
-   </li>
-   @endif
+   @endif 
+
 
    @if(Session::get('comunicaciones_cliente'))
    <li @if($op=='comunicaciones') {{'class="active"'}} @endif>
@@ -77,6 +62,22 @@
          <i class="fa fa-calculator"></i> Facturación
       </a>
    </li>
+   @endif
+
+   @if(Session::get('actividades'))
+   <li @if($op=='actividades') {{'class="active"'}} @endif>
+      <a href="{{ url('usuario/actividades') }}">
+         <i class="fa fa-child"></i> Reporte de Actividades
+      </a>
+   </li>
+   @endif
+
+   @if(Session::get('capacitacion'))
+      <li @if($op=='capacitacion') {{'class="active"'}} @endif>
+         <a href="{{ url('usuario/capacitacion') }}">
+            <i class="fa fa-child"></i> Capacitaciones
+         </a>
+      </li>
    @endif
  
 </ul>

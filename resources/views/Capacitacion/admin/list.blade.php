@@ -91,8 +91,9 @@
                 <input type="text" name="titulo" id="titulo" class="form-control" autocomplete="off" required>
               </div>
               <div class="form-group">
-                <label>*Documento</label>
-                <input type="file" name="archivo" class="form-control" required>
+                <label>Documento</label>
+                <input type="file" name="archivo" class="form-control">
+                Si no selecciona ningun archivo se conservara el documento anteriormente subido a la plataforma 
               </div>              
               <button type="submit" onclick="clicked();" class="btn btn-success">
                     <i class="fa fa-floppy-o"></i> <b>Insertar</b>

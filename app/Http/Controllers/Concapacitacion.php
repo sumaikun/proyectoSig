@@ -87,7 +87,7 @@ class Concapacitacion extends Controller
       $documento->delete();		
       if(file_exists(storage_path('cap_documentos/'.$documento->ruta)))
       {
-        Storage::disk('plantillas_excel')->delete($documento->ruta.'.xlsx');
+        Storage::disk('cap_documentos')->delete($documento->ruta);
         return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Documento borrado con exito!!');
        
       }
@@ -97,17 +97,24 @@ class Concapacitacion extends Controller
     }
 
     public function editDoc(Request $request){
-    	//print_r($_POST);
+    	
     	$documento = CapDocumento::where('id','=',$request->id)->first();
-    	//return $documento;
-    	if(file_exists(storage_path('cap_documentos/'.$documento->ruta))){
-    		Storage::disk('plantillas_excel')->delete($documento->ruta.'.xlsx');
-    	}
-	 	$archivo = $request->file('archivo');        
-        $nombre=$archivo->getClientOriginalName();          
-        $this->filemanage($archivo,'cap_documentos');    
+    	
+
+        if($request->file('archivo')!=null)
+        {
+            if(file_exists(storage_path('cap_documentos/'.$documento->ruta))){
+            Storage::disk('cap_documentos')->delete($documento->ruta.'.xlsx');
+            }
+            $archivo = $request->file('archivo');        
+            $nombre=$archivo->getClientOriginalName();          
+            $this->filemanage($archivo,'cap_documentos');    
+            $documento->ruta = $nombre;    
+        }
+    	
+
         $documento->titulo = $request->titulo;             
-        $documento->ruta = $nombre;
+        
         $documento->save();
         return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Documento editado con éxito!!');     
     }
