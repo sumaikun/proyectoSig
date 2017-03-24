@@ -59,7 +59,7 @@
                   <td> {{$elemento->descripcion}}</td>             
                   <td style="text-align: center;"> {{$elemento->cantidad}}</td>                  
                   <td> {{$elemento->categoria}}</td>                  
-                  <td> <abbr title="Editar"><a href="#" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i></abbr> <abbr title="Borrar"><a href="#" data-toggle="modal" data-target="#myModal2" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></abbr><abbr title="Gestión"><a href="#" data-toggle="modal" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a></abbr>
+                  <td> <abbr title="Editar"><a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i></abbr> <abbr title="Borrar"><a href="#" data-toggle="modal" data-target="#myModal2" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></abbr><abbr title="Gestión"><a href="#" data-toggle="modal" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a></abbr>
                   </td>  
                 </tr>  
               @endforeach
@@ -80,57 +80,7 @@
         <h4 class="modal-title">Editar</h4>
       </div>
       <div class="modal-body">
-         <form action="addElemento" onsubmit="return validar()" method="post" enctype="multipart/form-data">    
-
-              <input type="hidden" value="0" id="cont_items" name="cont">
-
-               <div class="form-group">      
-                  <label>CODIGO</label>
-                  <input  class="form-control" name="codigo" id="codigo" type="text"  required/>            
-              </div>
-
-              <div class="form-group">      
-                  <label>Descripción</label>
-                  <textarea class="form-control" name="descripcion" id="descripcion" required></textarea>  
-              </div>
-
-              <div class="form-group">      
-                  <label>Cantidad</label>
-                  <input  class="form-control" name="cantidad" id="cantidad" onblur="generate_serials()" type="number"  required/>
-                  <div id="container">
-                  </div>  
-              </div>
-
-              <div class="form-group">      
-                  <label>Status</label>
-                  <select class="form-control" name="status" id="status"  required>
-                    <option value=''>Selecciona</button></option>
-                    @foreach($estados as  $key=>$value)
-                      <option value={{$key}}>{{$value}}</option>
-                    @endforeach
-                    <option value='new'>+ NUEVO STATUS</button></option>
-                  </select> 
-              </div>
-
-               <div class="form-group">      
-                  <label>Categoria</label>
-                  <select class="form-control" name="categoria" id="categoria"  required>
-                    <option value=''>Selecciona</button></option>
-                    @foreach($categorias as  $key=>$value)
-                      <option value={{$key}}>{{$value}}</option>
-                    @endforeach
-                    <option value='new'>+ NUEVA CATEGORIA</button></option>
-                  </select>    
-              </div>          
-
-            
-                <button type="submit" onclick="clicked();" class="btn btn-success">
-                      <i class="fa fa-floppy-o"></i> <b>Insertar</b>
-                </button>
-                <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
-          
-
-          </form>
+        <div id="ajax-content2"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -190,25 +140,7 @@
         <h4 class="modal-title">Gestión</h4>
       </div>
       <div class="modal-body">
-        <table id="example2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-            <thead>
-               <tr class="active">
-                  <th>#</th>
-                  <th><strong>Serial</strong></th>
-                  <th><strong>Status</strong></th>                                 
-                  <th><strong>Opciones</strong></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                   <td><abbr title="alquilar"><a href="#" data-toggle="modal" data-target="#myModal3" style="margin-left: 5px;"><i class="fa fa-briefcase" aria-hidden="true"></i></a></abbr><abbr title="detalles"><a href="#" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a></abbr>
-                   </td> 
-                </tr>
-            </tbody>
-         </table>
+        <div id="ajax-content"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -218,12 +150,56 @@
   </div>
 </div>
 
+<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Categorias
+            </h4>
+         </div>
+         <div class="modal-body">              
+            <div class="row">  
+              <div class="col-lg-12">
+                <div class="form-group">      
+                  <label>INGRESE EL NOMBRE DE LA NUEVA CATEGORIA</label>
+                  <input  class="form-control" name="new_category" id="new_category" type="text"  required/>            
+                </div>
+              </div>
+            </div>      
+         </div>
+         <div class="modal-footer">
+            <button type="button"  id="close_category" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" id="save_category"   class="btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</button>
+         </div>
+      </div>
+   </div>
+</div>
+
 <script type="text/javascript">
   $(document).ready(function() {
     $('#example').DataTable({
        "bSort": false
       });
   });
+
+  function get_serials(id)
+  {
+   $.get("get_seriales/"+id, function(res, sta){
+         $("#ajax-content").empty();
+         $("#ajax-content").append(res);
+      });
+  }
+  function edit_element(id)
+  {
+    $.get("edit_element/"+id, function(res, sta){
+         $("#ajax-content2").empty();
+         $("#ajax-content2").append(res);
+      });
+  }
+
+
 
 </script>
 
