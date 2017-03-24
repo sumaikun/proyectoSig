@@ -255,6 +255,55 @@ class Metodos{
 		return (int)$total_horas;		 
 	}
 
+	public static function hr_month_total_ent($id_ent,$date)
+	{		
+		$horas_especificas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->where('tp_empresa','=',$id_ent)->sum('horas');
+		return (int)$horas_especificas;			
+		 
+	}
+
+	public static function hr_month_per_ent($id_ent,$date)
+	{
+		$total_horas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->sum('horas');
+		$horas_especificas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->where('tp_empresa','=',$id_ent)->sum('horas');
+		if($total_horas!=0)
+		{return number_format(($horas_especificas*100)/$total_horas,2); }
+		else {
+			return 0.0;
+		}			
+		 
+	}
+
+	public static function hr_year_per_ent($id_ent,$date)
+	{
+		$total_horas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->sum('horas');
+		$horas_especificas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->where('tp_empresa','=',$id_ent)->sum('horas');
+		if($total_horas!=0)
+		{return number_format(($horas_especificas*100)/$total_horas,2); }
+		else {
+			return 0.0;
+		}			
+		 
+	}
+
+	public static function hr_month_all_ent($date)
+	{		
+		$horas_especificas = ModActividad::where('fecha',"LIKE",'%'.$date.'%')->sum('horas');
+		return (int)$horas_especificas;			
+		 
+	}
+
+	public static function hr_year_total_ent($id_ent,$date)
+	{
+		$horas_especificas = ModActividad::where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$date.'%')->where('tp_empresa','=',$id_ent)->sum('horas');
+		return (int)$horas_especificas;
+	}	
+
+	public static function hr_year_all_ent($date)
+	{
+		$horas_especificas = ModActividad::where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$date.'%')->sum('horas');
+		return (int)$horas_especificas;
+	}
 
 	public static function double_enterprises($enterprise,$int)
 	{

@@ -37,6 +37,8 @@
       <div class="panel-heading">
         <input type="hidden" value="0" id="con"> 
         <button onclick="change_data()"><i class="fa fa-exchange" aria-hidden="true"></i></button>
+        <a href="informes"><button style="float:right;" class="btn btn-success">Reportes de empresas</button></a>
+        <br>
          <strong><i class="fa fa-list"></i> Reportes</strong>
           <form action='../actividades/reports'  method="post">
             <select name="year_list"  class="form-control" onchange="javascript: this.form.submit();">
@@ -107,19 +109,19 @@
                  @foreach(psig\Helpers\Metodos::ent_reports($value->usuario) as $empresa)
                  <tr>                   
                    <td> {{psig\Helpers\Metodos::ent_names($empresa->tp_empresa)}} </td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-01')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-01')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-02')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-02')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-03')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-03')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-04')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-04')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-05')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-05')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-06')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-06')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-07')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-07')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-08')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-08')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-09')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-09')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-10')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-10')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-11')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-11')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-12')}}</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-12')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_year($value->usuario,$empresa->tp_empresa,$year)}}</span><span class="td_hr">{{psig\Helpers\Metodos::hr_year($value->usuario,$empresa->tp_empresa,$year)}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-01')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-01')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-02')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-02')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-03')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-03')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-04')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-04')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-05')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-05')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-06')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-06')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-07')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-07')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-08')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-08')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-09')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-09')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-10')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-10')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-11')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-11')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_month($value->usuario,$empresa->tp_empresa,$year.'-12')}}%</span><span class="td_hr" >{{psig\Helpers\Metodos::hr_month($value->usuario,$empresa->tp_empresa,$year.'-12')}}h</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::cal_year($value->usuario,$empresa->tp_empresa,$year)}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_year($value->usuario,$empresa->tp_empresa,$year)}}h</span></td>
                   
                  </tr>                                 
                  @endforeach
