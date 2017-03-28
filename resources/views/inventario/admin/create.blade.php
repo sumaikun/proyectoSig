@@ -40,18 +40,18 @@
               <input type="hidden" value="0" id="cont_items" name="cont">
 
                <div class="form-group">      
-                  <label>CODIGO</label>
+                  <label>*CODIGO</label>
                   <input  class="form-control" name="codigo" id="codigo" type="text"  required/>            
               </div>
 
               <div class="form-group">      
-                  <label>Descripción</label>
+                  <label>*Descripción</label>
                   <textarea class="form-control" name="descripcion" id="descripcion" required></textarea>  
               </div>
 
               <div class="form-group">      
-                  <label>Cantidad</label>
-                  <input  class="form-control" name="cantidad" id="cantidad" onblur="generate_serials()" type="number"  required/>
+                  <label>*Cantidad</label>
+                  <input  class="form-control" max="10" min="1" name="cantidad" id="cantidad" onblur="generate_serials()" type="number"  required/>
                   <div id="container">
                   </div>  
               </div>
@@ -69,7 +69,7 @@
               </div>
               -->
                <div class="form-group">      
-                  <label>Categoria</label>
+                  <label>*Categoria</label>
                   <select class="form-control" name="categoria" id="categoria"  required>
                     <option value=''>Selecciona</button></option>
                     @foreach($categorias as  $key=>$value)
@@ -214,6 +214,8 @@ $('#close_status').click(function(){$('select[name=categoria]').val('');});
 
 function generate_serials(){
 
+  if($("#cantidad").val()<=10)
+  {
     $("#container").empty();
 
       for(var i = 0 ; i<$("#cantidad").val(); i++){
@@ -221,7 +223,7 @@ function generate_serials(){
         div.className = "form-group";
         div.id = "item";  
         var label = document.createElement("label");
-        var text = document.createTextNode("serial "+(i+1));
+        var text = document.createTextNode("*serial "+(i+1));
         label.appendChild(text);
         label.style = 'color:#aaaaaa';
         div.appendChild(label);
@@ -235,6 +237,13 @@ function generate_serials(){
         div.appendChild(input);
         container.appendChild(div);  
       }
+  }
+  else{
+    alert("El número ingresado debe ser menor a 10");
+    $("#cantidad").val(0)
+  }  
+
+    
       
 }
 

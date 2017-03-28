@@ -59,7 +59,7 @@
                   <td> {{$elemento->descripcion}}</td>             
                   <td style="text-align: center;"> {{$elemento->cantidad}}</td>                  
                   <td> {{$elemento->categoria}}</td>                  
-                  <td> <abbr title="Editar"><a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i></abbr> <abbr title="Borrar"><a href="#" data-toggle="modal" data-target="#myModal2" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></abbr><abbr title="Gestión"><a href="#" data-toggle="modal" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a></abbr>
+                  <td> <a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="elementdelete/{{$elemento->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#" data-toggle="modal" title="Gestión" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a>
                   </td>  
                 </tr>  
               @endforeach
@@ -89,26 +89,7 @@
 
   </div>
 </div>
-<!-- Modal -->
-<div id="myModal2" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content panel-danger">
-      <div class="modal-header panel-heading">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Eliminar</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 <!-- Modal -->
 <div id="myModal3" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -177,6 +158,84 @@
    </div>
 </div>
 
+<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Nuevo Serial
+            </h4>
+         </div>
+         <div class="modal-body">              
+             <form action="addSerial" onsubmit="return validar()" method="post" enctype="multipart/form-data">   
+
+                <input type="hidden" value="" id="newsid" name="newsid">
+
+                 <div class="form-group">      
+                    <label>Serial</label>
+                    <input  class="form-control" name="serial"  id="codigo" type="text"  required/>            
+                </div>
+                
+
+                 <div class="form-group">      
+                    <label>Status</label>
+                    <select class="form-control" name="status" id="status"  required>
+                      <option value=''>Selecciona</button></option>
+                      @foreach($estados as  $key=>$value)
+                          <option value={{$key}}>{{$value}}</option>            
+                      @endforeach          
+                    </select>    
+                </div>          
+
+              
+                  <button type="submit" onclick="clicked();" class="btn btn-success">
+                        <i class="fa fa-floppy-o"></i> <b>Guardar</b>
+                  </button>
+                  <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
+            </form>
+
+         </div>
+         <div class="modal-footer">
+            <button type="button"  id="close_category" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Cambiar valor del Serial
+            </h4>
+         </div>
+         <div class="modal-body">              
+             <form action="editSerialname" onsubmit="return validar()" method="post" enctype="multipart/form-data">   
+
+                <input type="hidden" value="" id="namesid" name="namesid">
+
+                 <div class="form-group">      
+                    <label>Serial</label>
+                    <input  class="form-control" name="serial"  id="namese" type="text"  required/>            
+                </div>
+                
+                  <button type="submit" onclick="clicked();" class="btn btn-success">
+                        <i class="fa fa-floppy-o"></i> <b>Guardar</b>
+                  </button>
+                  <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
+            </form>
+
+         </div>
+         <div class="modal-footer">
+            <button type="button"  id="close_category" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+         </div>
+      </div>
+   </div>
+</div>
+
 <script type="text/javascript">
   $(document).ready(function() {
     $('#example').DataTable({
@@ -199,7 +258,9 @@
       });
   }
 
-
+  function confirm_action(){
+   return confirm('¿Esta seguro?');
+ }
 
 </script>
 

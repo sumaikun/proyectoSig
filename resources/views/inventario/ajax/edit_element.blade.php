@@ -1,4 +1,4 @@
- <form action="addElemento" onsubmit="return validar()" method="post" enctype="multipart/form-data">    
+ <form action="editElemento" onsubmit="return validar()" method="post" enctype="multipart/form-data">    
 
     <input type="hidden" value="{{$element->id}}" id="id" name="id">
 
@@ -29,7 +29,7 @@
 
   
       <button type="submit" onclick="clicked();" class="btn btn-success">
-            <i class="fa fa-floppy-o"></i> <b>Insertar</b>
+            <i class="fa fa-floppy-o"></i> <b>Editar</b>
       </button>
       <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
 

@@ -11,11 +11,31 @@
       @foreach($seriales as $serial)
         <tr>
           <td> {{$serial->id}} </td>
-          <td> {{$serial->valor}}</td>
-          <td> {{$serial->nombre}}</td>
-           <td><abbr title="alquilar"><a href="#" data-toggle="modal" data-target="#myModal3" style="margin-left: 5px;"><i class="fa fa-briefcase" aria-hidden="true"></i></a></abbr><abbr title="detalles"><a href="#" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a></abbr>
+          <td> {{$serial->valor}} <a href="#" data-toggle="modal" onclick="edit_name({{$serial->id}},'{{$serial->valor}}')" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></td>
+          <td> {{$serial->nombre}} </td>
+           <td><a href="#" data-toggle="modal" data-target="#myModal3" title="Alquilar" style="margin-left: 5px;"><i class="fa fa-briefcase" aria-hidden="true"></i></a><a href="#" title="Detalles" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a><a href="serialdelete/{{$serial->id}}" onclick="return confirm_action()" title="Borrar" style="margin-left: 5px;"><i class="fa fa-times" aria-hidden="true"></i></a>
            </td>            
         </tr>
       @endforeach  
     </tbody>
  </table>
+ <button class="btn btn-primary"  onclick="new_serial({{$serial->id_elementos}})" title="crear nuevo"><span class="glyphicon glyphicon-plus"></span></button>
+
+ <script>
+
+ function new_serial(id)
+ { 
+    $('#myModal6').modal('show');
+    $('#newsid').val(id);
+
+ }
+
+ function edit_name(id,name)
+ {
+    $('#myModal7').modal('show');
+    $('#namesid').val(id);
+    $('#namese').val(name);  
+ }
+
+ 
+ </script>
