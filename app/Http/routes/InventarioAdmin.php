@@ -23,8 +23,9 @@ Route::get('inventario/create', function(){
 
 Route::get('inventario/Gestion', function(){	
 	$estados = psig\models\InvStatus::lists('nombre','id');
-  $elementos = DB::select(DB::raw("select e.id,e.codigo,e.descripcion,e.cantidad,c.nombre as categoria from inventario_elementos as e INNER JOIN inventario_categorias as c on e.categoria = c.id where e.deleted_at is null "));             
-	return View::make('inventario.admin.gestion',compact('elementos','estados'));
+  $elementos = DB::select(DB::raw("select e.id,e.codigo,e.descripcion,e.cantidad,c.nombre as categoria from inventario_elementos as e INNER JOIN inventario_categorias as c on e.categoria = c.id where e.deleted_at is null "));
+  $empresas = psig\models\ListEnterprises::lists('nombre','id');             
+	return View::make('inventario.admin.gestion',compact('elementos','estados','empresas'));
 });
 
 Route::get('inventario/insertar_categoria/{nombre}','Coninventario@createCat');
@@ -54,3 +55,5 @@ Route::get('inventario/elementdelete/{id}','Coninventario@deleteEle');
 Route::post('inventario/addSerial','Coninventario@createSerial');
 
 Route::post('inventario/editSerialname','Coninventario@editnameSerial');
+
+Route::post('inventario/alquilar','Coninventario@alquilar');

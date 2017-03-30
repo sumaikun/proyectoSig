@@ -91,25 +91,7 @@
 </div>
 
 <!-- Modal -->
-<div id="myModal3" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content panel-success">
-      <div class="modal-header panel-heading">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Alquilar</h4>
-      </div>
-      <div class="modal-body">
-        <p>Some text in the modal.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-
-  </div>
-</div>
 
 <div id="myModal4" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -236,6 +218,61 @@
    </div>
 </div>
 
+<div id="myModal3" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content panel-success">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Alquilar</h4>
+      </div>
+      <div class="modal-body">
+       <form action="alquilar" onsubmit="return validar()" method="post" id="rent_form" enctype="multipart/form-data">
+        <input type="hidden" value="" id="objectid" name="objectid">
+         <div class="form-group">      
+            <label class="form-control">Selecciona el cliente</label>
+            <select name="empresa" class="form-control">
+              <option>Selecciona</option>
+              @foreach($empresas as $key=>$value)
+                <option value={{$key}}>{{$value}}</option>
+              @endforeach 
+            </select>            
+        </div>
+
+        <div class="form-group">      
+            <label class="form-control">Fecha de alquiler</label>
+            <input type="date" id="fecha1" name="fecha1" class="form-control">            
+        </div>
+
+        <div class="form-group">      
+            <label class="form-control">Fecha estimada de regreso</label>
+            <input type="date" id="fecha2" name="fecha2" class="form-control">            
+        </div>
+
+        <div class="form-group">      
+            <label class="form-control">Valor diario</label>
+            <input type="number" min="10000" name="valor" class="form-control">            
+        </div>
+        
+        <button type="submit" onclick="clicked();" class="btn btn-success">
+              <i class="fa fa-floppy-o"></i> <b>Guardar</b>
+        </button>
+        <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
 <script type="text/javascript">
   $(document).ready(function() {
     $('#example').DataTable({
@@ -262,6 +299,14 @@
    return confirm('¿Esta seguro?');
  }
 
+$(document).ready(function() {
+$("#fecha1").change(event => {
+    var min = `${event.target.value}`;
+    var input = document.getElementById("fecha2");
+    input.setAttribute("min", min);
+  });
+
+});
 </script>
 
 @stop
