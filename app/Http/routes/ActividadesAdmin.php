@@ -15,8 +15,8 @@ Route::any('actividades', function(){
 
 Route::get('actividades/create', function(){
 	  
-  $actividades = psig\models\ListActivities::lists('nombre','id');
-  $empresas = psig\models\ListEnterprises::lists('nombre','id');
+  $actividades = psig\models\ListActivities::Select(DB::raw('nombre','id'))->orderBy('nombre')->get();
+  $empresas = psig\models\ListEnterprises::Select(DB::raw('nombre','id'))->orderBy('nombre')->get();
   return View::make('actividades.admin.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas));
    //return View::make('actividades.actividades');
 });

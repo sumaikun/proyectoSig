@@ -6,7 +6,8 @@
         <div class="ocultar" style="max-height: 460px !important">
      
 
-        <div class="col-lg-9">
+        <div class="col-lg-9 col-md-9 col-xs-9">
+
           <form name="form1" id="form1" action="registraractividad" onsubmit="return validar()" method="post" enctype="multipart/form-data">
 
  		
@@ -20,8 +21,8 @@
 					<label>Actividad</label>
 					<select class="form-control" name=actividad required>
 						<option value="">Selecciona</option>
-					@foreach($actividades as $key=>$value)
-						<option value={{$key}}>{{$value}}</option>
+					@foreach($actividades as $actividad)
+						<option value={{$actividad->id}}>{{$actividad->nombre}}</option>
 					@endforeach	
 					</select>
     	    </div>
@@ -30,8 +31,8 @@
 					<label>Empresa</label>
 					<select class="form-control" name="empresa" required>
 						<option value="">Selecciona</option>
-					@foreach($empresas as $key=>$value)
-						<option value={{$key}}>{{$value}}</option>
+					@foreach($empresas as $empresa)
+						<option value={{$empresa->id}}>{{$empresa->nombre}}</option>
 					@endforeach		
 					</select>
     	    </div>

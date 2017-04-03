@@ -61,19 +61,8 @@ class Coninventario extends Controller
         
         $element->categoria = $request->categoria;         
 
-        if($element->save())
-        {
-            if(Session::get('rol_nombre')=='administrador')
-            {
-              return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Elemento creado con éxito!!');
-            }
-            else{
-               return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Elemento creado con éxito!!'); 
-            }  
-         }
- 
-
-
+        return $this->common_answer('Elemento creado con éxito!!',true);
+        
     }
 
     public function editEle(Request $request)
@@ -83,13 +72,7 @@ class Coninventario extends Controller
         $element->descripcion = $request->descripcion; 
         $element->categoria = $request->categoria;
         $element->save();
-        if(Session::get('rol_nombre')=='administrador')
-        {
-          return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Elemento editado con éxito!!');
-        }
-        else{
-           return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Elemento editado con éxito!!'); 
-        }
+        return $this->common_answer('Elemento editado con éxito!!',true);        
     }
 
        public function createSta($nombre)
@@ -164,6 +147,11 @@ class Coninventario extends Controller
             return $this->common_answer('Elemento alquilado!!',true);       
         }
             
+    }
+
+    public function details($id)
+    {
+        return View::make('inventario.admin.detalles');
     }
 
     private function common_answer($string,$bool)

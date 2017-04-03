@@ -57,3 +57,5 @@ Route::post('inventario/addSerial','Coninventario@createSerial');
 Route::post('inventario/editSerialname','Coninventario@editnameSerial');
 
 Route::post('inventario/alquilar','Coninventario@alquilar');
+
+Route::get('inventario/Detalles/{id}','Coninventario@details');
