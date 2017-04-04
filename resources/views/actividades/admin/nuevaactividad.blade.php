@@ -35,8 +35,4 @@
 
 @section('script')
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}
-<script type="text/javascript">
-
-
-</script>
 @stop
