@@ -130,10 +130,10 @@ class Conactividades extends Controller
         }
     }
 
-    public function store()
+    public function store(Request $request)
     {
-
-
+        print_r($_POST);
+        /*return 'dsad';
         $Actividad = new modActividad;
         $id = Metodos::id_generator($Actividad,'id');
         $Actividad->id = $id;
@@ -146,31 +146,8 @@ class Conactividades extends Controller
         //return $Actividad->horas;
         $Actividad->descripcion = Input::get('descripcion');
         $Actividad->usuario = Session::get('usu_id');
-
-        if($Actividad->save()){  
-            if(Session::get('rol_nombre')=='administrador')
-            {
-             return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada!!');
-            }
-            else
-            {
-                //$key=$id;
-                //Cache::put($key,Session::get('usu_id'),30);
-
-             return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad Registrada, tiene 30 minutos si desea editarla!!');
-            }       
-        }
-        else{
-
-            if(Session::get('rol_nombre')=='administrador')
-            {     
-                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-            }
-            else
-            {
-                return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-            }    
-        } 
+        $Actividad->save()
+        return $this->common_answer('Actividad Registrada!!',true);*/
 
     }
 
@@ -184,15 +161,7 @@ class Conactividades extends Controller
           return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));    
         }
         else{
-            //if(Cache::get($id)==Session::get('usu_id'))
-            //{
-                 return View::make('actividades.usuario.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));  
-            /*}
-            else{
-
-                 return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'No puede editarse');
-            }*/
-
+          return View::make('actividades.usuario.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));
         }    
         
     }
@@ -489,5 +458,16 @@ class Conactividades extends Controller
             return "Ha ocurrido un error";
         }    
         
+    }
+
+       private function common_answer($string,$bool)
+    {
+        if(Session::get('rol_nombre')=='administrador')
+        {
+          return View::make('administrador.cosas.resultado_volver')->with('funcion', $bool)->with('mensaje',$string );
+        }
+        else{
+           return View::make('usuarios.cosas.resultado_volver')->with('funcion', $bool)->with('mensaje', $string); 
+        }
     }
 }
