@@ -91,7 +91,8 @@
               success: function(data)
               {
                 $("#form1").trigger('reset');
-                update_table();                
+                update_table();
+                $("#hfin").prop( "disabled", true );                
               },
               error: function(data)
               {
