@@ -35,49 +35,48 @@
             <thead>
                <tr class="active">
                   <th>#</th>
-                  <th><strong>Fecha</strong></th>
                   <th><strong>Usuario</strong></th>
-                  <th><strong>Actividad</strong></th>                  
-                  <th><strong>Empresa</strong></th>
-                  <th><strong>Filial</strong></th>
-                  <th><strong>Subcontratistas</strong></th>
-                  <th><strong>Horas</strong></th>
-                  <th><strong>Descripción</strong></th>
-                  <th></th>
+                  <th><strong>Calendario</strong></th>        
                </tr>
             </thead>
             <tbody>
-            
-            @foreach($registros as $registro)
-               <tr>
-                  <td></td>
-                  <td>{{ucwords($registro->fecha)}}</td>
+              @foreach($registros as $registro)
+                <tr>
+                  <td>{{$registro->usuario}}</td>
                   <td>{{ucwords($registro->usuarios->usu_nombres)}} {{ucwords($registro->usuarios->usu_apellido1)}}</td>
-                  <td>{{ucwords ($registro->actividades->nombre)}}</td>              
-                  <td>{{$registro->empresas->nombre}}</td>
-                  <td>{{ucwords ($registro->filial)}}</td>
-                  <td>{{ucwords ($registro->subcontratista)}}</td>
-                  <td>{{ucwords ($registro->horas)}}</td>
-                  <td>{{$registro->descripcion}}</td>
-                  @if(Session::get('rol_nombre')=='administrador')
-                  <td>
-                     <a class='btn btn-warning btn-xs' href="{{ url('admin/actividades/edit/'.$registro->id) }}">
-                        <i class="fa fa-pencil-square-o"></i> Editar
-                     </a> 
-                  </td>
-                  @else
-                  <td>
-                     <a class='btn btn-warning btn-xs' href="{{ url('usuario/actividades/edit/'.$registro->id) }}">
-                        <i class="fa fa-pencil-square-o"></i> Editar
-                     </a> 
-                  </td>
-                  @endif
-               </tr>
-            
-            @endforeach
+                  <td><button class="btn btn-warning" onclick="look_for_calendar({{$registro->usuario}})">Observar historial de actividades</button></td>
+                </tr>
+              @endforeach
             </tbody>
          </table>
          </div>
 
    </div>
 </div>
+
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content panel-success">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Calendario</h4>
+      </div>
+      <div class="modal-body">
+        
+        <div class="calendarbody">
+
+          <div id='calendar'></div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+

@@ -132,22 +132,24 @@ class Conactividades extends Controller
 
     public function store(Request $request)
     {
-        print_r($_POST);
-        /*return 'dsad';
+        $hora_inicial = $request->hini;
+        $hora_final = $request->hfin;
+        
         $Actividad = new modActividad;
         $id = Metodos::id_generator($Actividad,'id');
         $Actividad->id = $id;
-        $Actividad->fecha = Input::get('fecha');
-        $Actividad->tp_actividad = Input::get('actividad');
-        $Actividad->tp_empresa = Input::get('empresa');
-        $Actividad->filial = Input::get('filial');
-        $Actividad->subcontratista = Input::get('subcontratista');
-        $Actividad->horas = round((Input::get('minutos')/60),1)+Input::get('horas');
-        //return $Actividad->horas;
-        $Actividad->descripcion = Input::get('descripcion');
-        $Actividad->usuario = Session::get('usu_id');
-        $Actividad->save()
-        return $this->common_answer('Actividad Registrada!!',true);*/
+        $Actividad->fecha = $request->fechaactividad;
+        $Actividad->tp_actividad = $request->actividad;
+        $Actividad->tp_empresa = $request->empresa;
+        $Actividad->filial = $request->filial;
+        $Actividad->subcontratista = $request->subcontratista;
+        $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);        
+        $Actividad->descripcion = $request->descripcion;
+        $Actividad->hora_inicio = $hora_inicial;
+        $Actividad->hora_final = $hora_final;      
+        $Actividad->usuario = Session::get('usu_id');     
+        $Actividad->save();
+        //return $this->common_answer('Actividad Registrada!!',true);
 
     }
 
@@ -460,6 +462,22 @@ class Conactividades extends Controller
         
     }
 
+    public function myactivities($fecha)
+    {
+
+        $actividades = DB::select(Db::raw("select hora_inicio, hora_final, la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_inicio"));
+
+        return view('actividades.ajax.actividadesdia',compact('actividades'));
+
+         //DB::select(DB::raw("select max(id) as id from Factores")); 
+    }
+
+    public function calendar($id)
+    {
+        return 'got it';
+        return view('actividades.ajax.calendar');
+    }
+
        private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')
@@ -469,5 +487,15 @@ class Conactividades extends Controller
         else{
            return View::make('usuarios.cosas.resultado_volver')->with('funcion', $bool)->with('mensaje', $string); 
         }
-    }
+    }  
+
+    private function float_time($hora1,$hora2){
+        $separar[1]=explode(':',$hora1); 
+        $separar[2]=explode(':',$hora2); 
+
+        $total_minutos_trasncurridos[1] = ($separar[1][0]*60)+$separar[1][1]; 
+        $total_minutos_trasncurridos[2] = ($separar[2][0]*60)+$separar[2][1]; 
+        $total_minutos_trasncurridos = $total_minutos_trasncurridos[1]-$total_minutos_trasncurridos[2];
+        return $total_minutos_trasncurridos;
+    } 
 }

@@ -151,7 +151,7 @@
             <div class='fc-event'>fecha final</div>
             <p>
               <input type='checkbox' id='drop-remove' />
-              <label for='drop-remove'>remove despues spñtar</label>
+              <label for='drop-remove'>remove despues seleccionar</label>
             </p>
           </div>
           <div id='calendar'></div>  

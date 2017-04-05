@@ -29,17 +29,19 @@ Route::any('actividades/list', function(){
   {
     $year = Input::get('year_list');
   }
-
   else
   {
     $year = date('Y');
-  }    
-  	$registros = psig\models\modActividad::orderBy('usuario')->orderBy('fecha','desc')->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->get();
+  }
+    //$year = "2016";    
+  	$registros = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->orderBy('usuario')->orderBy('fecha','desc')->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->get();
     Session::put('usu_listy',$year);  
     $empresas = psig\models\ListEnterprises::lists('nombre','id');
     $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
     Session::put('usu_exportactividades',$registros);  
+    //return $registros;
      return View::make('actividades.admin.listaactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
+
 
 });
 
@@ -141,7 +143,9 @@ Route::any('actividades/informes',function(){
 });
 
 
+Route::get('actividades/myactivities/{fecha}','Conactividades@myactivities');
 
+Route::get('actividades/activity_calendar/{id}','Conactividades@calendar');
 
 
 
