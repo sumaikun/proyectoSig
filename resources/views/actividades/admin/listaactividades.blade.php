@@ -203,6 +203,13 @@ function unlock(){
     
 }
 
+//previene que al poner un modal sobre otro modal el modal que se encuentra por debajo pierda su posición
+ $(document).on('hidden.bs.modal', function (event) {
+    if ($('.modal:visible').length) {
+      $('body').addClass('modal-open');
+    }
+  });
+
  
 
 function look_for_calendar(id)
@@ -210,7 +217,25 @@ function look_for_calendar(id)
   $("#ajax_content").empty();
   $("#myModal2").modal('show');   
    $.get("activity_calendar/"+id, function(res, sta){
-     //$("#ajax_content").append(res);                    
+     //$("#ajax_content").append(res);
+     var myCalendar = $('#calendar');
+      /*var event1 = new Object();
+      event1.title = 'event1'; 
+      event1.start = '2017-04-01'; 
+      event1.end = '2017-04-03';
+      event1.url = "#";
+
+      var event2 = new Object();
+      event2.title = 'event2'; 
+      event2.start = '2017-04-04'; 
+      event2.end = '2017-04-05';
+      event2.url = "#";
+
+    var events = new Array();
+      events[0] = event1;
+      events[1] = event2;*/
+    myCalendar.fullCalendar('addEventSource', res);
+                        
   });
 }
 
@@ -220,71 +245,29 @@ $('#myModal2').on('shown.bs.modal', function () {
 
 $(document).ready(function() {
 
-    $('#calendar').fullCalendar({
-      defaultDate: '2016-05-12',
-      editable: true,
-      eventLimit: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2016-05-01'
-        },
-        {
-          title: 'Long Event',
-          start: '2016-05-07',
-          end: '2016-05-10'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2016-05-09T16:00:00'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2016-05-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2016-05-11',
-          end: '2016-05-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2016-05-12T10:30:00',
-          end: '2016-05-12T12:30:00'
-        },
-        {
-          title: 'Lunch',
-          start: '2016-05-12T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2016-05-12T14:30:00'
-        },
-        {
-          title: 'Happy Hour',
-          start: '2016-05-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2016-05-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2016-05-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2016-05-28'
+    $('#calendar').fullCalendar({     
+      editable: false,     
+      events: [ ],
+      eventClick: function(calEvent, jsEvent, view) {
+           detail_info(calEvent.fecha,calEvent.id); 
         }
-      ]
     });
     
   });
 
- 
+function detail_info(fecha,id)
+{
+  $("#ajax_content").empty();
+    $.get("detailinfo/"+fecha+"/"+id, function(res, sta){
+            $('#myModal3').modal('show');
+             $("#ajax_content").append(res);        
+            
+        });
+}
+
+   
+          
+  
 
 </script>
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}

@@ -21,7 +21,7 @@
 <section class="content-header">
 	<h1><i class="fa fa-plus-circle"></i> Actividades Registradas  <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-   	<li><a href="{{ url('admin/actividades') }}""><i class="fa fa-users"></i> Actividades</a></li>
+   	<li><a href="{{ url('usuario/actividades') }}""><i class="fa fa-users"></i> Actividades</a></li>
       <li class="active">registros</li>
     </ol>
     <!-- <hr> -->
@@ -86,6 +86,54 @@ $(function(){
    });
    $('[data-toggle="tooltip"]').tooltip();
 })
+
+$(document).on('hidden.bs.modal', function (event) {
+    if ($('.modal:visible').length) {
+      $('body').addClass('modal-open');
+    }
+  });
+
+ 
+
+function look_for_calendar(id)
+{
+  $("#ajax_content").empty();
+  $("#myModal2").modal('show');   
+   $.get("activity_calendar/"+id, function(res, sta){
+
+     var myCalendar = $('#calendar');
+  
+    myCalendar.fullCalendar('addEventSource', res);
+                        
+  });
+}
+
+$('#myModal2').on('shown.bs.modal', function () {
+       $("#calendar").fullCalendar('render');
+});
+
+$(document).ready(function() {
+
+    $('#calendar').fullCalendar({     
+      editable: false,     
+      events: [ ],
+      eventClick: function(calEvent, jsEvent, view) {
+           detail_info(calEvent.fecha,calEvent.id); 
+        }
+    });
+    
+  });
+
+function detail_info(fecha,id)
+{
+  $("#ajax_content").empty();
+    $.get("detailinfo/"+fecha+"/"+id, function(res, sta){
+            $('#myModal3').modal('show');
+             $("#ajax_content").append(res);        
+            
+        });
+}
+
 
 </script>
 @stop

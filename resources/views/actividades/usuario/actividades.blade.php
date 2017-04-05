@@ -51,8 +51,25 @@
     </div>
   </a>
 </div>
-
-
+<?php
+  $permisos = psig\models\Modpermisosact::where('user_id','=',Session::get('usu_id'))->value('permisos');
+  $array = explode(",",$permisos);
+    $validate = False;
+    if(in_array('revisar_reportes', $array))
+    {
+      $validate = True;
+    }
+?>
+@if($validate == True)
+<div class="col-lg-2">
+  <a href="{{ url('usuario/actividades/reports') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/actividades/reports.png', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Reportes</span></button>
+    </div>
+  </a>
+</div>
+@endif
 
 
 @include('cosas_generales.boton_info', array('imagen'=>'inicio_usuario'))

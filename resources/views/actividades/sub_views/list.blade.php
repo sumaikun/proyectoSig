@@ -6,7 +6,7 @@
          </div> 
           <div class="col-log-2">
       
-          @if(Session::get('rol_nombre')=='administrador')
+          
          <form action='../actividades/list'  method="post">
             <select name="year_list"  class="form-control" onchange="javascript: this.form.submit();">
                    @for ($i = 2016; $i <= date('Y'); $i++)
@@ -14,7 +14,7 @@
                   @endfor
             </select>
          </form>   
-          
+          @if(Session::get('rol_nombre')=='administrador')
             <a class="btn btn-success "  data-toggle="modal" data-target="#myModal" href="">
                 <i class="fa fa-file-excel-o"></i> Exportar
             </a>
@@ -71,6 +71,26 @@
 
         </div>
 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="myModal3" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content panel-success">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Información detallada</h4>
+      </div>
+      <div class="modal-body">        
+        <div id="ajax_content" style="max-height: 300px;"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

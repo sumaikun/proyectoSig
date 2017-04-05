@@ -14,6 +14,8 @@ use psig\models\modActividad;
 
 use psig\models\modusuarios;
 
+use psig\models\Modpermisosact;
+
 use psig\Http\Requests;
 
 use Cache;
@@ -474,8 +476,68 @@ class Conactividades extends Controller
 
     public function calendar($id)
     {
-        return 'got it';
-        return view('actividades.ajax.calendar');
+        $fechas = modActividad::Select(DB::raw('DISTINCT fecha as start'))->orderBy('fecha','desc')->Where('usuario','=',$id)->get();
+        foreach($fechas as $fecha)
+        {
+            $fecha->title='detalles';
+            $fecha->fecha = $fecha->start;
+            $fecha->id = $id;
+            $fecha->url = "#";            
+        }
+
+        return $fechas;
+    }
+
+    public function detailinfo($fecha,$id)
+    {
+         $actividades = DB::select(Db::raw("select hora_inicio, hora_final, la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".$id." order by hora_inicio"));
+
+        return view('actividades.ajax.actividadesdia',compact('actividades'));
+    }
+
+    public function assign_permission(Request $request){
+
+        $permisos = new Modpermisosact;          
+
+        $existence = Modpermisosact::where('user_id','=',$request->usuario)->first();
+
+        if($existence==null)
+        {
+            $id = Metodos::id_generator($permisos,'id');
+            $permisos->id = $id;                        
+        }   
+        else{
+            $permisos = $existence;
+        }     
+
+        $permisos->user_id = $request->usuario;
+
+        $chain = '';
+
+        for($i=1;$i<3;$i++)
+        {
+            if($request['permiso'.$i]!=null)
+            {
+                $chain = $chain.$request['permiso'.$i].',';
+            }
+        }
+
+        $permisos->permisos = $chain;
+
+        //return $permisos;
+
+        $permisos->save();
+        return $this->common_answer("Permisos asignados con exito!!",true);
+    }
+
+    public function check_permission($id){
+        $existence = Modpermisosact::where('user_id','=',$id)->first();
+        if($existence!=null){
+            return $existence->permisos;
+        }
+        else {
+            return 'inexistence';
+        }        
     }
 
        private function common_answer($string,$bool)

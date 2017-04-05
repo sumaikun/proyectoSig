@@ -147,6 +147,17 @@ Route::get('actividades/myactivities/{fecha}','Conactividades@myactivities');
 
 Route::get('actividades/activity_calendar/{id}','Conactividades@calendar');
 
+Route::get('actividades/detailinfo/{fecha}/{id}','Conactividades@detailinfo');
+
+Route::any('actividades/permission',function(){
+   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->get();
+
+  return View::make('actividades.admin.permission',compact('usuarios'));
+});
+
+Route::post('actividades/registrarpermiso','Conactividades@assign_permission');
+
+Route::get('actividades/permi_asoc/{id}','Conactividades@check_permission');
 
 
 
