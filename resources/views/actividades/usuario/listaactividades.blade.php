@@ -93,7 +93,7 @@ $(document).on('hidden.bs.modal', function (event) {
     }
   });
 
- 
+ var database="";
 
 function look_for_calendar(id)
 {
@@ -102,9 +102,14 @@ function look_for_calendar(id)
    $.get("activity_calendar/"+id, function(res, sta){
 
      var myCalendar = $('#calendar');
-  
+
+    if(database!="")
+    {
+      myCalendar.fullCalendar('removeEventSource', database);  
+    }   
+    
     myCalendar.fullCalendar('addEventSource', res);
-                        
+    database = res;                    
   });
 }
 
@@ -127,6 +132,7 @@ $(document).ready(function() {
 function detail_info(fecha,id)
 {
   $("#ajax_content").empty();
+  
     $.get("detailinfo/"+fecha+"/"+id, function(res, sta){
             $('#myModal3').modal('show');
              $("#ajax_content").append(res);        

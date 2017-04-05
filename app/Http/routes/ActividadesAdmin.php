@@ -40,7 +40,7 @@ Route::any('actividades/list', function(){
     $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
     Session::put('usu_exportactividades',$registros);  
     //return $registros;
-     return View::make('actividades.admin.listaactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
+     return View::make('actividades.admin.listactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
 
 
 });
