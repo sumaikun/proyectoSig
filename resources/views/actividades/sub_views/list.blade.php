@@ -36,7 +36,8 @@
                <tr class="active">
                   <th>#</th>
                   <th><strong>Usuario</strong></th>
-                  <th><strong>Calendario</strong></th>        
+                  <th><strong>Calendario</strong></th>
+                  <th><strong>Listas</strong></th>        
                </tr>
             </thead>
             <tbody>
@@ -45,6 +46,7 @@
                   <td>{{$registro->usuario}}</td>
                   <td>{{ucwords($registro->usuarios->usu_nombres)}} {{ucwords($registro->usuarios->usu_apellido1)}}</td>
                   <td><button class="btn btn-warning" onclick="look_for_calendar({{$registro->usuario}})">Observar historial de actividades</button></td>
+                  <td><button class="btn btn-success" onclick="look_for_list({{$registro->usuario}})">Ver lista de actividades</button></td>
                 </tr>
               @endforeach
             </tbody>
@@ -91,6 +93,28 @@
       </div>
       <div class="modal-body">        
         <div id="ajax_content" style="max-height: 300px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="myModal4" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content panel-success">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">listas</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive ">
+          <div id="ajax_content2" ></div>
+        </div>             
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

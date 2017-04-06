@@ -245,6 +245,21 @@ function look_for_calendar(id)
   });
 }
 
+function look_for_list(id,year)
+{
+  $.get("activity_list/"+id+"/"+$("select[name=year_list]").val(), function(res, sta){
+      $("#ajax_content2").empty();
+      $("#myModal4").modal('show');
+      $("#ajax_content2").append(res);
+      $('#sample').DataTable({
+       "bSort": false,
+       fixedHeader: {
+            header: true
+        },"pageLength": 25
+      });
+  });
+}
+
 $('#myModal2').on('shown.bs.modal', function () {
        $("#calendar").fullCalendar('render');
 });
@@ -264,17 +279,12 @@ $(document).ready(function() {
 function detail_info(fecha,id)
 {
   $("#ajax_content").empty();
-    $('#calendar').fullCalendar('removeEventSources'); 
     $.get("detailinfo/"+fecha+"/"+id, function(res, sta){
             $('#myModal3').modal('show');
              $("#ajax_content").append(res);        
             
         });
-}
-
-   
-          
-  
+}  
 
 </script>
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}

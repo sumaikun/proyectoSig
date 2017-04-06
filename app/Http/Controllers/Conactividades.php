@@ -136,23 +136,33 @@ class Conactividades extends Controller
     {
         $hora_inicial = $request->hini;
         $hora_final = $request->hfin;
-        
-        $Actividad = new modActividad;
-        $id = Metodos::id_generator($Actividad,'id');
-        $Actividad->id = $id;
-        $Actividad->fecha = $request->fechaactividad;
-        $Actividad->tp_actividad = $request->actividad;
-        $Actividad->tp_empresa = $request->empresa;
-        $Actividad->filial = $request->filial;
-        $Actividad->subcontratista = $request->subcontratista;
-        $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);        
-        $Actividad->descripcion = $request->descripcion;
-        $Actividad->hora_inicio = $hora_inicial;
-        $Actividad->hora_final = $hora_final;      
-        $Actividad->usuario = Session::get('usu_id');     
-        $Actividad->save();
-        //return $this->common_answer('Actividad Registrada!!',true);
+        if($hora_inicial == $hora_final)
+        {
+            return 'deben ser horas distintas';
+        }
+        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad);
 
+        if($cross != True)
+        {            
+            $Actividad = new modActividad;
+            $id = Metodos::id_generator($Actividad,'id');
+            $Actividad->id = $id;
+            $Actividad->fecha = $request->fechaactividad;
+            $Actividad->tp_actividad = $request->actividad;
+            $Actividad->tp_empresa = $request->empresa;
+            $Actividad->filial = $request->filial;
+            $Actividad->subcontratista = $request->subcontratista;
+            $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);        
+            $Actividad->descripcion = $request->descripcion;
+            $Actividad->hora_inicio = $hora_inicial;
+            $Actividad->hora_final = $hora_final;      
+            $Actividad->usuario = Session::get('usu_id');     
+            $Actividad->save();
+            return "Actividad registrada";    
+        }
+        else{
+            return "Actividad no registrada, se cruza con otra actividad";
+        }
     }
 
     public function edit($id)
@@ -160,6 +170,7 @@ class Conactividades extends Controller
         $registro = modActividad::find($id);
         $actividades = ListActivities::lists('nombre','id');
         $empresas = ListEnterprises::lists('nombre','id');
+
         if(Session::get('rol_nombre')=='administrador')
         {
           return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));    
@@ -180,46 +191,15 @@ class Conactividades extends Controller
         $Actividad->subcontratista = Input::get('fecha');
         $Actividad->horas = Input::get('horas');
         $Actividad->descripcion = Input::get('descripcion');
-
-        if($Actividad->save()){ 
-            if(Session::get('rol_nombre')=='administrador')
-            {  
-                return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Registro Editado!!');
-            }
-            else
-            {
-                return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Registro Editado!!'); 
-            }           
-        }
-        else{
-            if(Session::get('rol_nombre')=='administrador')
-            {
-                return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-            }   
-            else
-            {
-                return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-            }    
-        } 
-
-    }
+        $Actividad->save();
+        return $this->common_answer('Registro Editado!!',true);
+   }
 
 
     public function exportar_actividades()
     {
         $registros = Session::get('usu_exportactividades');
         $order = Array ('fecha','tp_actividad','tp_empresa','filial','subcontratista','horas','usuario','descripcion'); 
-
-            /*foreach($registros as $key => $temp) 
-            {
-                static $i = 0;
-                //echo $i;
-                echo $temp;
-                echo '<br>';
-                $i++;
-            }
-
-            return ' ';*/
     
             Excel::load(public_path('excel').'\GOLBMSFO12.xlsx',function($sheet)use($registros,$order){               
 
@@ -254,12 +234,9 @@ class Conactividades extends Controller
                     }
 
                    $row++;   
-               }
-               
-               
+               }          
 
-            })->export('xlsx');  
-
+            })->export('xlsx');
     }
 
     public function exportar_actividades_admin (Request $request)
@@ -309,7 +286,6 @@ class Conactividades extends Controller
 
     public function excel(Request $request)
     {
-
         $archivo = $request->file('archivo');
             
         $nombre_original=$archivo->getClientOriginalName();
@@ -322,9 +298,7 @@ class Conactividades extends Controller
         if($archivo->move('excel',$nombre_original))
         {
             
-             $ruta  ="public/excel/".$nombre_original;
-             
-             
+             $ruta  ="public/excel/".$nombre_original;           
 
              Excel::selectSheetsByIndex(0)->load($ruta, function($hoja) {           
 
@@ -340,25 +314,15 @@ class Conactividades extends Controller
 
                      for ($i=0; $i <count($pos) ; $i++)
                      { 
-                        $var = $pos[$i];
-
-                        //echo $var;
-                        //echo '<br>';
-                        //$var = 'horas';
-                        
-
+                        $var = $pos[$i];                     
                         if($fila->$var==null or $fila->$var==' ')
                         {
                               //echo "encontre un nulo";
                               $cont ++;  
                               $condition = false;
-                        }
-
-                                              
+                        }                                            
                         
                      }
-
-
 
                      if($cont>4)
                      {
@@ -371,17 +335,8 @@ class Conactividades extends Controller
                         return 'proceso terminado';
                      }
 
-                     static $i=0;                      
-                   //echo ($i+1).'espacios '.$cont;   
-                   // echo '<br>'; 
-                    /* if($fila->horas==null or $fila->horas==' ')
-                     {
-                        echo $i;
-                        echo "encontrado";
-                        echo '<br>';
-                     }   
-                      */  //
-                    $i++;
+                     static $i=0;                
+                     $i++;
                     
                      if($condition==true)
                      { 
@@ -405,31 +360,21 @@ class Conactividades extends Controller
                         $actividad->descripcion=$fila->descripcion;
                         $actividad->usuario=$usuario;
                         $exist = modActividad::Where('tp_empresa','=',$tp_empresa)->where('tp_actividad','=',$tp_actividad)->where('subcontratista','=',$fila->tema)->where('horas','=',$fila->horas)->where('fecha','=',$fecha)->get();
-                        /*if($exist=='[]')
-                        {
-                            echo ' no existe';
-                        }
-                        else{
-                            echo ' existe';
-                        } */   
-                            
+                    
                         if($tp_actividad!=null&&$tp_empresa!=null&&$exist=='[]')
                         {                           
                             if($actividad->save())
-                            {
-                                //echo 'guardado';              
+                            {                                            
                                 $this->rute = true;
                             }                          
 
                         }
                         elseif ($tp_actividad==null or $tp_empresa==null)
-                        {
-                            //echo 'no hay parametro';
+                        {                            
                             $this->row=$i;
                             $this->rute = false;
                             return '';
                         }
-
                          else
                         {
                             $this->rute = true;
@@ -437,24 +382,18 @@ class Conactividades extends Controller
                                         
                      }
                         
-                    }); 
-
-
+                    });
               });
 
             if($this->rute==true)
-            {
-                
-                return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');    
+            {                
+                return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Excel recibido!!');
             }    
 
             else
-            {
-                
+            {                
                 return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'un parametro de la linea '.($this->row+1).' no existe en el sistema');
-            }   
-            
-
+            }
 
         }
         else
@@ -467,7 +406,7 @@ class Conactividades extends Controller
     public function myactivities($fecha)
     {
 
-        $actividades = DB::select(Db::raw("select hora_inicio, hora_final, la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_inicio"));
+        $actividades = DB::select(Db::raw("select hora_inicio, hora_final, la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_final"));
 
         return view('actividades.ajax.actividadesdia',compact('actividades'));
 
@@ -490,13 +429,19 @@ class Conactividades extends Controller
 
     public function detailinfo($fecha,$id)
     {
-         $actividades = DB::select(Db::raw("select hora_inicio, hora_final, la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".$id." order by hora_inicio"));
+         $actividades = DB::select(Db::raw("select hora_inicio, hora_final, filial, subcontratista, descripcion,la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".$id." order by hora_final"));
 
         return view('actividades.ajax.actividadesdia',compact('actividades'));
     }
 
-    public function assign_permission(Request $request){
+    public function lista($id,$year)
+    {
+      $actividades = modActividad::Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->where('usuario','=',$id)->orderBy('fecha','desc')->get();
+      return view('actividades.ajax.actividadeslista',compact('actividades'));
+    }
 
+    public function assign_permission(Request $request)
+    {
         $permisos = new Modpermisosact;          
 
         $existence = Modpermisosact::where('user_id','=',$request->usuario)->first();
@@ -559,5 +504,44 @@ class Conactividades extends Controller
         $total_minutos_trasncurridos[2] = ($separar[2][0]*60)+$separar[2][1]; 
         $total_minutos_trasncurridos = $total_minutos_trasncurridos[1]-$total_minutos_trasncurridos[2];
         return $total_minutos_trasncurridos;
+    }
+
+    private function cross_time($fecha,$hora_final,$hora_inicial,$actividad)
+    {        
+        $actividad = strtoupper(ListActivities::where('id','=',$actividad)->value('nombre'));
+        if($actividad != "DESPLAZAMIENTO")
+        {
+            $registros = modActividad::where('fecha','=',$fecha)->where('usuario','=',Session::get('usu_id'))->where('tp_actividad','!=',61)->orderBy('hora_inicio')->get();
+            foreach($registros as $registro)
+            {
+
+                if($this->float_time($hora_inicial,$registro->hora_final)>=0)
+                {
+                    $var1 = True; 
+                }
+                else{
+                    $var1 = False;    
+                }
+                if($this->float_time($hora_final,$registro->hora_inicio)<=0)
+                {
+                    $var2 = True;
+                }
+                else{
+                    $var2 = False;    
+                }
+
+                if($var1==False and $var2==False)
+                {
+                    return True;
+                }
+
+            }
+            return False;    
+        }
+        else{
+            return False;
+        }     
+
     } 
 }
+

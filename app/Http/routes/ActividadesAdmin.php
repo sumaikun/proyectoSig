@@ -131,13 +131,9 @@ Route::any('actividades/informes',function(){
     $year = date('Y');
     $cond = " fecha like '%".$year."%' ";    
   
-  }
-  
-  
+  } 
 
-  $empresas = DB::SELECT(DB::RAW("select DISTINCT tp_empresa, e.nombre from reg_actividades as reg inner join lista_empresas as e on reg.tp_empresa = e.id where ".$cond." ORDER BY nombre"));
-
-    
+  $empresas = DB::SELECT(DB::RAW("select DISTINCT tp_empresa, e.nombre from reg_actividades as reg inner join lista_empresas as e on reg.tp_empresa = e.id where ".$cond." ORDER BY nombre"));    
 
   return View::make('actividades.admin.reports2',compact('year','empresas')); 
 });
@@ -146,6 +142,8 @@ Route::any('actividades/informes',function(){
 Route::get('actividades/myactivities/{fecha}','Conactividades@myactivities');
 
 Route::get('actividades/activity_calendar/{id}','Conactividades@calendar');
+
+Route::get('actividades/activity_list/{id}/{year}','Conactividades@lista');
 
 Route::get('actividades/detailinfo/{fecha}/{id}','Conactividades@detailinfo');
 

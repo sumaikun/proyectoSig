@@ -27,7 +27,8 @@
 
 <section class="content" style="max-width: 800px;" >
 	@include('actividades.sub_views.create')
-  <div class="col-lg-11 col-md-11 col-xs-11">      
+  <div class="col-lg-11 col-md-11 col-xs-11">
+    <span id="ajax_content2" style="font-family: bold; color:red; font-size: 150%;"></span>      
     <div id="ajax_content" style="max-height: 300px;"></div>
   </div>
 </section>
@@ -53,7 +54,7 @@
     $("#ajax_content").empty();
 
     $.get("myactivities/"+$("input[name=fecha]").val(), function(res, sta){
-            console.log(res);
+            //console.log(res);
              $("#ajax_content").append(res);        
             
         });
@@ -85,9 +86,11 @@
               data: datastring,          
               success: function(data)
               {
-                $("#form1").trigger('reset');
-                update_table();
-                 $("#hfin").prop( "disabled", true );                
+                 $("#form1").trigger('reset');
+                 update_table();
+                 $("#hfin").prop( "disabled", true );
+                 $("#ajax_content2").empty();
+                 $("#ajax_content2").append(data);                
               },
               error: function(data)
               {
