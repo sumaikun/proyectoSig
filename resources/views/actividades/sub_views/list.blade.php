@@ -92,7 +92,9 @@
         <h4 class="modal-title">Información detallada</h4>
       </div>
       <div class="modal-body">        
-        <div id="ajax_content" style="max-height: 300px;"></div>
+        <div class="table-responsive ">
+          <div id="ajax_content" style="max-height: 300px;"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -114,6 +116,28 @@
       <div class="modal-body">
         <div class="table-responsive ">
           <div id="ajax_content2" ></div>
+        </div>             
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="myModal5" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content panel-warning">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Editar</h4>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive ">
+          @include('actividades.sub_views.edit')
         </div>             
       </div>
       <div class="modal-footer">

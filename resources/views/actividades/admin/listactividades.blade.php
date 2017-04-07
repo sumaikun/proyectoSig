@@ -253,6 +253,9 @@ function look_for_list(id,year)
       $("#ajax_content2").append(res);
       $('#sample').DataTable({
        "bSort": false,
+       "language": {
+          "url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+       },
        fixedHeader: {
             header: true
         },"pageLength": 25
@@ -280,11 +283,58 @@ function detail_info(fecha,id)
 {
   $("#ajax_content").empty();
     $.get("detailinfo/"+fecha+"/"+id, function(res, sta){
-            $('#myModal3').modal('show');
-             $("#ajax_content").append(res);        
-            
-        });
+       $('#myModal3').modal('show');
+       $("#ajax_content").append(res);           
+    });
+}
+
+function edit_register(id)
+{
+  $.get("reg_edit/"+id, function(res, sta){
+      $("input[name=id]").val(id);
+      $("select[name=actividad]").val(res.tp_actividad);
+      $("select[name=empresa]").val(res.tp_empresa);
+      $("input[name=fecha]").val(res.fecha);
+      $("input[name=filial]").val(res.filial);
+      $("input[name=subcontratista]").val(res.subcontratista);
+      $("#descripcion").empty();     
+      $("#descripcion").append(res.descripcion);    
+     });
+  $('#myModal5').modal('show');
 }  
+
+function validate_date()
+{  
+  $("#hfin").prop( "disabled", false );
+  $("#hfin").prop( "min", $("#hini").val());
+}
+
+$(document).on("submit","#form1",function(e){
+  $("#myModal5").modal('hide');  
+  e.preventDefault();           
+     var route = "updateactividad";
+     var token = $("#token").val();
+     var datastring = $("#form1").serialize();        
+       $.ajax({
+          url: route,  
+          headers: {'X-CSRF-TOKEN': token},
+          type: 'POST',
+          dataType: 'html',     
+          data: datastring,          
+          success: function(data)
+          {
+             $("#form1").trigger('reset');   
+             $("#hfin").prop( "disabled", true );
+             alert(data);
+             $("#myModal3").modal('hide');
+             $("#myModal4").modal('hide');
+          },
+          error: function(data)
+          {
+            alert("ha ocurrido un error") ;
+          }       
+      });   
+});
 
 </script>
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}

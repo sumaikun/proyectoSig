@@ -36,8 +36,8 @@ Route::post('inventario/addElemento','Coninventario@createEle');
 
 Route::post('inventario/editElemento','Coninventario@editEle');
 
-Route::get('inventario/get_seriales/{id}',function(){
-  $seriales = DB::SELECT(DB::RAW("select s.id,s.valor,e.nombre, s.id_elementos from inventario_seriales as s INNER JOIN inventario_status as e on s.id_status = e.id where s.deleted_at is null"));  
+Route::get('inventario/get_seriales/{id}',function($id){
+  $seriales = DB::SELECT(DB::RAW("select s.id,s.valor,e.nombre, s.id_elementos from inventario_seriales as s INNER JOIN inventario_status as e on s.id_status = e.id where s.deleted_at is null and s.id_elementos=".$id));  
   return View::make('inventario.ajax.seriallist',compact('seriales'));
 });
 

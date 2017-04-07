@@ -36,13 +36,11 @@ Route::any('actividades/list', function(){
     //$year = "2016";    
   	$registros = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->orderBy('usuario')->orderBy('fecha','desc')->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->get();
     Session::put('usu_listy',$year);  
-    $empresas = psig\models\ListEnterprises::lists('nombre','id');
+    $actividades = psig\models\ListActivities::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
+    $empresas = psig\models\ListEnterprises::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
     $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
     Session::put('usu_exportactividades',$registros);  
-    //return $registros;
-     return View::make('actividades.admin.listactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios));
-
-
+     return View::make('actividades.admin.listactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios,'actividades'=>$actividades));
 });
 
 Route::any('actividades/parameters', function(){
@@ -68,8 +66,6 @@ Route::get('actividades/destroyAct/{id}','Conactividades@destroyAct');
 Route::get('actividades/destroyEmp/{id}','Conactividades@destroyEmp');
 
 Route::post('actividades/registraractividad','Conactividades@store');
-
-Route::get('actividades/edit/{id}', 'Conactividades@edit');
 
 Route::post('actividades/updateactividad','Conactividades@update');
 
@@ -157,9 +153,4 @@ Route::post('actividades/registrarpermiso','Conactividades@assign_permission');
 
 Route::get('actividades/permi_asoc/{id}','Conactividades@check_permission');
 
-
-
-
-
-
-
+Route::get('actividades/reg_edit/{id}','Conactividades@edit');

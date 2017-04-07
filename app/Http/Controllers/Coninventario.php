@@ -41,11 +41,14 @@ class Coninventario extends Controller
         //return print_r($_POST);
         $element = new InvElementos;
         $id = Metodos::id_generator($element,'id');
+        //return $id;
         $foid = $id;
         $element->id = $id;
         $element->codigo = $request->codigo;
         $element->descripcion = $request->descripcion;          
         $element->cantidad = $request->cantidad;
+        $element->categoria = $request->categoria;  
+        $element->save();
         for($i=1; $i<=$request->cantidad;$i++ )
         {
 
@@ -57,9 +60,7 @@ class Coninventario extends Controller
             $serial->id_status = 1;      
             $serial->save();
             
-        }        
-        
-        $element->categoria = $request->categoria;         
+        }            
 
         return $this->common_answer('Elemento creado con éxito!!',true);
         

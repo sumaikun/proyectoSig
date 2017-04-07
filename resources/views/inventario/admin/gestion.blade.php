@@ -274,16 +274,28 @@
 
 
 <script type="text/javascript">
+
+
+
   $(document).ready(function() {
+    
+    var spanish = $.getJSON("//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json", function(data) {
+      return data;  
+    });    
+    
+    console.log(spanish);
     $('#example').DataTable({
-       "bSort": false
-      });
+       "bSort": false,
+        "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+            }
+    });
   });
 
   function get_serials(id)
   {
-   $.get("get_seriales/"+id, function(res, sta){
-         $("#ajax-content").empty();
+    $("#ajax-content").empty();
+   $.get("get_seriales/"+id, function(res, sta){         
          $("#ajax-content").append(res);
       });
   }

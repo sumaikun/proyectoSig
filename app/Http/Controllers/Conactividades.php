@@ -140,7 +140,7 @@ class Conactividades extends Controller
         {
             return 'deben ser horas distintas';
         }
-        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad);
+        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,0);
 
         if($cross != True)
         {            
@@ -167,32 +167,37 @@ class Conactividades extends Controller
 
     public function edit($id)
     {
-        $registro = modActividad::find($id);
-        $actividades = ListActivities::lists('nombre','id');
-        $empresas = ListEnterprises::lists('nombre','id');
-
-        if(Session::get('rol_nombre')=='administrador')
-        {
-          return View::make('actividades.admin.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));    
-        }
-        else{
-          return View::make('actividades.usuario.editaractividad',array('registro'=>$registro,'actividades'=>$actividades,'empresas'=>$empresas));
-        }    
-        
+        $Actividad = modActividad::where('id','=',$id)->first();
+        return $Actividad;                   
     }
 
-    public function update()
+    public function update(Request $request)
     {
-        $Actividad=modActividad::find(Input::get('id'));
-        $Actividad->fecha = Input::get('fecha');
-        $Actividad->tp_actividad = Input::get('actividad');
-        $Actividad->tp_empresa = Input::get('empresa');
-        $Actividad->filial = Input::get('filial');
-        $Actividad->subcontratista = Input::get('fecha');
-        $Actividad->horas = Input::get('horas');
-        $Actividad->descripcion = Input::get('descripcion');
-        $Actividad->save();
-        return $this->common_answer('Registro Editado!!',true);
+        $hora_inicial = $request->hini;
+        $hora_final = $request->hfin;
+        if($hora_inicial == $hora_final)
+        {
+            return 'deben ser horas distintas';
+        }
+        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,$request->id);
+        if($cross != True)
+        {                    
+            $Actividad=modActividad::find($request->id);
+            $Actividad->fecha = $request->fecha;
+            $Actividad->tp_actividad = $request->actividad;
+            $Actividad->tp_empresa = $request->empresa;
+            $Actividad->filial = $request->filial;
+            $Actividad->subcontratista = $request->subcontratista;        
+            $Actividad->descripcion = $request->descripcion;
+            $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);  
+            $Actividad->hora_inicio = $hora_inicial;
+            $Actividad->hora_final = $hora_final;   
+            $Actividad->save();
+            return "Actividad editada";    
+        }
+        else{
+            return "Actividad no registrada, se cruza con otra actividad";
+        }
    }
 
 
@@ -429,7 +434,7 @@ class Conactividades extends Controller
 
     public function detailinfo($fecha,$id)
     {
-         $actividades = DB::select(Db::raw("select hora_inicio, hora_final, filial, subcontratista, descripcion,la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".$id." order by hora_final"));
+         $actividades = DB::select(Db::raw("select a.id as id, hora_inicio, hora_final, filial, subcontratista, descripcion,la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".$id." order by hora_final"));
 
         return view('actividades.ajax.actividadesdia',compact('actividades'));
     }
@@ -506,12 +511,12 @@ class Conactividades extends Controller
         return $total_minutos_trasncurridos;
     }
 
-    private function cross_time($fecha,$hora_final,$hora_inicial,$actividad)
+    private function cross_time($fecha,$hora_final,$hora_inicial,$actividad,$id)
     {        
         $actividad = strtoupper(ListActivities::where('id','=',$actividad)->value('nombre'));
         if($actividad != "DESPLAZAMIENTO")
         {
-            $registros = modActividad::where('fecha','=',$fecha)->where('usuario','=',Session::get('usu_id'))->where('tp_actividad','!=',61)->orderBy('hora_inicio')->get();
+            $registros = modActividad::where('fecha','=',$fecha)->where('usuario','=',Session::get('usu_id'))->where('tp_actividad','!=',61)->where('id','!=',$id)->orderBy('hora_inicio')->get();
             foreach($registros as $registro)
             {
 

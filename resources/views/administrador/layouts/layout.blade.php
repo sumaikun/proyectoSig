@@ -24,11 +24,11 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" type="text/javascript"></script>
         {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js') }}
-
+        
+        <!--<script src="//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"></script>-->
         <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
         <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-
-
+        
 
         <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.0/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
         <link href="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.0/fullcalendar.print.css" rel="stylesheet" type="text/css" media="print"/>

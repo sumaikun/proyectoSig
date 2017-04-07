@@ -1,5 +1,5 @@
 
-<table id="sample"  style="font-size: 75%;" class="table table-bordered table-striped">
+<table id="sample"  style="font-size: 85%;" class="table table-bordered table-striped">
   <thead class="thead-inverse">
     <tr>
       <th>Fecha</th>
@@ -10,7 +10,8 @@
       <th>Tiempo</th>
       <th>Hora inicial</th>
       <th>Hora final</th>
-      <th>Descripción</th>      
+      <th>Descripción</th>
+      <th>Opciones</th>      
     </tr>
   </thead>
   <tbody>   
@@ -25,6 +26,7 @@
       <td> {{$actividad->hora_inicio}} </td>      
       <td> {{$actividad->hora_final}}</td>
       <td> {{$actividad->descripcion}}</td>              
+      <td> <button class="btn btn-warning" onclick="edit_register({{$actividad->id}})">Editar</button></td>
     </tr>    
     @endforeach
   </tbody>
