@@ -309,6 +309,14 @@ function validate_date()
   $("#hfin").prop( "min", $("#hini").val());
 }
 
+function big_text_edit(elem){
+   $("td").css("white-space","nowrap");
+   $(elem).css("white-space","normal");
+   
+}
+
+
+
 $(document).on("submit","#form1",function(e){
   $("#myModal5").modal('hide');  
   e.preventDefault();           
@@ -335,6 +343,8 @@ $(document).on("submit","#form1",function(e){
           }       
       });   
 });
+
+
 
 </script>
 {{ HTML::script('//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js') }}

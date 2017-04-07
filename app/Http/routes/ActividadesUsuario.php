@@ -30,6 +30,10 @@ Route::any('actividades/list', function(){
   {
     $year = date('Y');
   }
+
+    $actividades = psig\models\ListActivities::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
+    $empresas = psig\models\ListEnterprises::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
+
     $permisos = psig\models\Modpermisosact::where('user_id','=',Session::get('usu_id'))->value('permisos');
     $array = explode(",",$permisos);
     if(in_array('ver_todos_usuarios', $array))
@@ -44,13 +48,11 @@ Route::any('actividades/list', function(){
       $registros = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->where('usuario','=',Session::get('usu_id'))->get();
     }    
     //return $registros;
-     return View::make('actividades.usuario.listaactividades',array('registros'=> $registros));
+     return View::make('actividades.usuario.listaactividades',compact('registros','actividades','empresas'));
 });
 
 
 Route::post('actividades/registraractividad','Conactividades@store');
-
-Route::get('actividades/edit/{id}', 'Conactividades@edit');
 
 Route::post('actividades/updateactividad','Conactividades@update');
 
@@ -135,4 +137,8 @@ Route::get('actividades/myactivities/{fecha}','Conactividades@myactivities');
 
 Route::get('actividades/activity_calendar/{id}','Conactividades@calendar');
 
+Route::get('actividades/activity_list/{id}/{year}','Conactividades@lista');
+
 Route::get('actividades/detailinfo/{fecha}/{id}','Conactividades@detailinfo');
+
+Route::get('actividades/reg_edit/{id}','Conactividades@edit');

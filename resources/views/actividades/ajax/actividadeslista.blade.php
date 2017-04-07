@@ -1,4 +1,11 @@
-
+<style>
+  td {
+       max-width: 200px;
+       white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;    
+     }
+</style>
 <table id="sample"  style="font-size: 85%;" class="table table-bordered table-striped">
   <thead class="thead-inverse">
     <tr>
@@ -25,7 +32,7 @@
       <td> {{psig\Helpers\horas_minutos::calcular_tiempo_trasnc($actividad->hora_final,$actividad->hora_inicio)}} </td>
       <td> {{$actividad->hora_inicio}} </td>      
       <td> {{$actividad->hora_final}}</td>
-      <td> {{$actividad->descripcion}}</td>              
+      <td  onclick="big_text_edit(this)" onblur="big_text_edit_over(this)"> {{$actividad->descripcion}}</td>              
       <td> <button class="btn btn-warning" onclick="edit_register({{$actividad->id}})">Editar</button></td>
     </tr>    
     @endforeach
