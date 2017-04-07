@@ -144,7 +144,7 @@ Route::get('actividades/activity_list/{id}/{year}','Conactividades@lista');
 Route::get('actividades/detailinfo/{fecha}/{id}','Conactividades@detailinfo');
 
 Route::any('actividades/permission',function(){
-   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->get();
+   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->where('usu_estado','=','activo')->get();
   return View::make('actividades.admin.permission',compact('usuarios'));
 });
 

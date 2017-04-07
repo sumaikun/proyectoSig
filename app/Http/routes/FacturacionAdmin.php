@@ -89,7 +89,7 @@ Route::get('facturacion/excel', function(){
 });
 
 Route::any('facturacion/permission',function(){
-   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->get();
+   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->where('usu_estado','=','activo')->get();
 
   return View::make('facturacion.admin.permission',compact('usuarios'));
 });
