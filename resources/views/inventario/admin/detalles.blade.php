@@ -72,21 +72,21 @@
 
 
   });
-  /*$(document).ready(function() {
+  $(document).ready(function() {
       var myCalendar = $('#calendar');
       myCalendar.fullCalendar({defaultDate: '2017-03-31',
-      editable: true,
-      eventLimit: true});
+      editable: false,
+      eventLimit: false});
 
     var myEvent = {
-      title: "New Event Added",
+      title: "Alquiler",
       allDay: true,
-      start: new Date(),
-      end: new Date()
+      start: '{{$registro->fecha_ingreso}}',
+      end: '{{$registro->fecha_salida}}' 
     };        
 
-    myCalendar.fullCalendar('renderEvent', myEvent);    
-  });*/
+    myCalendar.fullCalendar('renderEvent', myEvent, true);    
+  });
 
 </script><!-- Cuerpo de la pagina -->
 <style>
@@ -105,55 +105,13 @@
     z-index: 1;
   }
 
-  #external-events {
-    float: left;
-    width: 150px;
-    padding: 0 10px;
-    border: 1px solid #ccc;
-    background: #eee;
-    text-align: left;
-    position: relative;
-    z-index: 2;
-    margin-left: 700px;
-    margin-top: 200px;f
-  }
-    
-  #external-events h4 {
-    font-size: 16px;
-    margin-top: 0;
-    padding-top: 1em;
-  }
-    
-  #external-events .fc-event {
-    margin: 10px 0;
-    cursor: pointer;
-  }
-    
-  #external-events p {
-    margin: 1.5em 0;
-    font-size: 11px;
-    color: #666;
-  }
-    
-  #external-events p input {
-    margin: 0;
-    vertical-align: middle;
-  }
+
 
 </style>   
 <section class="content" style="margin-top: -5px;">
    <div class="col-lg-9">
       <div style="background-color: white;">     
-        <div id='wrap' style="width:100%;height:100%;">
-          <div id='external-events'>
-            <h4>picker</h4>
-            <div class='fc-event'>fecha inicio</div>
-            <div class='fc-event'>fecha final</div>
-            <p>
-              <input type='checkbox' id='drop-remove' />
-              <label for='drop-remove'>remove despues seleccionar</label>
-            </p>
-          </div>
+        <div id='wrap' style="width:100%;height:100%;">      
           <div id='calendar'></div>  
         </div>
       </div>      
@@ -170,26 +128,29 @@
           <td style="text-align: center">Fecha de alquiler</td>          
         </tr>
         <tr>
-          <td></td>          
+          <td style="text-align: center"> <input type="date" name="fecha1" onblur="update_calendar()" value="{{$registro->fecha_ingreso}}"></td>          
         </tr>
          <tr>
           <td style="text-align: center">Fecha de devolución</td>          
         </tr>
         <tr>
-          <td></td>          
+          <td style="text-align: center"> <input type="date" name="fecha2" onblur="update_calendar()" value="{{$registro->fecha_salida}}"></td>          
         </tr>
          <tr>
           <td style="text-align: center">Valor</td>          
         </tr>
         <tr>
-          <td></td>          
+          <td style="text-align: center">$<input type="number" name="valor" onblur="update_calendar()" value="{{$registro->valor}}"></td>          
         </tr>
          <tr>
           <td style="text-align: center">Valor total</td>          
         </tr>
         <tr>
-          <td></td>          
-        </tr>  
+          <td style="text-align: center"> <span id="total">{{psig\Helpers\Metodos::asDollars((int)psig\Helpers\horas_minutos::taking_away_days($registro->fecha_salida,$registro->fecha_ingreso)*$registro->valor)}}</span> </td>          
+        </tr>
+        <tr>
+          <td style="text-align: center"><button class="btn btn-warning">Guardar</button></td>          
+        </tr>    
       </tbody>
     </table>
   </div>      
@@ -202,69 +163,36 @@
 
 
 <script>
-  $('#calendar').fullCalendar({
-      defaultDate: '2016-05-12',
-      editable: true,
-      eventLimit: true, // allow "more" link when too many events
-      events: [
-        {
-          title: 'All Day Event',
-          start: '2016-05-01'
-        },
-        {
-          title: 'Long Event',
-          start: '2016-05-07',
-          end: '2016-05-10'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2016-05-09T16:00:00'
-        },
-        {
-          id: 999,
-          title: 'Repeating Event',
-          start: '2016-05-16T16:00:00'
-        },
-        {
-          title: 'Conference',
-          start: '2016-05-11',
-          end: '2016-05-13'
-        },
-        {
-          title: 'Meeting',
-          start: '2016-05-12T10:30:00',
-          end: '2016-05-12T12:30:00'
-        },
-        {
-          title: 'Lunch',
-          start: '2016-05-12T12:00:00'
-        },
-        {
-          title: 'Meeting',
-          start: '2016-05-12T14:30:00'
-        },
-        {
-          title: 'Happy Hour',
-          start: '2016-05-12T17:30:00'
-        },
-        {
-          title: 'Dinner',
-          start: '2016-05-12T20:00:00'
-        },
-        {
-          title: 'Birthday Party',
-          start: '2016-05-13T07:00:00'
-        },
-        {
-          title: 'Click for Google',
-          url: 'http://google.com/',
-          start: '2016-05-28'
-        }
-      ]
-    });
+  function update_calendar()
+  {
+    console.log($("input[name='fecha1']").val());
+    var myCalendar = $('#calendar');
+    myCalendar.fullCalendar('removeEvents');
+     myEvent = {
+      title: "Alquiler",
+      allDay: true,
+      start: $("input[name='fecha1']").val(),
+      end: $("input[name='fecha2']").val() 
+    };        
 
+    myCalendar.fullCalendar('renderEvent', myEvent, true);
+    $("#total").empty();
+    var vtotal = taking_away_days()*$("input[name='valor']").val();
+    $("#total").append(vtotal);
+
+  }
+
+
+  function taking_away_days()
+  {
+    var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+    var firstDate = new Date($("input[name='fecha2']").val());
+    var secondDate = new Date($("input[name='fecha1']").val());
+    var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));  
+    return diffDays;
+  }
+  
   //https://codepen.io/subodhghulaxe/pen/myxyJg
-    </script>
+</script>
 
 

@@ -152,7 +152,8 @@ class Coninventario extends Controller
 
     public function details($id)
     {
-        return View::make('inventario.admin.detalles');
+        $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();        
+        return View::make('inventario.admin.detalles',compact('registro'));
     }
 
     private function common_answer($string,$bool)

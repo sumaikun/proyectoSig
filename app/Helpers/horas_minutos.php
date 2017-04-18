@@ -26,4 +26,11 @@ class horas_minutos {
         } 
     
     }
+
+   public static function taking_away_days($date2,$date1){
+        $date1 = strtotime($date1);
+        $date2 = strtotime($date2);
+        $datediff = $date2 - $date1;
+        return floor($datediff / (60 * 60 * 24));
+   } 
 }    
