@@ -140,7 +140,7 @@ class Coninventario extends Controller
             $alquiler->id_serial = $request->objectid;
             $alquiler->valor = $request->valor;
             $alquiler->fecha_ingreso = $request->fecha;
-            $alquiler->fecha_ingreso = $request->fecha2;
+            $alquiler->fecha_salida = $request->fecha2;
             $alquiler->id_empresa = $request->empresa;
             $alquiler->save();        
             $serial->id_status = 3;
@@ -150,10 +150,28 @@ class Coninventario extends Controller
             
     }
 
+    public function edit_alquilar($id,$fecha2,$fecha1,$valor)
+    {
+        $alquiler = InvAlquiler::where('id','=',$id)->first();
+        $alquiler->valor = $valor;
+        $alquiler->fecha_ingreso = $fecha1;
+        $alquiler->fecha_salida = $fecha2;
+        $alquiler->save();            
+    }
+
     public function details($id)
     {
-        $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();        
-        return View::make('inventario.admin.detalles',compact('registro'));
+        $status = InvSeriales::where('id','=',$id)->value('id_status');
+        if($status==3)
+        {
+            $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();        
+            return View::make('inventario.admin.detalles',compact('registro'));    
+        }
+        if($status==1)
+        {
+            return $this->common_answer('El elemento se encuentra en bodega',true);
+        }
+        
     }
 
     private function common_answer($string,$bool)

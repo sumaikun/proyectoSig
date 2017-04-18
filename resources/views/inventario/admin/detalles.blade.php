@@ -149,7 +149,7 @@
           <td style="text-align: center"> <span id="total">{{psig\Helpers\Metodos::asDollars((int)psig\Helpers\horas_minutos::taking_away_days($registro->fecha_salida,$registro->fecha_ingreso)*$registro->valor)}}</span> </td>          
         </tr>
         <tr>
-          <td style="text-align: center"><button class="btn btn-warning">Guardar</button></td>          
+          <td style="text-align: center"><button onclick="update_data()" class="btn btn-warning">Guardar</button></td>          
         </tr>    
       </tbody>
     </table>
@@ -190,6 +190,14 @@
     var secondDate = new Date($("input[name='fecha1']").val());
     var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));  
     return diffDays;
+  }
+
+
+  function update_data()
+  {
+      $.get("modify_rent_data/"+{{$registro->id}}+"/"+$("input[name='fecha2']").val()+"/"+$("input[name='fecha1']").val()+"/"+$("input[name='valor']").val(), function(res, sta){
+        alert('datos modificados con éxito');
+      });
   }
   
   //https://codepen.io/subodhghulaxe/pen/myxyJg

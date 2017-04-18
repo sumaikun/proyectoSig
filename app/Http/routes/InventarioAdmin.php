@@ -59,3 +59,5 @@ Route::post('inventario/editSerialname','Coninventario@editnameSerial');
 Route::post('inventario/alquilar','Coninventario@alquilar');
 
 Route::get('inventario/Detalles/{id}','Coninventario@details');
+
+Route::get('inventario/Detalles/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}','Coninventario@edit_alquilar');
