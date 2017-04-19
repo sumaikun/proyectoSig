@@ -9,7 +9,11 @@ class Modgeofertas extends Model {
 	protected $primaryKey = 'geofer_id';
 
 
+	public function facturadoras(){
 
+    	return $this->belongsTo('psig\models\ListEnterprises','facturadora');
+    }
+    
 	public function usuarios(){
 		return $this->belongsTo('psig\models\Modusuarios', 'usu_id');
 	}

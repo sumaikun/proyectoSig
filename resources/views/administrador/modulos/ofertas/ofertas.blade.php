@@ -95,6 +95,7 @@
             	<tr class="active">
             		<th class="last"></th>
             		<th class="last">Fecha</th>
+                  <th class="last">Facturada por</th>
             		<th class="last">Consecutivo</th>
             		<th class="last">Cliente</th>
             		<th class="last">Concepto</th>
@@ -105,7 +106,8 @@
             		<th class="last">Resultado</th>
             		<th class="last">Factura SIG</th>
             		<th class="last">Valor Factura</th>
-            		<th class="last"></th>
+            		<th class="last">Archivo</th>
+                  <th class="last"></th>
             	</tr>
             </thead>
             <tbody>
@@ -113,6 +115,7 @@
 					<tr>
 						<td class="last"><a href="#" onclick="editar_reg({{$oferta->geofer_id}})"><i class="fa fa-pencil-square-o"></i></a></td>
 						<td class="last">{{$oferta->created_at->format('Y-m-d')}}</td>
+                  <td> {{$oferta->facturadoras->nombre}} </td>
 						<td class="last">{{$oferta->geofer_consecutivo}}</td>
 						<td class="last">{{$oferta->geofer_cliente}}</td>
 						<td class="last">{{$oferta->geofer_concepto}}</td>
@@ -123,7 +126,8 @@
 						<td class="last">{{$oferta->geofer_resultado}}</td>
 						<td class="last">{{$oferta->geofer_fact_sig}}</td>
 						<td class="last" align="right">@if($oferta->geofer_val_factura!=0){{$oferta->geofer_val_factura}}@endif</td>
-						<td class="last"><a href="#" onclick="editar_reg({{$oferta->geofer_id}})"><i class="fa fa-pencil-square-o"></i></a></td>
+						<td class="last" align="right"><a href="download_file/{{$oferta->archivo}}"><button class="btn btn-sm btn-warning">Descargar</button></a></td>                  
+                  <td class="last"><a href="#" onclick="editar_reg({{$oferta->geofer_id}})"><i class="fa fa-pencil-square-o"></i></a></td>
 					</tr>
             @endforeach
             </tbody>
@@ -138,7 +142,7 @@
    <div class="content-container clearfix">
       <div class="col-md-12">
    	<h4 class="content-title">NUEVA OFERTA</h4>
-   	<form action="save_oferta" name="form1" id="form1" method="post">
+   	<form action="save_oferta" enctype="multipart/form-data" name="form1" id="form1" method="post">
    		
    	
          <div class="row">
@@ -159,6 +163,25 @@
 						<option value="{{{$usuario->usu_id}}}">{{{$usuario->usu_nombres." ".$usuario->usu_apellido1}}}</option>
                		@endforeach
                	</select>
+               </div>
+            </div>
+
+            <div class="col-lg-2">
+               <div class="form-group">
+                  <label for="usu_id">Factura por</label>
+                  <select name="facturadora_id" id="facturadora_id" class="form-control" required>
+                     <option value="" selected>Seleccione...</option>
+                     @foreach($facturadoras as $key=>$value)
+                        <option value={{$key}}>{{$value}}</option>
+                     @endforeach                      
+                  </select>
+               </div>
+            </div>
+
+            <div class="col-lg-2">
+               <div class="form-group">
+                  <label for="usu_id">archivo</label>
+                  <input type="file" name="archivo"  class="form-control input-sm text-center" >
                </div>
             </div>
 
@@ -320,7 +343,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
 		
-		<form action="update_oferta" name="form3" id="form3" method="post">
+		<form action="update_oferta" name="form3" enctype="multipart/form-data" id="form3" method="post">
 
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -336,6 +359,25 @@
                <div class="form-group">
                	<label for="created_at_upd">Fecha:</label>
                	<input type="date" name="created_at_upd" id="created_at_upd" class="form-control input-sm text-center" required>
+               </div>
+            </div>
+
+            <div class="col-lg-4">
+               <div class="form-group">
+                  <label for="usu_id">Factura por</label>
+                  <select name="facturadora_id" id="facturadora_id_upd" class="form-control" required>
+                     <option value="" selected>Seleccione...</option>
+                     @foreach($facturadoras as $key=>$value)
+                        <option value={{$key}}>{{$value}}</option>
+                     @endforeach                      
+                  </select>
+               </div>
+            </div>
+
+            <div class="col-lg-5">
+               <div class="form-group">
+                  <label for="usu_id">archivo</label>
+                  <input type="file" name="archivo"  class="form-control input-sm text-center"  >
                </div>
             </div>
 
@@ -494,6 +536,8 @@ function editar_reg(geofer_id){
     	$('#geofer_resultado_upd').val(data.geofer_resultado);
     	$('#geofer_fact_sig_upd').val(data.geofer_fact_sig);
     	$('#geofer_val_factura_upd').val(data.geofer_val_factura);
+      $('#geofer_val_factura_upd').val(data.geofer_val_factura);
+      $('#facturadora_id_upd').val(data.facturadora);
 
    });
 

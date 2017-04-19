@@ -279,11 +279,11 @@
 
   $(document).ready(function() {
     
-    var spanish = $.getJSON("//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json", function(data) {
+    /*var spanish = $.getJSON("//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json", function(data) {
       return data;  
     });    
     
-    console.log(spanish);
+    console.log(spanish);*/
     $('#example').DataTable({
        "bSort": false,
         "language": {

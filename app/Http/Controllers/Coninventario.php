@@ -139,7 +139,7 @@ class Coninventario extends Controller
             $alquiler->id_usuario = Session::get('usu_id');
             $alquiler->id_serial = $request->objectid;
             $alquiler->valor = $request->valor;
-            $alquiler->fecha_ingreso = $request->fecha;
+            $alquiler->fecha_ingreso = $request->fecha1;
             $alquiler->fecha_salida = $request->fecha2;
             $alquiler->id_empresa = $request->empresa;
             $alquiler->save();        

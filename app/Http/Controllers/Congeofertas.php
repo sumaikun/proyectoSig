@@ -2,12 +2,13 @@
 namespace psig\Http\Controllers;
 
 use psig\models\Modgeofertas;
-
+use psig\models\ListEnterprises;
 use psig\Helpers\Metodos;
 use Input;
 use View;
 use Session;
 use Excel;
+use Storage;
 
 class Congeofertas extends Controller {
 
@@ -30,16 +31,29 @@ class Congeofertas extends Controller {
 	 */
 	public function create(){
 		
-		$ultimo_oferta = Modgeofertas::whereRaw('geofer_anio=? and geofer_numero = (select max(geofer_numero) from ge_ofertas where geofer_anio=?)', array(date('y'), date('y')))->first();
+		if(Input::file('archivo') != null)
+		{
+			
+			$archivo = Input::file('archivo');
+			 $name=$archivo->getClientOriginalName();
+			 $upload=Storage::disk('archivos_ofertas')->put($name,  \File::get($archivo) );	
+		}
+		else{
+			$name = null;
+		}
+
+		$ultimo_oferta = Modgeofertas::whereRaw('geofer_anio=? and geofer_numero = (select max(geofer_numero) from ge_ofertas where geofer_anio=?) and facturadora=?', array(date('y'), date('y'),Input::get('facturadora_id')))->first();
+
+		$abbr = ListEnterprises::where('id','=',Input::get('facturadora_id'))->value('abbr');
 		
-		if($ultimo_oferta){
+		if($ultimo_oferta){			
 
 			// si el consecutivo es del año actual solo sumo 1
 			if($ultimo_oferta->geofer_anio == date('y')){
 				$oferta = new Modgeofertas();
 				$oferta->geofer_anio = date('y');
 				$oferta->geofer_numero = $ultimo_oferta->geofer_numero + 1;
-				$oferta->geofer_consecutivo = Metodos::cc_armar_consecutivo('SIG',$ultimo_oferta->geofer_numero);
+				$oferta->geofer_consecutivo = Metodos::cc_armar_consecutivo($abbr,$ultimo_oferta->geofer_numero);
 				
 				$oferta->geofer_cliente = Input::get('geofer_cliente');
 				$oferta->geofer_concepto = Input::get('geofer_concepto');
@@ -52,6 +66,9 @@ class Congeofertas extends Controller {
 
 				$oferta->geofer_fact_sig = Input::get('geofer_fact_sig');
 				$oferta->geofer_val_factura = Input::get('geofer_val_factura');
+
+				$oferta->archivo = $name;
+				$oferta->facturadora = Input::get('facturadora_id');
 
 				$oferta->created_at = Input::get('created_at');
 
@@ -88,7 +105,7 @@ class Congeofertas extends Controller {
 				$oferta = new Modgeofertas();
 					$oferta->geofer_anio = date('y');
 					$oferta->geofer_numero = 1;
-					$oferta->geofer_consecutivo = Metodos::cc_armar_consecutivo('SIG',0);
+					$oferta->geofer_consecutivo = Metodos::cc_armar_consecutivo($abbr,0);
 					
 					$oferta->geofer_cliente = Input::get('geofer_cliente');
 					$oferta->geofer_concepto = Input::get('geofer_concepto');
@@ -106,6 +123,8 @@ class Congeofertas extends Controller {
 
 					$oferta->created_at = Input::get('created_at');
 					
+					$oferta->archivo = $name;
+					$oferta->facturadora = Input::get('facturadora_id');
 
 					if(Session::get('rol_nombre')=='usuario'){
 					$oferta->usu_id = Session::get('usu_id');
@@ -162,8 +181,47 @@ class Congeofertas extends Controller {
 	 * @return Response
 	 */
 	public function update(){
+
+			$oferta = Modgeofertas::find(Input::get('geofer_id_upd'));
+
+		if(Input::file('archivo') != null)
+		{
+
+			 $prev_file = Modgeofertas::where('geofer_id','=',Input::get('geofer_id_upd'))->value('archivo');
+			  
+			  if(file_exists(storage_path('archivos_ofertas/'.$prev_file)))
+        	{
+                Storage::disk('archivos_ofertas')->delete($prev_file);            	
+            }
+
+
+			
+			 $archivo = Input::file('archivo');
+			 $name=$archivo->getClientOriginalName();
+			 $upload=Storage::disk('archivos_ofertas')->put($name,  \File::get($archivo) );
+			 $oferta->archivo = $name;	
+		}
+
+		$prev_fact = Modgeofertas::where('geofer_id','=',Input::get('geofer_id_upd'))->value('facturadora');
 		
-		$oferta = Modgeofertas::find(Input::get('geofer_id_upd'));
+		if($prev_fact!=Input::get('facturadora_id'))
+		{
+			$abbr = ListEnterprises::where('id','=',Input::get('facturadora_id'))->value('abbr');
+			$ultimo_oferta = Modgeofertas::whereRaw('geofer_anio=? and geofer_numero = (select max(geofer_numero) from ge_ofertas where geofer_anio=?) and facturadora=?', array(date('y'), date('y'),Input::get('facturadora_id')))->first();
+			
+			if($ultimo_oferta->geofer_anio == date('y')){			
+				$oferta->geofer_anio = date('y');
+				$oferta->geofer_numero = $ultimo_oferta->geofer_numero + 1;
+				$oferta->geofer_consecutivo = Metodos::cc_armar_consecutivo($abbr,$ultimo_oferta->geofer_numero);
+			}
+			else{
+				$oferta->geofer_anio = date('y');
+				$oferta->geofer_numero = 1;
+				$oferta->geofer_consecutivo = Metodos::cc_armar_consecutivo($abbr,0);
+					
+			}	
+		}
+
 			$oferta->geofer_cliente = Input::get('geofer_cliente_upd');
 			$oferta->geofer_concepto = Input::get('geofer_concepto_upd');
 			$oferta->geofer_reemplazo = Input::get('geofer_reemplazo_upd');
@@ -174,6 +232,7 @@ class Congeofertas extends Controller {
 			$oferta->geofer_fact_sig = Input::get('geofer_fact_sig_upd');
 			$oferta->geofer_val_factura = Input::get('geofer_val_factura_upd');
 			$oferta->created_at = Input::get('created_at_upd');
+			$oferta->facturadora = Input::get('facturadora_id');
 
 			if($oferta->save()){
 
@@ -256,6 +315,20 @@ class Congeofertas extends Controller {
   	})->download('xlsx');
 
 	}
+
+
+	public function downloadfile($file)
+    {
+            if(file_exists(storage_path('archivos_ofertas/'.$file)))
+            {
+                $file_path = storage_path('archivos_ofertas/'.$file);
+                return response()->download($file_path);
+            
+            }
+            else {
+                return "no existe el documento";
+            }             
+    }
 
 	
 
