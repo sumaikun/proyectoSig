@@ -297,6 +297,8 @@ function edit_register(id)
       $("input[name=fecha]").val(res.fecha);
       $("input[name=filial]").val(res.filial);
       $("input[name=subcontratista]").val(res.subcontratista);
+      $("input[name=hini]").val(res.hora_inicio);
+      $("input[name=hfin]").val(res.hora_final);
       $("#descripcion").empty();     
       $("#descripcion").append(res.descripcion);    
      });

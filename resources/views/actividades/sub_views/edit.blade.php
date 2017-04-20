@@ -11,7 +11,7 @@
 			<input type="hidden" value="{{$registro->id}}" name="id">
 			{{ csrf_field() }}
 	        <div class="form-group">
-            	<label>Actividad</label>
+            	<label>Actividad *</label>
 	            <select class="form-control" name=actividad required>
 	              <option value="">Selecciona</option>
 	            @foreach($actividades as $actividad)
@@ -20,7 +20,7 @@
 	            </select>
           </div>
           <div class="form-group">
-            	<label>Empresa</label>
+            	<label>Empresa *</label>
 	            <select class="form-control" name="empresa" required>
 	              <option value="">Selecciona</option>
 	            @foreach($empresas as $empresa)
@@ -30,7 +30,7 @@
           </div>
 
   	    	<div class="form-group">			
-          			<label>Fecha</label>
+          			<label>Fecha *</label>
           			<input  class="form-control" name="fecha" type="date" value="{{$registro->fecha}}" required/>          	
     	    </div>    	    
 
@@ -50,12 +50,12 @@
 			</div>
 
 			<div class="form-group ">
-            		<label>Hora inicial</label>
+            		<label>Hora inicial *</label>
             		<input class="form-control" id="hini" onblur="validate_date()" name="hini" type=time min="0:00" max="100:59" required="required" >
           	</div>
 
           	<div class="form-group ">
-            		<label>Hora final</label>
+            		<label>Hora final *</label>
             		<input class="form-control" id="hfin" name="hfin" type=time min="0:00" max="100:59"  required="required" disabled> 
           	</div>  						
 			<!-- <div class="col-lg-6 col-xs-12">
