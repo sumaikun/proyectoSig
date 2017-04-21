@@ -41,6 +41,11 @@ Route::get('inventario/get_seriales/{id}',function($id){
   return View::make('inventario.ajax.seriallist',compact('seriales'));
 });
 
+Route::get('inventario/get_components/{id}',function($id){
+  $components = DB::SELECT(DB::RAW("select * from inventario_componentes where id_elementos=".$id));  
+  return View::make('inventario.ajax.componentslist',compact('components'));
+});
+
 Route::get('inventario/edit_element/{id}',function($id){
    $element =  psig\models\InvElementos::where('id','=',$id)->first();
    $categorias = psig\models\InvCategorias::lists('nombre','id');

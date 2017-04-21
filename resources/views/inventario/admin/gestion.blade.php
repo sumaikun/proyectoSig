@@ -59,7 +59,7 @@
                   <td> {{$elemento->descripcion}}</td>             
                   <td style="text-align: center;"> {{$elemento->cantidad}}</td>                  
                   <td> {{$elemento->categoria}}</td>                  
-                  <td> <a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="elementdelete/{{$elemento->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#" data-toggle="modal" title="Gestión" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a>
+                  <td> <a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="elementdelete/{{$elemento->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#" data-toggle="modal" title="Gestión" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a><a  href="#" title="Componentes" style="margin-left: 5px;" data-target="#myModal8" data-toggle="modal" onclick="get_components({{$elemento->id}})"><i class="fa fa-list-ul" aria-hidden="true"></i></a>
                   </td>  
                 </tr>  
               @endforeach
@@ -113,6 +113,7 @@
   </div>
 </div>
 
+<!-- Modal -->
 <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -184,7 +185,9 @@
       </div>
    </div>
 </div>
+<!-- Modal -->
 
+<!-- Modal -->
 <div class="modal fade" id="myModal7" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -217,7 +220,30 @@
       </div>
    </div>
 </div>
+<!-- Modal -->
 
+<!-- Modal -->
+<div class="modal fade" id="myModal8" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+         <div class="modal-header">
+            
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Componentes
+            </h4>
+         </div>
+         <div class="modal-body">              
+             <div id="ajax-content3"></div>
+         </div>
+         <div class="modal-footer">
+            <button type="button"  id="close_category" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Modal -->
+
+<!-- Modal -->
 <div id="myModal3" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
@@ -268,7 +294,7 @@
 
   </div>
 </div>
-
+<!-- Modal -->
 
 
 
@@ -299,6 +325,15 @@
          $("#ajax-content").append(res);
       });
   }
+
+  function get_components(id)
+  {
+    $("#ajax-content3").empty();
+    $.get("get_components/"+id, function(res, sta){         
+         $("#ajax-content3").append(res);
+      }); 
+  }
+
   function edit_element(id)
   {
     $.get("edit_element/"+id, function(res, sta){

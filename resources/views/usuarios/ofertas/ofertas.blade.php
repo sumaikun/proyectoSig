@@ -93,7 +93,7 @@
             	<tr class="active">
             		<th class="last"></th>
             		<th class="last">Fecha</th>
-                  <th class="last">Facturada por</th>
+                  <th class="last">Facturar por</th>
             		<th class="last">Consecutivo</th>
             		<th class="last">Cliente</th>
             		<th class="last">Concepto</th>
@@ -119,12 +119,12 @@
 						<td class="last">{{$oferta->geofer_cliente}}</td>
 						<td class="last">{{$oferta->geofer_concepto}}</td>
 						<td class="last">{{$oferta->geofer_reemplazo}}</td>
-						<td class="last" align="right">@if($oferta->geofer_valor_inicial!=0){{$oferta->geofer_valor_inicial}}@endif</td>
+						<td class="last" align="right">@if($oferta->geofer_valor_inicial!=0){{psig\Helpers\Metodos::asDollars($oferta->geofer_valor_inicial)}}@endif</td>
 						<td class="last">{{$oferta->geofer_moneda}}</td>
-						<td class="last" align="right">@if($oferta->geofer_ult_valor_cot!=0){{$oferta->geofer_ult_valor_cot}}@endif</td>
+						<td class="last" align="right">@if($oferta->geofer_ult_valor_cot!=0){{psig\Helpers\Metodos::asDollars($oferta->geofer_ult_valor_cot)}}@endif</td>
 						<td class="last">{{$oferta->geofer_resultado}}</td>
 						<td class="last">{{$oferta->geofer_fact_sig}}</td>
-						<td class="last" align="right">@if($oferta->geofer_val_factura!=0){{$oferta->geofer_val_factura}}@endif</td>
+						<td class="last" align="right">@if($oferta->geofer_val_factura!=0){{psig\Helpers\Metodos::asDollars($oferta->geofer_val_factura)}}@endif</td>
                   <td class="last">{{$oferta->usuarios->usu_nombres." ".$oferta->usuarios->usu_apellido1}}</td>
 						<td class="last" align="right"><a href="download_file/{{$oferta->archivo}}"><button class="btn btn-sm btn-warning">Descargar</button></a></td>    
                   <td class="last"><a href="#" onclick="editar_reg({{$oferta->geofer_id}})"><i class="fa fa-pencil-square-o"></i></a></td>
@@ -224,7 +224,7 @@
          	<div class="col-lg-2">
                <div class="form-group">
                	<label for="geofer_valor_inicial">Valor Inicial:</label>
-               	<input type="text" name="geofer_valor_inicial" id="geofer_valor_inicial" class="form-control input-sm" placeholder="12019223">
+               	<input type="number" name="geofer_valor_inicial" id="geofer_valor_inicial" class="form-control input-sm" placeholder="12019223">
                </div>
             </div>
 
@@ -242,7 +242,7 @@
             <div class="col-lg-2">
                <div class="form-group">
                	<label for="geofer_ult_valor_cot">Ultimo Vr Cotizado:</label>
-               	<input type="text" name="geofer_ult_valor_cot" id="geofer_ult_valor_cot" class="form-control input-sm" placeholder="12019223">
+               	<input type="number" name="geofer_ult_valor_cot" id="geofer_ult_valor_cot" class="form-control input-sm" placeholder="12019223">
                </div>
             </div>
 
@@ -268,7 +268,7 @@
             <div class="col-lg-2">
                <div class="form-group">
                	<label for="geofer_val_factura">Valor Factura:</label>
-               	<input type="text" name="geofer_val_factura" id="geofer_val_factura" class="form-control input-sm" placeholder="12019223">
+               	<input type="number" name="geofer_val_factura" id="geofer_val_factura" class="form-control input-sm" placeholder="12019223">
                </div>
             </div>
 
