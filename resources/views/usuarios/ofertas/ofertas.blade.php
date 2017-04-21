@@ -102,7 +102,7 @@
             	<tr class="active">
             		<th class="last"></th>
             		<th class="last">Fecha</th>
-                  <th class="last">Facturar por</th>
+                  <th class="last">Ofertado por</th>
             		<th class="last">Consecutivo</th>
             		<th class="last">Cliente</th>
             		<th class="last">Concepto</th>
