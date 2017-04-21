@@ -89,7 +89,7 @@
 
          <style>
            td {
-                max-width: 200px;
+                max-width: 250px;
                 white-space: nowrap;
                text-overflow: ellipsis;
                overflow: hidden;      
