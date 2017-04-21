@@ -86,9 +86,18 @@
          </div>
 
          </form>
+
+         <style>
+           td {
+                max-width: 200px;
+                white-space: nowrap;
+               text-overflow: ellipsis;
+               overflow: hidden;      
+              }
+         </style>
          
          <div class="table-responsive ocultar_350px">   
-         <table class="table table-condensed table-hover table-bordered" id="dev-table">
+         <table class="table table-bordered table-striped" id="dev-table">
          	<thead>
             	<tr class="active">
             		<th class="last"></th>
@@ -116,8 +125,8 @@
 						<td class="last">{{$oferta->created_at->format('Y-m-d')}}</td>
 						<td> {{$oferta->facturadoras->nombre}} </td>
                   <td class="last">{{$oferta->geofer_consecutivo}}</td>
-						<td class="last">{{$oferta->geofer_cliente}}</td>
-						<td class="last">{{$oferta->geofer_concepto}}</td>
+						<td onclick="big_text_edit(this)" onblur="big_text_edit_over(this)">{{$oferta->geofer_cliente}}</td>
+						<td onclick="big_text_edit(this)" onblur="big_text_edit_over(this)">{{$oferta->geofer_concepto}}</td>
 						<td class="last">{{$oferta->geofer_reemplazo}}</td>
 						<td class="last" align="right">@if($oferta->geofer_valor_inicial!=0){{psig\Helpers\Metodos::asDollars($oferta->geofer_valor_inicial)}}@endif</td>
 						<td class="last">{{$oferta->geofer_moneda}}</td>
@@ -580,5 +589,12 @@ $(function(){
    });
    $('[data-toggle="tooltip"]').tooltip();
 })
+
+function big_text_edit(elem){
+   $("td").css("white-space","nowrap");
+   $(elem).css("white-space","normal");
+   
+}
+
 </script>
 @stop
