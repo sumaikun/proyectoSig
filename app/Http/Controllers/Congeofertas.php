@@ -42,7 +42,11 @@ class Congeofertas extends Controller {
 			$name = null;
 		}
 
-		$ultimo_oferta = Modgeofertas::whereRaw('geofer_anio=? and geofer_numero = (select max(geofer_numero) from ge_ofertas where geofer_anio=?) and facturadora=?', array(date('y'), date('y'),Input::get('facturadora_id')))->first();
+
+
+		$ultimo_oferta = Modgeofertas::whereRaw('geofer_anio=? and geofer_numero = (select max(geofer_numero) from ge_ofertas where geofer_anio=? and facturadora= '.Input::get('facturadora_id').' ) and facturadora=?', array(date('y'), date('y'),Input::get('facturadora_id')))->first();
+
+		//return $ultimo_oferta;
 
 		$abbr = ListEnterprises::where('id','=',Input::get('facturadora_id'))->value('abbr');
 		
