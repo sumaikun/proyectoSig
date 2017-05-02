@@ -57,7 +57,7 @@
 
 
    @if(psig\Helpers\Metodos::exist_fac_permission(Session::get('usu_id'))==true)
-   <li class="active">
+   <li>
       <a href="{{ url('usuario/facturacion') }}">
          <i class="fa fa-calculator"></i> Facturación
       </a>

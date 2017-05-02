@@ -47,7 +47,7 @@
           {{ csrf_field() }}
           <input type="hidden" name="fechaactividad" required>
           <div class="form-group">
-            <label>Actividad</label>
+            <label>*Actividad</label>
             <select class="form-control" name=actividad required>
               <option value="">Selecciona</option>
             @foreach($actividades as $actividad)
@@ -56,7 +56,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Empresa</label>
+            <label>*Empresa</label>
             <select class="form-control" name="empresa" required>
               <option value="">Selecciona</option>
             @foreach($empresas as $empresa)
@@ -74,15 +74,15 @@
           </div>
           <div class="form-group">
               <label>Descripción de actividad</label>
-              <textarea class="form-control" placeholder="Descripción de habilidad" maxlength="500" name="descripcion" cols="50" row="5" style="height:100px"></textarea>
+              <textarea class="form-control" placeholder="Descripción de la actividad" maxlength="500" name="descripcion" cols="50" row="5" style="height:100px"></textarea>
           </div>
           <div class="form-group ">
-            <label>Hora inicial</label>
+            <label>*Hora inicial</label>
             <input class="form-control" id="hini" onblur="validate_date()" name="hini" type=time min="0:00" max="100:59" required="required" >
           </div>
 
           <div class="form-group ">
-            <label>Hora final</label>
+            <label>*Hora final</label>
             <input class="form-control" id="hfin" name="hfin" type=time min="0:00" max="100:59"  required="required" disabled>  
           </div>   
           <button type="submit"  class="btn btn-success">

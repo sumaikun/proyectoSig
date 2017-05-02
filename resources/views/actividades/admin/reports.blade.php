@@ -36,8 +36,8 @@
  
       <div class="panel-heading">
         <input type="hidden" value="0" id="con"> 
-        <button onclick="change_data()"><i class="fa fa-exchange" aria-hidden="true"></i></button>
-        <a href="informes"><button style="float:right;" class="btn btn-success">Reportes de empresas</button></a>
+        <button onclick="change_data()"><i class="fa fa-exchange" aria-hidden="true"></i>&nbspHoras/Porcentaje</button>
+        <a href="informes"><button style="float:right;" class="btn btn-success">Reportes por empresas</button></a>
         <br>
          <strong><i class="fa fa-list"></i> Reportes</strong>
           <form action='../actividades/reports'  method="post">
