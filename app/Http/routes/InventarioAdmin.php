@@ -42,8 +42,8 @@ Route::get('inventario/get_seriales/{id}',function($id){
 });
 
 Route::get('inventario/get_components/{id}',function($id){
-  $components = DB::SELECT(DB::RAW("select * from inventario_componentes where id_elementos=".$id));  
-  return View::make('inventario.ajax.componentslist',compact('components'));
+  $components = DB::SELECT(DB::RAW("select * from inventario_componentes where id_elementos=".$id));
+  return View::make('inventario.ajax.componentslist',compact('components','id'));
 });
 
 Route::get('inventario/edit_element/{id}',function($id){
@@ -66,3 +66,5 @@ Route::post('inventario/alquilar','Coninventario@alquilar');
 Route::get('inventario/Detalles/{id}','Coninventario@details');
 
 Route::get('inventario/Detalles/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}','Coninventario@edit_alquilar');
+
+Route::post('inventario/newComponent','Coninventario@createcomp');

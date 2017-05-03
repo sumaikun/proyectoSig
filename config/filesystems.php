@@ -68,6 +68,11 @@ return [
             'root'   => storage_path('archivos_ofertas'),
         ],
 
+        'inventarios_imagenes' => [
+            'driver' => 'local',
+            'root'   => public_path('inventarios_imagenes'),
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

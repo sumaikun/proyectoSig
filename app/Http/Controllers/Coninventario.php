@@ -16,11 +16,15 @@ use psig\models\InvSeriales;
 
 use psig\models\InvAlquiler;
 
+use psig\models\InvComponentes;
+
 use psig\Helpers\Metodos;
 
 use Session;
 
 use View;
+
+use \Storage;
 
 class Coninventario extends Controller
 {
@@ -174,6 +178,21 @@ class Coninventario extends Controller
         
     }
 
+
+    public function createcomp(Request $request)
+    {
+
+        $componente = new InvComponentes;
+        $id = Metodos::id_generator($componente,'id');
+        $componente->id = $id;
+        $componente->nombre=$request->nombre;
+        $componente->id_elementos = $request->elementcomp;
+        $archivo = $request->file('archivo');
+        $componente->imagen=$this->filemanage($archivo,'inventarios_imagenes');
+        $componente->save();//return $componente;
+        return $this->common_answer('Componente creado',true);
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')
@@ -183,6 +202,19 @@ class Coninventario extends Controller
         else{
            return View::make('usuarios.cosas.resultado_volver')->with('funcion', $bool)->with('mensaje', $string); 
         }
+    }
+
+
+     private function filemanage($archivo,$disk)
+    {        
+        $name=$archivo->getClientOriginalName();            
+        $upload=Storage::disk($disk)->put($name,  \File::get($archivo) );
+            if($upload)
+            {
+                               
+                return $name;
+            }
+          
     }
 
 
