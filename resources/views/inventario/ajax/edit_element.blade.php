@@ -27,11 +27,11 @@
         </select>    
     </div>          
 
-  
+          
       <button type="submit" onclick="clicked();" class="btn btn-success">
             <i class="fa fa-floppy-o"></i> <b>Editar</b>
       </button>
-      <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
+
 
 
 </form>

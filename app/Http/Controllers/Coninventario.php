@@ -16,6 +16,8 @@ use psig\models\InvSeriales;
 
 use psig\models\InvAlquiler;
 
+use psig\models\InvReparacion;
+
 use psig\models\InvComponentes;
 
 use psig\Helpers\Metodos;
@@ -132,9 +134,9 @@ class Coninventario extends Controller
     {
         $serial = InvSeriales::where('id','=',$request->objectid)->first();
         //return $serial->id_status;
-        if($serial->id_status==3)
+        if($serial->id_status==3 || $serial->id_status==2)
         {
-            return $this->common_answer('Elemento esta alquilado, no puedo realizar su solicitud!!',false);              
+            return $this->common_answer('El elemento no esta disponible para esta solicitud!!',false);              
         }
         else{
 
@@ -191,6 +193,30 @@ class Coninventario extends Controller
         $componente->imagen=$this->filemanage($archivo,'inventarios_imagenes');
         $componente->save();//return $componente;
         return $this->common_answer('Componente creado',true);
+    }
+
+    public function reparar(Request $request)
+    {
+        $serial = InvSeriales::where('id','=',$request->objectidr)->first();
+        //return $serial->id_status;
+        if($serial->id_status==3 || $serial->id_status==2)
+        {
+            return $this->common_answer('El elemento no esta disponible para esta solicitud!!',false);              
+        }
+        else{
+
+            $serial->id_status=2;
+            $serial->save(); 
+            $reparacion = new InvReparacion;
+            $id = Metodos::id_generator($reparacion,'id');
+            $reparacion->id = $id;
+            $reparacion->fecha = $request->fechar;
+            $reparacion->info_extra = $request->detalles_oper;
+            $reparacion->id_seriales = $request->objectidr;      
+            $reparacion->save();
+            return $this->common_answer('Registro creado',true);
+        }
+            
     }
 
     private function common_answer($string,$bool)

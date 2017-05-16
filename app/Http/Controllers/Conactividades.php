@@ -173,6 +173,7 @@ class Conactividades extends Controller
 
     public function update(Request $request)
     {
+
         $hora_inicial = $request->hini;
         $hora_final = $request->hfin;
         if($hora_inicial == $hora_final)
@@ -180,6 +181,7 @@ class Conactividades extends Controller
             return 'deben ser horas distintas';
         }
         $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,$request->id);
+        
         if($cross != True)
         {                    
             $Actividad=modActividad::find($request->id);
@@ -512,7 +514,7 @@ class Conactividades extends Controller
     }
 
     private function cross_time($fecha,$hora_final,$hora_inicial,$actividad,$id)
-    {        
+    {
         $actividad = strtoupper(ListActivities::where('id','=',$actividad)->value('nombre'));
         if($actividad != "DESPLAZAMIENTO")
         {

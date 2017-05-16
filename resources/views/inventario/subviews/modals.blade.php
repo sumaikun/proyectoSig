@@ -256,3 +256,42 @@
 
   </div>
 </div>
+
+<!--modal-->
+
+<div id="myModalRep" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content panel-success">
+      <div class="modal-header panel-heading">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Reparación</h4>
+      </div>
+      <div class="modal-body">
+        <form action="reparar" onsubmit="return validar()" method="post" id="fix_form" enctype="multipart/form-data">
+          <input type="hidden" value="" id="objectidr" name="objectidr">
+        
+          <div class="form-group">      
+              <label class="form-control">Fecha estimada de finalización de reparación</label>
+              <input type="date" id="fechar" name="fechar" class="form-control" required>            
+          </div>
+
+          <div class="form-group">      
+              <label class="form-control">Detalles de la operación</label>
+              <textarea  class="form-control" name="detalles_oper" required></textarea>             
+          </div>
+          
+          <button type="submit" onclick="clicked();" class="btn btn-success">
+                <i class="fa fa-floppy-o"></i> <b>Guardar</b>
+          </button>
+          <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
