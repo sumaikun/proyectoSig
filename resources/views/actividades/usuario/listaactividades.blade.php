@@ -188,6 +188,7 @@ function big_text_edit(elem){
 }
 
 $(document).on("submit","#form1",function(e){
+  $("#hfin").prop( "disabled", false );
   $("#myModal5").modal('hide');  
   e.preventDefault();           
      var route = "updateactividad";
