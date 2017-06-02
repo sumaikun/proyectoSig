@@ -413,9 +413,10 @@ class Conactividades extends Controller
     public function myactivities($fecha)
     {
 
-        $actividades = DB::select(Db::raw("select hora_inicio, hora_final, la.nombre as actividad , le.nombre as empresa from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_final"));
-
-        return view('actividades.ajax.actividadesdia',compact('actividades'));
+        $actividades = DB::select(Db::raw("select hora_inicio, a.id as id, hora_final, la.nombre as actividad , le.nombre as empresa, filial, subcontratista, descripcion  from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_final"));
+        //return $actividades;
+        $int2 = 'something'; 
+        return view('actividades.ajax.actividadesdia',compact('actividades','int2'));
 
          //DB::select(DB::raw("select max(id) as id from Factores")); 
     }

@@ -6,7 +6,7 @@
       <th>Hora final</th>
       <th>actividad</th>
       <th>empresa</th>
-      <th>opciones</th>      
+      <th>@if(!isset($int2)) opciones @endif</th>      
     </tr>
   </thead>
   <tbody>   
@@ -17,7 +17,7 @@
       <td> {{$actividad->hora_final}}</td>
       <td> {{$actividad->actividad}}</td>
       <td> {{$actividad->empresa}}</td>
-      <td> <button class="btn btn-warning" onclick="edit_register({{$actividad->id}})">Editar</button></td>        
+      <td> @if(!isset($int2))<button class="btn btn-warning" onclick="edit_register({{$actividad->id}})">Editar</button>@endif</td>        
     </tr>
     <tr>
       <td><span style="font-weight: bold;">filial</span></td>
