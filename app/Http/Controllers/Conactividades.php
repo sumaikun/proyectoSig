@@ -140,6 +140,12 @@ class Conactividades extends Controller
         {
             return 'deben ser horas distintas';
         }
+
+        if($request->fechaactividad == '0000-00-00' or $request->fechaactividad == null)
+        {
+            return 'ocurrio un error en el registro de la actividad';
+        }
+
         $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,0);
 
         if($cross != True)
@@ -153,6 +159,10 @@ class Conactividades extends Controller
             $Actividad->filial = $request->filial;
             $Actividad->subcontratista = $request->subcontratista;
             $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);        
+            if($Actividad->horas<1)
+            {
+                return 'ocurrio un error en el registro de la actividad';
+            }
             $Actividad->descripcion = $request->descripcion;
             $Actividad->hora_inicio = $hora_inicial;
             $Actividad->hora_final = $hora_final;      
@@ -180,7 +190,13 @@ class Conactividades extends Controller
         {
             return 'deben ser horas distintas';
         }
-        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,$request->id);
+
+        if($request->fecha == '0000-00-00' or $request->fecha == null)
+        {
+            return 'ocurrio un error en el registro de la actividad';
+        }
+
+        $cross = $this->cross_time($request->fecha,$hora_final,$hora_inicial,$request->actividad,$request->id);
         
         if($cross != True)
         {                    
@@ -191,7 +207,11 @@ class Conactividades extends Controller
             $Actividad->filial = $request->filial;
             $Actividad->subcontratista = $request->subcontratista;        
             $Actividad->descripcion = $request->descripcion;
-            $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);  
+            $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);
+            if($Actividad->horas<1)
+            {
+                return 'ocurrio un error en el registro de la actividad';
+            }  
             $Actividad->hora_inicio = $hora_inicial;
             $Actividad->hora_final = $hora_final;   
             $Actividad->save();
