@@ -146,7 +146,7 @@ class Conactividades extends Controller
             return 'ocurrio un error en el registro de la actividad';
         }
 
-        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,0);
+        $cross = $this->cross_time($request->fechaactividad,$hora_final,$hora_inicial,$request->actividad,0,Session::get('usu_id'));
 
         if($cross != True)
         {            
@@ -196,7 +196,7 @@ class Conactividades extends Controller
             return 'ocurrio un error en el registro de la actividad';
         }
 
-        $cross = $this->cross_time($request->fecha,$hora_final,$hora_inicial,$request->actividad,$request->id);
+        $cross = $this->cross_time($request->fecha,$hora_final,$hora_inicial,$request->actividad,$request->id,$request->usuario);
         
         if($cross != True)
         {                    
@@ -534,12 +534,12 @@ class Conactividades extends Controller
         return $total_minutos_trasncurridos;
     }
 
-    private function cross_time($fecha,$hora_final,$hora_inicial,$actividad,$id)
+    private function cross_time($fecha,$hora_final,$hora_inicial,$actividad,$id,$usuario)
     {
         $actividad = strtoupper(ListActivities::where('id','=',$actividad)->value('nombre'));
         if($actividad != "DESPLAZAMIENTO")
         {
-            $registros = modActividad::where('fecha','=',$fecha)->where('usuario','=',Session::get('usu_id'))->where('tp_actividad','!=',61)->where('id','!=',$id)->orderBy('hora_inicio')->get();
+            $registros = modActividad::where('fecha','=',$fecha)->where('usuario','=',$usuario)->where('tp_actividad','!=',61)->where('id','!=',$id)->orderBy('hora_inicio')->get();
             foreach($registros as $registro)
             {
 

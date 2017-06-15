@@ -31,7 +31,7 @@
 
   	    	<div class="form-group">			
           			<label>Fecha *</label>
-          			<input  class="form-control" name="fecha" type="date" value="{{$registro->fecha}}" required/>          	
+          			<input  class="form-control" name="fecha" type="date" max=<?php echo date('Y-m-d'); ?>  value="{{$registro->fecha}}" required/>          	
     	    </div>    	    
 
     	    <div class="form-group">
@@ -53,6 +53,8 @@
             		<label>Hora inicial *</label>
             		<input class="form-control" id="hini" onblur="validate_date()" name="hini" type=time min="0:00" max="100:59" required="required" >
           	</div>
+
+			<input name="usuario" type="hidden"/>
 
           	<div class="form-group ">
             		<label>Hora final *</label>

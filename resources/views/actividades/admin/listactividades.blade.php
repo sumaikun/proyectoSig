@@ -299,6 +299,7 @@ function edit_register(id)
       $("input[name=subcontratista]").val(res.subcontratista);
       $("input[name=hini]").val(res.hora_inicio);
       $("input[name=hfin]").val(res.hora_final);
+      $("input[name=usuario]").val(res.usuario);
       $("#descripcion").empty();     
       $("#descripcion").append(res.descripcion);    
      });
