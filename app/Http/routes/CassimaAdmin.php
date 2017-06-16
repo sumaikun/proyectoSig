@@ -81,8 +81,8 @@ Route::any('permisos_per_doc', function(){
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
 
-   $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
-   ->where('roles.rol_nombre', '=', 'usuario')->get();
+    $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
+   ->where('roles.rol_nombre', '=', 'usuario')->where('usu_estado','=','activo')->get();   
          
    return View::make('administrador.modulos.cassima.permisos_per_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'usuarios' => $usuarios));   
 });
@@ -110,7 +110,8 @@ Route::any('permisos_doc_per', function(){
       ->get();
 
    $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
-   ->where('roles.rol_nombre', '=', 'usuario')->get();
+   ->where('roles.rol_nombre', '=', 'usuario')->where('usu_estado','=','activo')->get();
+
          
    return View::make('administrador.modulos.cassima.permisos_doc_per', 
    array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'usuarios' => $usuarios));   
