@@ -312,7 +312,10 @@ function delete_empresa(id)
   }
   else
   {
-    window.location.href = 'destroyEmp/'+id;
+     if(confirm("¿Desea eliminar el parametro, eliminara todos los registros asociados?") ==  true)
+     {
+      window.location.href = 'destroyEmp/'+id;
+     } 
   }
 }
 
@@ -325,7 +328,11 @@ function delete_actividad(id)
   }
   else
   {
-    window.location.href = 'destroyAct/'+id;
+     if(confirm("¿Desea eliminar el parametro, eliminara todos los registros asociados?") ==  true)
+     {
+        window.location.href = 'destroyAct/'+id;  
+     }
+    
   }
 }
 
