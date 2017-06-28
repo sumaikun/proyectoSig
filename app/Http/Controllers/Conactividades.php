@@ -107,6 +107,14 @@ class Conactividades extends Controller
 
     public function destroyAct($id)
     {
+        
+        $actividades =  modActividad::where('tp_actividad','=',$id)->get();
+
+        foreach ($actividades as $actividad)
+        {
+            $actividad->delete();    
+        }
+
         $actividad = ListActivities::find($id);
         if($actividad->delete())
         {
@@ -121,7 +129,15 @@ class Conactividades extends Controller
 
     public function destroyEmp($id)
     {
+        $actividades =  modActividad::where('tp_empresa','=',$id)->get();
+        
+        foreach ($actividades as $actividad)
+        {
+            $actividad->delete();    
+        }
+
         $empresa = ListEnterprises::find($id);
+
         if($empresa->delete())
         {
             return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Parametro Borrado!!');
@@ -511,6 +527,38 @@ class Conactividades extends Controller
         else {
             return 'inexistence';
         }        
+    }
+
+    public function replace_actividad(Request $request)
+    {
+        if($request->act_torplc == $request->replace_act){
+            return $this->common_answer("No se puede reemplazar por la misma",false);
+        }
+        $actividades = ModActividad::where('tp_actividad','=',$request->act_torplc)->get();
+        foreach($actividades as $actividad)
+        {
+            $actividad->tp_actividad = $request->replace_act;
+            $actividad->save();
+        }
+        $actividad = ListActivities::where('id','=',$request->act_torplc)->first();
+        $actividad->delete();
+        return $this->common_answer("Cambios realizados con exito",true);
+    }
+
+    public function replace_empresa(Request $request)
+    {
+        if($request->emp_torplc == $request->replace_emp){
+            return $this->common_answer("No se puede reemplazar por la misma",false);
+        }
+        $actividades = ModActividad::where('tp_empresa','=',$request->emp_torplc)->get();
+        foreach($actividades as $actividad)
+        {
+            $actividad->tp_empresa = $request->replace_emp;
+            $actividad->save();   
+        }
+        $empresa = ListEnterprises::where('id','=',$request->emp_torplc)->first();
+        $empresa->delete();
+        return $this->common_answer("Cambios realizados con exito",true);   
     }
 
        private function common_answer($string,$bool)

@@ -153,3 +153,7 @@ Route::post('actividades/registrarpermiso','Conactividades@assign_permission');
 Route::get('actividades/permi_asoc/{id}','Conactividades@check_permission');
 
 Route::get('actividades/reg_edit/{id}','Conactividades@edit');
+
+Route::post('actividades/replace_actividad','Conactividades@replace_actividad');
+
+Route::post('actividades/replace_empresa','Conactividades@replace_empresa');

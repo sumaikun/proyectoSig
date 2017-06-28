@@ -78,9 +78,9 @@
                            <a href="{{ url('admin/actividades/editAct/'.$actividad->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
-                           <a href="{{ url('admin/actividades/destroyAct/'.$actividad->id) }}" class="btn btn-danger btn-xs">
+                           <button onclick="delete_actividad({{$actividad->id}})" class="btn btn-danger btn-xs">
                               <i class="fa fa-trash-o"></i> Eliminar
-                           </a>
+                           </button>
                         </td>
                      </tr>
                   @endforeach
@@ -96,9 +96,9 @@
                            <a href="{{ url('admin/actividades/editEmp/'.$empresa->id) }}" class="btn btn-warning btn-xs">
                               <i class="fa fa-pencil-square-o"></i> Editar
                            </a>
-                           <!--<a href="{{ url('admin/actividades/destroyEmp/'.$empresa->id) }}" class="btn btn-danger btn-xs">
+                           <button onclick="delete_empresa({{$empresa->id}})"  class="btn btn-danger btn-xs">
                               <i class="fa fa-trash-o"></i> Eliminar
-                           </a>-->
+                           </button>
                         </td>
                      </tr>
                   @endforeach
@@ -173,6 +173,75 @@
 </div>
 </form>
 
+<!-- Modal3 -->
+<form name="form2" id="form2" action="replace_empresa" method="post">
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Empresa a reemplazar
+            </h4>
+         </div>
+         <div class="modal-body">
+            <input type="hidden" name="emp_torplc" id="emp_torplc">
+            <div class="row">
+               <div class="col-lg-12 form-group">
+                  <label class="form-control">Empresa</label>
+                  <select name="replace_emp" class="form-control" id="replace_emp" required>
+                     <option value=""> Selecciona </option>
+                     @foreach ($empresas as $empresa)
+                        <option value="{{$empresa->id}}"> {{$empresa->nombre}} </option>
+                     @endforeach
+                  </select>
+               </div>
+            </div>
+      
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</button>
+         </div>
+      </div>
+   </div>
+</div>
+</form>
+
+<!-- Modal4 -->
+<form name="form3" id="form3" action="replace_actividad" method="post">
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">
+               <i class="fa fa-plus-square-o"></i>Actividad a reemplazar
+            </h4>
+         </div>
+         <div class="modal-body">
+         <input type="hidden" name="act_torplc" id="emp_torplc">
+            <div class="row">
+               <div class="col-lg-12 form-group">
+                  <label class="form-control">Actividad</label>
+                  <select name="replace_act" class="form-control"  id="replace_emp" required>
+                     <option value=""> Selecciona </option>
+                     @foreach ($actividades as $actividad)
+                        <option value="{{$actividad->id}}"> {{$actividad->nombre}} </option>
+                     @endforeach
+                  </select>
+               </div>
+            </div>
+      
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-success"><i class="fa fa-floppy-o"></i> Guardar</button>
+         </div>
+      </div>
+   </div>
+</div>
+</form>
 
 
 </section>
@@ -234,20 +303,46 @@ $(function(){
 })
 
 
+function delete_empresa(id)
+{
+   if(confirm("¿Desea reemplazar esta empresa con otra antes de eliminarla ?") ==  true)
+  {
+    $("input[name='emp_torplc']").val(id);
+    $("#myModal3").modal("show");  
+  }
+  else
+  {
+    window.location.href = 'destroyEmp/'+id;
+  }
+}
 
-      function hide_empresas(){
-        document.getElementsByClassName("tb-enterprise")[0].style.display = "none";
-        document.getElementsByClassName("tb-activity")[0].style.display = "";
-        document.getElementsByClassName("tb-data")[0].style.visibility = "visible";
-         event.preventDefault();
-      }
+function delete_actividad(id)
+{
+   if(confirm("¿Desea reemplazar esta actividad con otra antes de eliminarla ?") ==  true)
+  {
+    $("input[name='act_torplc']").val(id);
+    $("#myModal4").modal("show");  
+  }
+  else
+  {
+    window.location.href = 'destroyAct/'+id;
+  }
+}
 
-      function hide_actividades(){
-        document.getElementsByClassName("tb-activity")[0].style.display = "none";
-        document.getElementsByClassName("tb-enterprise")[0].style.display = "";
-        document.getElementsByClassName("tb-data")[0].style.visibility = "visible"; 
-         event.preventDefault(); 
-      }
+
+function hide_empresas(){
+  document.getElementsByClassName("tb-enterprise")[0].style.display = "none";
+  document.getElementsByClassName("tb-activity")[0].style.display = "";
+  document.getElementsByClassName("tb-data")[0].style.visibility = "visible";
+   event.preventDefault();
+}
+
+function hide_actividades(){
+  document.getElementsByClassName("tb-activity")[0].style.display = "none";
+  document.getElementsByClassName("tb-enterprise")[0].style.display = "";
+  document.getElementsByClassName("tb-data")[0].style.visibility = "visible"; 
+   event.preventDefault(); 
+}
 
 </script>
 @stop
