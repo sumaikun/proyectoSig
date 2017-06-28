@@ -172,6 +172,7 @@ class Conactividades extends Controller
             $Actividad->fecha = $request->fechaactividad;
             $Actividad->tp_actividad = $request->actividad;
             $Actividad->tp_empresa = $request->empresa;
+            $Actividad->tp_propia = $request->propia;
             $Actividad->filial = $request->filial;
             $Actividad->subcontratista = $request->subcontratista;
             $Actividad->horas = round(($this->float_time($hora_final,$hora_inicial)/60),2);        
@@ -449,7 +450,7 @@ class Conactividades extends Controller
     public function myactivities($fecha)
     {
 
-        $actividades = DB::select(Db::raw("select hora_inicio, a.id as id, hora_final, la.nombre as actividad , le.nombre as empresa, filial, subcontratista, descripcion  from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_final"));
+        $actividades = DB::select(Db::raw("select hora_inicio, a.id as id, hora_final, la.nombre as actividad , le.nombre as cliente, lp.nombre as propia, filial, subcontratista, descripcion  from reg_actividades as a inner join lista_actividades as la on a.tp_actividad = la.id inner join lista_empresas as le on a.tp_empresa = le.id inner join lista_empresas as lp on a.tp_propia = lp.id where fecha = '".$fecha."' and usuario = ".Session::get('usu_id')." order by hora_final"));
         //return $actividades;
         $int2 = 'something'; 
         return view('actividades.ajax.actividadesdia',compact('actividades','int2'));

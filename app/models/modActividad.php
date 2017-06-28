@@ -20,6 +20,11 @@ class modActividad extends Model
     	return $this->belongsTo('psig\models\ListEnterprises','tp_empresa');
     }
 
+    public function propias(){
+
+        return $this->belongsTo('psig\models\ListEnterprises','tp_propia');
+    }
+
    public function usuarios(){
 
     	return $this->belongsTo('psig\models\Modusuarios','usuario');

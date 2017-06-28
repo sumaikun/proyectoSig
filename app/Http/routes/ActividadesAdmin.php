@@ -17,9 +17,11 @@ Route::get('actividades/create', function(){
 	  
   $actividades = psig\models\ListActivities::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
   $empresas = psig\models\ListEnterprises::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
+  $propias = psig\models\ListEnterprises::Where('cliente','=',0)->get();
+  
   //return $empresas;
   //return $actividades;
-  return View::make('actividades.admin.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas));
+  return View::make('actividades.admin.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas,'propias'=>$propias));
    //return View::make('actividades.actividades');
 });
 
@@ -39,8 +41,9 @@ Route::any('actividades/list', function(){
     $actividades = psig\models\ListActivities::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
     $empresas = psig\models\ListEnterprises::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
     $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->get();
+    $propias = psig\models\ListEnterprises::Where('cliente','=',0)->get();
     Session::put('usu_exportactividades',$registros);  
-     return View::make('actividades.admin.listactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios,'actividades'=>$actividades));
+     return View::make('actividades.admin.listactividades',array('registros'=> $registros,'empresas'=>$empresas,'usuarios'=>$usuarios,'actividades'=>$actividades,'propias'=>$propias));
 });
 
 Route::any('actividades/parameters', function(){

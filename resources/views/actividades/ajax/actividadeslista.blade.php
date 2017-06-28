@@ -11,6 +11,7 @@
     <tr>
       <th>Fecha</th>
       <th>Actividad</th>
+      <th>Cliente</th>
       <th>Empresa</th>
       <th>Filial</th>
       <th>Subcontratista</th>
@@ -27,6 +28,7 @@
       <td> {{$actividad->fecha}}</td>
       <td> {{$actividad->actividades->nombre}}</td>
       <td> {{$actividad->empresas->nombre}}</td>
+      <td> {{$actividad->propias->nombre}}</td>
       <td> {{$actividad->filial}}</td>
       <td> {{$actividad->subcontratista}}</td>
       <td> {{psig\Helpers\horas_minutos::calcular_tiempo_trasnc($actividad->hora_final,$actividad->hora_inicio)}} </td>

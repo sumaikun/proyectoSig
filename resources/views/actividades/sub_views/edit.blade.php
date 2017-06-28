@@ -19,14 +19,25 @@
 	            @endforeach 
 	            </select>
           </div>
+          
+         <div class="form-group">
+            <label>*Cliente</label>
+            <select class="form-control" name="empresa" required>
+              <option value="">Selecciona</option>
+            @foreach($empresas as $empresa)
+              <option value={{$empresa->id}}>{{$empresa->nombre}}</option>
+            @endforeach   
+            </select>
+          </div>
+
           <div class="form-group">
-            	<label>Empresa *</label>
-	            <select class="form-control" name="empresa" required>
-	              <option value="">Selecciona</option>
-	            @foreach($empresas as $empresa)
-	              <option value={{$empresa->id}}>{{$empresa->nombre}}</option>
-	            @endforeach   
-	            </select>
+            <label>*Empresa</label>
+            <select class="form-control" name="propia" required>
+              <option value="">Selecciona</option>
+            @foreach($propias as $propia)
+              <option value={{$propia->id}}>{{$propia->nombre}}</option>
+            @endforeach   
+            </select>
           </div>
 
   	    	<div class="form-group">			

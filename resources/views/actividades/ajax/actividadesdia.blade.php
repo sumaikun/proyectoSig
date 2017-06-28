@@ -5,7 +5,7 @@
       <th>Tiempo trabajado</th>
       <th>Hora final</th>
       <th>actividad</th>
-      <th>empresa</th>
+      <th>Cliente</th>
       <th>@if(!isset($int2)) opciones @endif</th>      
     </tr>
   </thead>
@@ -16,7 +16,7 @@
       <td> {{psig\Helpers\horas_minutos::calcular_tiempo_trasnc($actividad->hora_final,$actividad->hora_inicio)}} </td>
       <td> {{$actividad->hora_final}}</td>
       <td> {{$actividad->actividad}}</td>
-      <td> {{$actividad->empresa}}</td>
+      <td> {{$actividad->cliente}}</td>
       <td> @if(!isset($int2))<button class="btn btn-warning" onclick="edit_register({{$actividad->id}})">Editar</button>@endif</td>        
     </tr>
     <tr>
@@ -24,7 +24,8 @@
       <td>{{$actividad->filial}}</td>
       <td><span style="font-weight: bold;">Subcontratista</span></td>
       <td>{{$actividad->subcontratista}}</td>
-      <td colspan="2"><span style="font-weight: bold;">Desc: </span>{{$actividad->descripcion}}</td>    
+      <td><span style="font-weight: bold;">Desc: </span>{{$actividad->descripcion}}</td>    
+      <td><span style="font-weight: bold;">Empresa: </span>{{$actividad->propia}}</td>
     </tr>
     @endforeach
   </tbody>

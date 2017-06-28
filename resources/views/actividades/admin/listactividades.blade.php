@@ -300,8 +300,10 @@ function edit_register(id)
       $("input[name=hini]").val(res.hora_inicio);
       $("input[name=hfin]").val(res.hora_final);
       $("input[name=usuario]").val(res.usuario);
+      $("select[name=propia]").val(res.tp_propia);
       $("#descripcion").empty();     
-      $("#descripcion").append(res.descripcion);    
+      $("#descripcion").append(res.descripcion);
+      //console.log("tp propia "+res.tp_propia);    
      });
   $('#myModal5').modal('show');
 }  

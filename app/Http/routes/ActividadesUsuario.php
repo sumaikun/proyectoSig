@@ -17,7 +17,8 @@ Route::get('actividades/create', function(){
 	  
   $actividades = psig\models\ListActivities::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
   $empresas = psig\models\ListEnterprises::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
-  return View::make('actividades.usuario.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas));
+  $propias = psig\models\ListEnterprises::Where('cliente','=',0)->get();
+  return View::make('actividades.usuario.nuevaactividad',array('actividades'=>$actividades,'empresas'=>$empresas,'propias'=>$propias));
    //return View::make('actividades.actividades');
 });
 
@@ -33,7 +34,7 @@ Route::any('actividades/list', function(){
 
     $actividades = psig\models\ListActivities::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
     $empresas = psig\models\ListEnterprises::Select(DB::raw('id,nombre'))->orderBy('nombre')->get();
-
+    $propias = psig\models\ListEnterprises::Where('cliente','=',0)->get();
     $permisos = psig\models\Modpermisosact::where('user_id','=',Session::get('usu_id'))->value('permisos');
     $array = explode(",",$permisos);
     if(in_array('ver_todos_usuarios', $array))
@@ -48,7 +49,7 @@ Route::any('actividades/list', function(){
       $registros = psig\models\modActividad::Select(DB::raw('DISTINCT usuario'))->Where(DB::raw('YEAR(fecha)'),"LIKE",'%'.$year.'%')->where('usuario','=',Session::get('usu_id'))->get();
     }    
     //return $registros;
-     return View::make('actividades.usuario.listaactividades',compact('registros','actividades','empresas'));
+     return View::make('actividades.usuario.listaactividades',compact('registros','actividades','empresas','propias'));
 });
 
 
