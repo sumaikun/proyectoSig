@@ -58,7 +58,7 @@
           <table>
             <thead>               
                   <tr class="active">                     
-                     <th style="width:96.67px;">Empresa</th>
+                     <th style="width:96.67px;">Clientes</th>
                      <th id="h2_Ene">Ene</th>   
                      <th id="h2_Feb">Feb</th>
                      <th id="h2_Mar">Mar</th>

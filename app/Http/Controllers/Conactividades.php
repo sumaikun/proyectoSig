@@ -541,8 +541,8 @@ class Conactividades extends Controller
             $actividad->tp_actividad = $request->replace_act;
             $actividad->save();
         }
-        $actividad = ListActivities::where('id','=',$request->act_torplc)->first();
-        $actividad->delete();
+        $rpactividad = ListActivities::where('id','=',$request->act_torplc)->first();
+        $rpactividad->delete();
         return $this->common_answer("Cambios realizados con exito",true);
     }
 
