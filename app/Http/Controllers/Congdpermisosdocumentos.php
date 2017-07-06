@@ -4,6 +4,7 @@ namespace psig\Http\Controllers;
 
 use psig\models\Modgddocumentos;
 use psig\models\Modgdpermisosdocumentos;
+use psig\models\Modgdversiones;
 use Input;
 use View;
 use DB;
@@ -32,26 +33,42 @@ class Congdpermisosdocumentos extends Controller {
 	public function create_per_doc(){
 
 		// return Input::get('usuario');
-		$documentos = Modgddocumentos::where('gddoc_estado','=','activo')->get();
+		 //print_r($_POST);
+		 //return '';		
+		//$documentos = Modgddocumentos::where('gddoc_estado','=','activo')->get();
+		$documentos = Modgdversiones::all();
+		//showreturn $documentos;
 		foreach ($documentos as $key => $value) {
-			$existe = Modgdpermisosdocumentos::where('usu_id', '=', Input::get('usuario'))
-															->where('gddoc_id', '=', $value->gddoc_id)->get();
-			
+			if($value->empresa==null)
+			{
+				$existe = Modgdpermisosdocumentos::where('usu_id', '=', Input::get('usuario'))->where('gddoc_id', '=', $value->gddoc_id)->get();
+					$empresa = null;
+			}
+			else{
+				$existe = Modgdpermisosdocumentos::where('usu_id', '=', Input::get('usuario'))->where('gddoc_id', '=', $value->gddoc_id)->where('empresa','=',$value->empresa)->get();
+				$empresa = $value->empresa;	
+			}
+
 			if($existe->isEmpty()){
 
 				$permisonew = new Modgdpermisosdocumentos;
 					$permisonew->usu_id = Input::get('usuario');
 					$permisonew->gddoc_id = $value->gddoc_id;
-					$permisonew->gdperdoc_permiso = Input::has($value->gddoc_id.'doc');
+					$permisonew->gdperdoc_permiso = Input::has($value->gdver_id.'doc');
+					$permisonew->empresa = $empresa;
 				$permisonew->save();
 
 			}else{
 
 				$permiso = Modgdpermisosdocumentos::find($existe[0]->gdperdoc_id);
-				$permiso->gdperdoc_permiso = Input::has($value->gddoc_id.'doc');
+				$permiso->gdperdoc_permiso = Input::has($value->gdver_id.'doc');
+				$permiso->empresa = $empresa;
 				$permiso->save();
 
 			}
+			
+			
+			
 
 		}
 
@@ -69,29 +86,42 @@ class Congdpermisosdocumentos extends Controller {
 		// return Input::get('usuario');
 		
 		// optengo los usuarios que no son administradores
+		$version = Modgdversiones::where('gdver_id','=',Input::get('gddoc_id'))->first();
+
+
 		$usuarios = DB::table('usuarios')
     	->join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
     	->where('roles.rol_nombre', '=', 'usuario')->get();
 
 
 		foreach ($usuarios as $key => $value) {
-			$existe = Modgdpermisosdocumentos::where('usu_id', '=', $value->usu_id)
-		 			->where('gddoc_id', '=', Input::get('gddoc_id'))->get();
+			if($version->empresa == null)
+			{
+				$existe = Modgdpermisosdocumentos::where('usu_id', '=', $value->usu_id)
+		 			->where('gddoc_id', '=', $version->gddoc_id)->get();
+				$empresa = null;	
+			}
+			else{
+				$existe = Modgdpermisosdocumentos::where('usu_id', '=', $value->usu_id)
+		 			->where('gddoc_id', '=', $version->gddoc_id)->where('empresa','=',$version->empresa)->get();
+		 		$empresa = $version->empresa;
+			}
 			
 		 	if($existe->isEmpty()){
 
 				$permisonew = new Modgdpermisosdocumentos;
 					$permisonew->usu_id = $value->usu_id;
-					$permisonew->gddoc_id = Input::get('gddoc_id');
+					$permisonew->gddoc_id = $version->gddoc_id;
 					$permisonew->gdperdoc_permiso = Input::has($value->usu_id.'u');
+					$permisonew->empresa = $empresa;
 				$permisonew->save();
 
 			}else{
 
 				$permiso = Modgdpermisosdocumentos::find($existe[0]->gdperdoc_id);
 				$permiso->gdperdoc_permiso = Input::has($value->usu_id.'u');
+				$permiso->empresa = $empresa;
 				$permiso->save();
-
 			}
 
 		 }
@@ -130,14 +160,17 @@ class Congdpermisosdocumentos extends Controller {
 
 	public function show_doc_json()
 	{
-		$permisos = Modgdpermisosdocumentos::where('usu_id', '=', Input::get('id_udu'))->get();
+		$permisos = \DB::SELECT(\DB::RAW("select * from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where per.usu_id = ".Input::get('id_udu')."  and ver.empresa is null or ver.empresa = per.empresa"));
 		return $permisos;
 	}
 
 
 	public function show_per_json()
 	{
-		$permisos = Modgdpermisosdocumentos::where('gddoc_id', '=', Input::get('docid'))->get();
+		//$version = Modgdversiones::where('gdver_id','=',Input::get('docid'))->first(); 
+		//$permisos = Modgdpermisosdocumentos::where('gddoc_id', '=', $version->gddoc_id)->get();
+		$permisos = DB::SELECT(DB::RAW("select * , per.usu_id as usu_id from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where ver.gdver_id = ".Input::get('docid')."  and ver.empresa is null or ver.empresa = per.empresa;"));
+
 		return $permisos;
 	}
 

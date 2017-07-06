@@ -7,6 +7,7 @@ Route::any('gdocumentos', function(){
 
 // CARGA LA VISTA PRINCIPAL DE LA SECCION DESCARGA DE DOCUMENTOS EN EL ADMINISTRADOR
 Route::any('download_doc', function(){
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
    $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
    $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
    
@@ -16,8 +17,9 @@ Route::any('download_doc', function(){
       ->where('gd_versiones.gdver_estado', '=', 'activo')
       ->where('gd_documentos.gddoc_estado', '=', 'activo')
       ->orderBy('gddoc_identificacion', 'asc')   
-      ->get();  	
-   return View::make('administrador.modulos.gdocumentos.download_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
+      ->get();
+          //return $documentos;    	
+   return View::make('administrador.modulos.gdocumentos.download_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'empresas' => $empresas));
 });
 
 // esta ruta es para buscar informacion de un documento espesifico y su version en uso

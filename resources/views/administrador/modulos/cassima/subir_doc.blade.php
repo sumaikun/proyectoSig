@@ -24,6 +24,18 @@
     </ol>
     <!-- <hr> -->
 </section>
+
+<style>
+   .mult_cons_v{
+      visibility: hidden;
+   }
+
+   #Arch_emps{
+      display: none;
+   }
+
+
+</style>
          
 <!-- Cuerpo de la pagina -->
 <section class="content">
@@ -80,14 +92,28 @@
             <input type="text" name="gdver_descripcion" id="gdver_descripcion" placeholder="Control Horario Laboral" class="form-control" required>
          </div>
          
-         <div class="col-lg-12"><strong>Archivo *</strong>
-            <input type="file"  name="gdver_ruta_archivo" id="gdver_ruta_archivo" class="filestyle" data-buttonText=" Seleccione" data-buttonName="btn-warning" required>
+         <div id="Arch_original">
+            <div class="col-lg-12"><strong>Archivo *</strong>
+               <input type="file"  name="gdver_ruta_archivo" id="gdver_ruta_archivo" class="filestyle old_input" data-buttonText=" Seleccione" data-buttonName="btn-warning" required>
+            </div>
+
+            <div class="col-lg-12"><strong>Previsualización *</strong>
+               <input type="file"  name="gdver_ruta_preview" id="gdver_ruta_preview" accept="image/x-png, image/gif, image/jpeg" class="filestyle old_input" data-buttonText=" Seleccione" data-buttonName="btn-success" required>
+            </div>
          </div>
 
-         <div class="col-lg-12"><strong>Previsualización *</strong>
-            <input type="file"  name="gdver_ruta_preview" id="gdver_ruta_preview" accept="image/x-png, image/gif, image/jpeg" class="filestyle" data-buttonText=" Seleccione" data-buttonName="btn-success" required>
+         <div id="Arch_emps">
+            @foreach($empresas as $empresa)
+            <div class="col-lg-12"><strong>Archivo {{$empresa->nombre}} *</strong>
+               <input type="file"  name="arch{{$empresa->abbr}}" id="arch{{$empresa->abbr}}" class="filestyle emp_input" data-buttonText=" Seleccione" data-buttonName="btn-warning">
+            </div>
+
+            <div class="col-lg-12"><strong>Previsualización *</strong>
+               <input type="file"  name="arch_prev{{$empresa->abbr}}" id="arch_prev{{$empresa->abbr}}"  accept="image/x-png, image/gif, image/jpeg" class="filestyle emp_input" data-buttonText=" Seleccione" data-buttonName="btn-success">
+            </div>
+            @endforeach
          </div>
-         
+
          <div class="col-lg-6">
             <div class="checkbox checkbox-success">
                <input type="checkbox" id="gddoc_req_consecutivo" name="gddoc_req_consecutivo" value="SI">
@@ -106,6 +132,32 @@
             </div>
          </div>
 
+         
+         <div class="col-lg-12 mult_cons_v"><strong>¿Requiere diferentes consecutivos para cada empresa? *</strong></div>
+          <div class="col-lg-6 mult_cons_v"><strong>Si</strong>
+            <div class="input-group">
+              <input type="Radio" name="mult_cons" value="1" />
+            </div>
+         </div>
+          <div class="col-lg-6 mult_cons_v"><strong>No</strong>
+            <div class="input-group">
+              <input type="Radio" name="mult_cons" value="0" checked/>
+            </div>
+         </div>
+
+         <div class="col-lg-12"><strong>¿Necesita diferentes archivos para cada empresa? *</strong></div>
+          <div class="col-lg-6"><strong>Si</strong>
+            <div class="input-group">
+              <input type="Radio" onclick="transform_form(this)" name="mult_arch" value="1" />
+            </div>
+         </div>
+          <div class="col-lg-6"><strong>No</strong>
+            <div class="input-group">
+              <input type="Radio" onclick="transform_form(this)" name="mult_arch" value="0" checked/>
+            </div>
+         </div>
+
+               
          <div class="col-lg-12"><br>
             <button type="submit" class="btn btn-success btn-md btn-block" onclick="javascript: form.action='registrar_doc';"><i class="fa fa-floppy-o"></i> Guardar</button>
          </div>
@@ -119,62 +171,26 @@
 </div>
 
 
+<script>
+   function transform_form(input)
+   {
+      if(input.value==1)
+      {
+         $("#Arch_original").hide();
+         $("#Arch_emps").show();
+         $(".emp_input").prop('required',true);
+         $(".old_input").prop('required',false);
+      }
+      if(input.value==0)
+      {
+         $("#Arch_original").show();
+         $("#Arch_emps").hide();
+         $(".emp_input").prop('required',false);
+         $(".old_input").prop('required',true);
+      }
+   } 
+</script>
 
-
-
-<di class="col-lg-6 col-xs-12">
-
-<div class="ocultar">
-<div class="panel-group" id="accordion">
-
-   @foreach ($categorias as $cat)
-	<div class="panel panel-default">
-   	<div class="panel-heading">
-      	<h4 class="panel-title">
-         	<a data-toggle="collapse" data-parent="#accordion" href="#{{ $cat->gdcat_id }}">
-               <i class="fa fa-folder-open-o text-primary"></i>
-               <span class="text-muted"> <strong>{{ ucwords ($cat->gdcat_nombre) }}</strong> </span>
-            </a>
-            <!-- <i class="fa fa-trash-o pull-right text-danger"></i> -->
-            <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
-         </h4>
-      </div>
-      <div id="{{ $cat->gdcat_id }}" class="panel-collapse collapse"> <!-- aqui va el in para desplegar -->
-      	<ul class="list-group">
-         @foreach ($subcategorias as $sub)
-            @if($cat->gdcat_id == $sub->gdcat_id)
-				<li class="list-group-item">
-               <i class="fa fa-angle-double-right"></i>
-               <a data-toggle="collapse" data-parent="#accordion1" href="#{{ $sub->gdsub_id }}" class="text-danger"> {{$sub->gdsub_nombre}} </a>
-               <!-- <i class="fa fa-trash-o pull-right text-danger"></i> -->
-               <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
-               
-               <div id="{{ $sub->gdsub_id }}" class="panel-collapse collapse">
-               <ul class="list-unstyled">
-               @foreach ($documentos as $doc)
-                  @if($sub->gdsub_id == $doc->gdsub_id)
-                     <li class="correte">
-                        <i class="fa fa-caret-right"></i>
-                           {{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}
-                        <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
-                     </li>
-                  @endif
-               @endforeach   
-               </ul>
-               </div>
-
-            </li>
-            @endif
-         @endforeach
-			</ul>
-      </div>
-   </div>
-   @endforeach
- 
-</div>
-</div>
-
-</di>
 
 
 
@@ -194,8 +210,11 @@ $(function() {
 $('#gddoc_req_consecutivo').click(function() {
    if($('#gddoc_req_consecutivo').is(':checked')){
       $("#gddoc_consecutivo_ini").prop('disabled', false);
+      $(".mult_cons_v").css("visibility", 'visible');
+
    }else{
       $("#gddoc_consecutivo_ini").prop('disabled', true);
+      $(".mult_cons_v").css("visibility", "hidden");
    }
 });
 

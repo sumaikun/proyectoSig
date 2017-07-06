@@ -162,7 +162,7 @@
                @foreach ($documentos as $doc)
                   @if($sub->gdsub_id == $doc->gdsub_id)
                      <li class="correte">
-                        <input type="radio" name="gdver_id" class="gdver_id" id="{{$doc->gdver_id.'lab'}}" value="{{$doc->gdver_id}}" onclick="buscar_informacion({{$doc->gddoc_id}})">
+                        <input type="radio" name="gdver_id" class="gdver_id" id="{{$doc->gdver_id.'lab'}}" value="{{$doc->gdver_id}}" onclick="buscar_informacion({{$doc->gdver_id}})">
                         <label for="{{$doc->gdver_id.'lab'}}">{{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}</label>
                      </li>
                   @endif
@@ -212,6 +212,8 @@ $('#gddoc_req_consecutivo').click(function() {
 function buscar_informacion(id){
    
    $.post("buscar_info_doc_json",{iddoc:id},function(data){
+
+      //return alert(data);
 
       if(data.length==0){
          console.log(data);

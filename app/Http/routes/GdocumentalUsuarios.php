@@ -13,11 +13,16 @@ Route::any('gdocumental', function(){
 });
 
 // CARGA LA VISTA PRINCIPAL DE LA DESCARGA DE DOCUMENTOS
-Route::any('download_doc', function(){	
+Route::any('download_doc', function(){
+   
+   //	
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
  	$categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();     
-   $documentos = DB::table('gd_documentos')
-   	->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
+   $documentos = DB::SELECT(DB::RAW("SELECT * , ver.empresa as ent1, per.empresa as ent2 FROM gd_versiones as ver inner join gd_documentos as doc on ver.gddoc_id = doc.gddoc_id inner join gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where per.usu_id = ".Session::get('usu_id')." and  per.gdperdoc_permiso=1 and ver.gdver_estado = 'activo' and doc.gddoc_estado = 'activo'  ORDER BY doc.gddoc_identificacion;"));
+   //return $documentos;     
+   /*$documentos = DB::table('gd_versiones')
+   	->join('gd_documentos', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->join('usuarios', 'usuarios.usu_id', '=', 'gd_documentos.usu_id')
       ->join('gd_permisos_documentos', 'gd_permisos_documentos.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->where('gd_permisos_documentos.usu_id', '=', Session::get('usu_id'))
@@ -25,8 +30,9 @@ Route::any('download_doc', function(){
       ->where('gd_versiones.gdver_estado', '=', 'activo')
       ->where('gd_documentos.gddoc_estado', '=', 'activo')
       ->orderBy('gddoc_identificacion', 'asc')->get();  	
-    
-   return View::make('usuarios.gdocumental.download_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
+    return $documentos;*/
+
+   return View::make('usuarios.gdocumental.download_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'empresas' => $empresas));
 });
 
 // esta ruta es para buscar informacion de un documento espesifico y su version en uso

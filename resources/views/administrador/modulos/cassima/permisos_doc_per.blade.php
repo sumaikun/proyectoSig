@@ -58,7 +58,7 @@
                   @foreach ($documentos as $doc)
                      @if($sub->gdsub_id == $doc->gdsub_id)
                      <li class="correte">
-                        <input type="radio" name="gddoc_id" class="gddoc_id" id="{{$doc->gddoc_id}}" value="{{$doc->gddoc_id}}" onclick="buscar_permisos(this.value)">
+                        <input type="radio" name="gddoc_id" class="gddoc_id" id="{{$doc->gdver_id}}" value="{{$doc->gdver_id}}" onclick="buscar_permisos(this.value)">
                         <label for="{{$doc->gddoc_id}}">{{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}</label>
                      </li>
                      @endif
@@ -188,12 +188,31 @@ function buscar_permisos(docid){
       if(data.length == 0 ){
             $('.checkall').attr("checked", false);
       }else{
+         $('.checkall').attr("checked", false);
          $.each(data,function(clave,valor) {
-            if(valor.gdperdoc_permiso==1){
-               $('#'+valor.usu_id+'u').prop('checked' , true);
-            }else{
-               $('#'+valor.usu_id+'u').prop('checked' , false);
-            }       
+            //console.log('got');
+            //console.log('permiso:'+valor.gdperdoc_permiso);
+                           
+               
+
+               if(valor.gdperdoc_permiso==1){
+                    
+                   $('#'+valor.usu_id+'u').prop('checked' , true);
+               }else{
+                  if(valor.empresa != null)
+                  {
+                     if(valor.gdperdoc_permiso==0 && docid == valor.gdver_id)
+                     {
+                        $('#'+valor.usu_id+'u').prop('checked' , false);
+                     }  
+                  }
+                  else{
+                     $('#'+valor.usu_id+'u').prop('checked' , false);
+                  }
+               }               
+                           
+            
+                   
          });
 
       }

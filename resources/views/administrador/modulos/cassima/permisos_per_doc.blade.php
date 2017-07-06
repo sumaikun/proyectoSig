@@ -140,7 +140,7 @@
                   @foreach ($documentos as $doc)
                      @if($sub->gdsub_id == $doc->gdsub_id)
                         <li class="correte">
-                           <input type="checkbox" class="{{$sub->gdsub_id}}b checkall" id="{{$doc->gddoc_id.'doc'}}" name="{{ $doc->gddoc_id.'doc' }}" />
+                           <input type="checkbox" class="{{$sub->gdsub_id}}b checkall" id="{{$doc->gdver_id.'doc'}}" name="{{ $doc->gdver_id.'doc' }}" />
                            <label for="{{$doc->gddoc_id.'doc'}}"> {{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }} </label>
                         </li>
                      @endif
@@ -212,9 +212,9 @@ function buscar_permisos(id_udu){
       }else{
          $.each(data,function(clave,valor) {
             if(valor.gdperdoc_permiso==1){
-               $('#'+valor.gddoc_id+'doc').prop('checked' , true);
+               $('#'+valor.gdver_id+'doc').prop('checked' , true);
             }else{
-               $('#'+valor.gddoc_id+'doc').prop('checked' , false);
+               $('#'+valor.gdver_id+'doc').prop('checked' , false);
             }       
          });
 

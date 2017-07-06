@@ -126,7 +126,7 @@
                @foreach ($documentos as $doc)
                   @if($sub->gdsub_id == $doc->gdsub_id)
                      <li class="correte">
-                        <input type="radio" name="gddoc_id" class="gddoc_id" id="{{$doc->gddoc_id}}" value="{{$doc->gddoc_id}}" onclick="buscar_informacion(this.value)">
+                        <input type="radio" name="gddoc_id" class="gddoc_id" id="{{$doc->gdver_id}}" value="{{$doc->gdver_id}}" onclick="buscar_informacion(this.value)">
                         <label for="{{$doc->gddoc_id}}">{{$doc->gddoc_identificacion." ".ucwords ($doc->gdver_descripcion) }}</label>
                      </li>
                   @endif

@@ -80,7 +80,7 @@ Route::any('permisos_per_doc', function(){
       ->where('gd_documentos.gddoc_estado', '=', 'activo')
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
-
+      //return $documentos;
     $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')
    ->where('roles.rol_nombre', '=', 'usuario')->where('usu_estado','=','activo')->get();   
          
@@ -157,6 +157,8 @@ Route::post('reg_permisos_por_cargo', 'Congdpermisoscargos@asignar_por_cargo');
 /******************************************** SUBIR DOCUMENTOS ************************************************/
 Route::any('subir_doc', function(){
    // Modgdcategorias::all()->orderBy('gdcat_guia');
+   
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
    $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
    $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
@@ -166,13 +168,14 @@ Route::any('subir_doc', function(){
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
       
-   return View::make('administrador.modulos.cassima.subir_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
+   return View::make('administrador.modulos.cassima.subir_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'empresas' => $empresas));
 });
  
 Route::post('registrar_doc', 'Congddocumentos@create');
 
 Route::any('new_version', function(){
 	// Modgdcategorias::all()->orderBy('gdcat_guia');
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
    $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
    $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id','gdsub_guia', 'asc')->get();     
    $documentos = DB::table('gd_documentos')
@@ -181,7 +184,7 @@ Route::any('new_version', function(){
     	->where('gd_documentos.gddoc_estado', '=', 'activo')
     	->orderBy('gddoc_identificacion', 'asc')->get();
       
-   return View::make('administrador.modulos.cassima.new_version', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
+   return View::make('administrador.modulos.cassima.new_version', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'empresas' => $empresas));
 });
 
 
@@ -198,6 +201,7 @@ Route::any('update_ver', function(){
       ->where('gd_documentos.gddoc_estado', '=', 'activo')
       ->orderBy('gddoc_identificacion', 'asc')->get();
       
+
       return View::make('administrador.modulos.cassima.update_ver', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
 });
    

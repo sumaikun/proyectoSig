@@ -60,10 +60,10 @@
                   <div id="{{ $sub->gdsub_id.'cubcolla' }}" class="panel-collapse collapse">
                   <ul class="list-unstyled">
                   @foreach ($documentos as $doc)
-                     @if($sub->gdsub_id == $doc->gdsub_id)
+                     @if($sub->gdsub_id == $doc->gdsub_id and $doc->ent1 == $doc->ent2)
                         <li class="correte">
                            <i class="fa fa-caret-right"></i>
-                           <a href="#" onclick="buscar_info_doc({{$doc->gddoc_id}})">{{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}</a>
+                           <a href="#" onclick="buscar_info_doc({{$doc->gdver_id}})">{{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}</a>
                         </li>
                      @endif
                   @endforeach   
@@ -81,6 +81,16 @@
 </div>
 
 </div>
+
+<style>
+  .cons_empresas{
+    display:none;
+  }
+  #cons_todas{
+    display:none;
+  }
+</style>
+
 
 <div class="col-lg-5"> <br>
    <div class="panel panel-default">
@@ -101,7 +111,10 @@
          <li><strong>Versión: </strong><span id="version"></span></li>
          <li><strong>Fecha de la versión: </strong><span id="fecha_version"></span></li>
          <li><strong>Requiere consecutivo: </strong><span id="req"></span></li>
-         <li><h4><small><strong>Ultimo Consecutivo: </strong></small><span id="ultimoconse" class="label label-success"></span></h4></li>
+          <li id="cons_todas"><h4><small><strong>Ultimo Consecutivo: </strong></small><span id="ultimoconse" class="label label-success"></span></h4></li>
+         @foreach($empresas as $empresa)
+          <li class="cons_empresas"><strong>Ultimo Consecutivo {{$empresa->abbr}}: </strong><span id="cons_{{$empresa->abbr}}"></span></li>
+        @endforeach
          <a href="" class="pull-right" data-toggle="modal" data-target="#hv">Ver HV Documento</a> 
          <!-- <li><strong>Consecutivo inicial: </strong><span id="conse_ini"></span></li> -->
       </ul>
@@ -327,30 +340,67 @@ function buscar_info_doc(id){
    
    $.post("buscar_info_doc_json",{iddoc:id},function(data){
 
+      //return alert(data);
+
       if(data.length==0){
          console.log(data);
       }else{
-      
-
+          //console.log("total empresas "+data.empresas[0].nombre);
          $("#identificacion").html(data.documentos.gddoc_identificacion); 
-         $("#version").html(" "+data.documentos.gdver_version); 
+         $("#version").html("V"+data.documentos.gdver_version); 
          $("#desc").html(data.documentos.gdver_descripcion); 
-         $("#fecha_version").html(data.documentos.gdver_fecha_version); 
-         
-         if(data.documentos.gddoc_req_consecutivo==1){
-            $("#req").html("SI");   
-            // $("#conse_ini").html(armar_sonsecutivo(data.documentos.gddoc_consecutivo_ini)+"-"+data.documentos.gddoc_anio);  
+         $("#fecha_version").html(data.documentos.gdver_fecha_version);          
 
-            $("#siconse").show();
-            $("#noconse").hide();
+
+         if(data.documentos.gddoc_req_consecutivo==1){
+              $(".cons_empresas").show();
+              $("#cons_todas").show();
+            if(data.documentos.gddoc_is_multcons==1)
+            {
+              console.log('entra a mult cons');
+              $(".cons_empresas").show();
+              $("#cons_todas").hide();
+              for(var i in data.consecutivo){
+                  $("#cons_"+i).empty();
+                  $("#cons_"+i).html(data.consecutivo[i]);                  
+                }
+              
+            }
+            else{
+              //console.log('no es mult cons'+data.documentos.gddoc_req_consecutivo);
+              $(".cons_empresas").hide();
+              $("#cons_todas").show(); 
+            }
+
+            $("#req").html("SI");   
+            $("#conse_ini").html(armar_sonsecutivo(data.documentos.gddoc_consecutivo_ini)+"-"+data.documentos.gddoc_anio);  
+            
+            $('#siconse').show();
+            $('#noconse').hide();
 
             if(data.consecutivo!=null){
+
+              if(data.documentos.gddoc_is_multcons==1)
+              {
+                //console.log('entré');
+
+                 for (var i=0 ; i<data.empresas.length ; i++)
+                 {
+                    $("#cons_"+data.empresas[i].abbr).html(data.consecutivo[i]);
+                    $("#cons_"+data.empresas[i].abbr).html();
+                 }
+              }
+              else{                
                $("#ultimoconse").html(data.consecutivo.gdcon_consecutivo);
+              }
             }else{
                $("#ultimoconse").html('');
             }
-
+            
          }else{
+
+            $(".cons_empresas").hide();
+            $("#cons_todas").hide();
 
             $('#noconse').show();
             $('#siconse').hide();
@@ -359,17 +409,14 @@ function buscar_info_doc(id){
             $("#iddoc_hidden").val(data.documentos.gddoc_id);
             
             $("#req").html("NO");   
-            // $("#conse_ini").html('');
+            $("#conse_ini").html('');
             $("#ultimoconse").html('');
-         }
+         }         
 
          $("#previsual").attr("src", "../"+data.documentos.gdver_ruta_preview);
-         // $("#ruta").html(data.documentos.gdver_ruta_archivo); 
-         $("#id_doc").val(data.documentos.gddoc_id);
+         // $("#ruta").html(data[0].gdver_ruta_archivo); 
+         $("#id_doc").val(data.documentos.gdver_id);
          $("#titulo_doc").html(data.documentos.gddoc_identificacion+" "+data.documentos.gdver_descripcion); 
-
-
-
 
 
          if(data.hv != null){
@@ -400,7 +447,6 @@ function buscar_info_doc(id){
            $("#retinact").html(''); 
            $("#retmuerto").html(''); 
          }
-         
          
       }
 
