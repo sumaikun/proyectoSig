@@ -40,9 +40,60 @@
 <!-- Cuerpo de la pagina -->
 <section class="content">
 
+<di class="col-lg-6 col-xs-12">
 
+<div class="ocultar">
+<div class="panel-group" id="accordion">
 
+   @foreach ($categorias as $cat)
+   <div class="panel panel-default">
+      <div class="panel-heading">
+         <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#{{ $cat->gdcat_id }}">
+               <i class="fa fa-folder-open-o text-primary"></i>
+               <span class="text-muted"> <strong>{{ ucwords ($cat->gdcat_nombre) }}</strong> </span>
+            </a>
+            <!-- <i class="fa fa-trash-o pull-right text-danger"></i> -->
+            <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
+         
+         </h4>
+      </div>
+      <div id="{{ $cat->gdcat_id }}" class="panel-collapse collapse"> <!-- aqui va el in para desplegar -->
+         <ul class="list-group">
+         @foreach ($subcategorias as $sub)
+            @if($cat->gdcat_id == $sub->gdcat_id)
+            <li class="list-group-item">
+               <i class="fa fa-angle-double-right"></i>
+               <a data-toggle="collapse" data-parent="#accordion1" href="#{{ $sub->gdsub_id }}" class="text-danger"> {{$sub->gdsub_nombre}} </a>
+               <!-- <i class="fa fa-trash-o pull-right text-danger"></i> -->
+               <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
+               
+               <div id="{{ $sub->gdsub_id }}" class="panel-collapse collapse">
+               <ul class="list-unstyled">
+               @foreach ($documentos as $doc)
+                  @if($sub->gdsub_id == $doc->gdsub_id)
+                     <li class="correte">
+                        <i class="fa fa-caret-right"></i>
+                           {{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}
+                        <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
+                     </li>
+                  @endif
+               @endforeach   
+               </ul>
+               </div>
 
+            </li>
+            @endif
+         @endforeach
+         </ul>
+      </div>
+   </div>
+   @endforeach
+ 
+</div>
+</div>
+
+</di>
  
 
 <div class="col-lg-6 col-xs-12">
