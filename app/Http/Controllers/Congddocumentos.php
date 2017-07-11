@@ -71,6 +71,8 @@ class Congddocumentos extends Controller {
 
 				$subcategoria = Modgdsubcategorias::find(Input::get('gdsub_id'));
 
+				
+
 				if(Input::get('mult_arch') == 1)
 				{
 					$empresas = ListEnterprises::where('cliente','=',0)->get();
@@ -93,24 +95,55 @@ class Congddocumentos extends Controller {
 						$ver->save();
 					}
 					$string = "finish";
-				}
+				}				
 				else
 				{
-					$ver = new Modgdversiones;
-					$ver->gddoc_id = $doc->gddoc_id;
-					$ver->gdver_version = Input::get('gdver_version');
-					$ver->gdver_descripcion = Input::get('gdver_descripcion');
-					$ver->gdver_fecha_version = Input::get('gdver_fecha_version');
-					$file = Input::file('gdver_ruta_archivo');
-					$file->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension());
-					$file_preview = Input::file('gdver_ruta_preview');
-					$file_preview->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension());
-					$ver->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
-					$ver->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
-					$ver->empresa = null;
-					$ver->usu_id = Session::get('usu_id');
-					$ver->save();
-					$string = "finish";	
+
+					if(Input::get('mult_cons') == 1)
+					{
+						$file = Input::file('gdver_ruta_archivo');
+						$file_preview = Input::file('gdver_ruta_preview');
+					
+						$file->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension());
+						
+						$file_preview->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension());
+
+						$empresas = ListEnterprises::where('cliente','=',0)->get();
+						
+						foreach($empresas as $empresa)
+						{
+							$ver = new Modgdversiones;
+							$ver->gddoc_id = $doc->gddoc_id;
+							$ver->gdver_version = Input::get('gdver_version');
+							$ver->gdver_descripcion = Input::get('gdver_descripcion').' versión '.$empresa->abbr;
+							$ver->gdver_fecha_version = Input::get('gdver_fecha_version');
+							$ver->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
+							$ver->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
+							$ver->empresa = $empresa->id;
+							$ver->usu_id = Session::get('usu_id');
+							$ver->save();
+						}
+						$string = "finish";
+					}
+					else{
+						
+						$ver = new Modgdversiones;
+						$ver->gddoc_id = $doc->gddoc_id;
+						$ver->gdver_version = Input::get('gdver_version');
+						$ver->gdver_descripcion = Input::get('gdver_descripcion');
+						$ver->gdver_fecha_version = Input::get('gdver_fecha_version');
+						$file = Input::file('gdver_ruta_archivo');
+						$file->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension());
+						$file_preview = Input::file('gdver_ruta_preview');
+						$file_preview->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension());
+						$ver->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
+						$ver->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
+						$ver->empresa = null;
+						$ver->usu_id = Session::get('usu_id');
+						$ver->save();
+						$string = "finish";		
+					}
+					
 				}
 				
 
