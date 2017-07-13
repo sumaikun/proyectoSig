@@ -159,6 +159,7 @@
             <!-- </div> -->
 
       </div>
+      <a href="{{ url('usuario/download_doc') }}"><button class="btn btn-warning  form-control">Filtrar solo documentos con consecutivo</button></a>
    </div>
 </div>
 

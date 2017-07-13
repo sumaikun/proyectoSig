@@ -7,20 +7,41 @@ Route::any('gdocumentos', function(){
 
 // CARGA LA VISTA PRINCIPAL DE LA SECCION DESCARGA DE DOCUMENTOS EN EL ADMINISTRADOR
 Route::any('download_doc', function(){
-   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
-   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
-   
-   // esta consulta trae todos los documentos activos sin importar permisos 
-   $documentos = DB::table('gd_documentos')
+
+  if(strpos(URL::previous(),'download_doc'))
+  {
+    $documentos = DB::table('gd_documentos')
       ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
       ->where('gd_versiones.gdver_estado', '=', 'activo')
-      ->where('gd_documentos.gddoc_estado', '=', 'activo')
+      ->where('gd_documentos.gddoc_estado', '=', 'activo')     
+      ->where('gddoc_req_consecutivo','=',1)
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
+
+    $categorias = DB::SELECT(DB::RAW("select DISTINCT(cat.gdcat_id),cat.*   from gd_categorias as cat INNER JOIN gd_subcategorias as sub on cat.gdcat_id = sub.gdcat_id inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id where  cat.gdcat_estado = 'activo' and doc.gddoc_req_consecutivo = 1"));
+    $subcategorias = DB::SELECT(DB::RAW("select DISTINCT(sub.gdsub_id), sub.*  from gd_subcategorias as sub inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id where sub.gdsub_estado = 'activo' and doc.gddoc_req_consecutivo = 1 ORDER BY sub.gdcat_id, sub.gdsub_guia ASC"));
+  }
+  else{
+    $documentos = DB::table('gd_documentos')
+      ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
+      ->where('gd_versiones.gdver_estado', '=', 'activo')
+      ->where('gd_documentos.gddoc_estado', '=', 'activo')     
+      ->orderBy('gddoc_identificacion', 'asc')   
+      ->get();
+
+    $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
+    $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();      
+  }
+
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
+   
+   
+   // esta consulta trae todos los documentos activos sin importar permisos 
           //return $documentos;    	
    return View::make('administrador.modulos.gdocumentos.download_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'empresas' => $empresas));
 });
+
+
 
 // esta ruta es para buscar informacion de un documento espesifico y su version en uso
 Route::post('buscar_info_doc_json', 'Congddocumentos@store_json');

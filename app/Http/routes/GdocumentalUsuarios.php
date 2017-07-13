@@ -16,22 +16,22 @@ Route::any('gdocumental', function(){
 Route::any('download_doc', function(){
    
    //	
-   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
- 	$categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
-   $documentos = DB::SELECT(DB::RAW("SELECT * , ver.empresa as ent1, per.empresa as ent2 FROM gd_versiones as ver inner join gd_documentos as doc on ver.gddoc_id = doc.gddoc_id inner join gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where per.usu_id = ".Session::get('usu_id')." and  per.gdperdoc_permiso=1 and ver.gdver_estado = 'activo' and doc.gddoc_estado = 'activo'  ORDER BY doc.gddoc_identificacion;"));
-   //return $documentos;     
-   /*$documentos = DB::table('gd_versiones')
-   	->join('gd_documentos', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
-      ->join('usuarios', 'usuarios.usu_id', '=', 'gd_documentos.usu_id')
-      ->join('gd_permisos_documentos', 'gd_permisos_documentos.gddoc_id', '=', 'gd_documentos.gddoc_id')
-      ->where('gd_permisos_documentos.usu_id', '=', Session::get('usu_id'))
-      ->where('gd_permisos_documentos.gdperdoc_permiso', '=', '1')
-      ->where('gd_versiones.gdver_estado', '=', 'activo')
-      ->where('gd_documentos.gddoc_estado', '=', 'activo')
-      ->orderBy('gddoc_identificacion', 'asc')->get();  	
-    return $documentos;*/
+   if(strpos(URL::previous(),'download_doc'))
+   {
+      $categorias = DB::SELECT(DB::RAW("select DISTINCT(cat.gdcat_id),cat.*   from gd_categorias as cat INNER JOIN gd_subcategorias as sub on cat.gdcat_id = sub.gdcat_id inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id INNER JOIN gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where  cat.gdcat_estado = 'activo' and doc.gddoc_req_consecutivo = 1 and per.usu_id = ".Session::get('usu_id')));
+      $subcategorias = DB::SELECT(DB::RAW("select DISTINCT(sub.gdsub_id),sub.*  from gd_subcategorias as sub inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id INNER JOIN gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where  sub.gdsub_estado = 'activo' and doc.gddoc_req_consecutivo = 1 and per.usu_id = ".Session::get('usu_id')." and per.gdperdoc_permiso = 1  ORDER BY sub.gdcat_id, sub.gdsub_guia ASC"));
+      $documentos = DB::SELECT(DB::RAW("SELECT * , ver.empresa as ent1, per.empresa as ent2 FROM gd_versiones as ver inner join gd_documentos as doc on ver.gddoc_id = doc.gddoc_id inner join gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where per.usu_id = ".Session::get('usu_id')." and  per.gdperdoc_permiso=1 and ver.gdver_estado = 'activo' and doc.gddoc_estado = 'activo' and doc.gddoc_req_consecutivo = 1  ORDER BY doc.gddoc_identificacion;")); 
+   }
+   else{
 
+      $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
+      $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
+
+      $documentos = DB::SELECT(DB::RAW("SELECT * , ver.empresa as ent1, per.empresa as ent2 FROM gd_versiones as ver inner join gd_documentos as doc on ver.gddoc_id = doc.gddoc_id inner join gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where per.usu_id = ".Session::get('usu_id')." and  per.gdperdoc_permiso=1 and ver.gdver_estado = 'activo' and doc.gddoc_estado = 'activo'  ORDER BY doc.gddoc_identificacion;"));
+   }
+ 	
+
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
    return View::make('usuarios.gdocumental.download_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'empresas' => $empresas));
 });
 
