@@ -160,7 +160,9 @@ class Congdpermisosdocumentos extends Controller {
 
 	public function show_doc_json()
 	{
-		$permisos = \DB::SELECT(\DB::RAW("select * from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where per.usu_id = ".Input::get('id_udu')."  and ver.empresa is null or ver.empresa = per.empresa"));
+		//print_r($_POST);
+		//return '';
+		$permisos = \DB::SELECT(\DB::RAW("select per.gdperdoc_id, per.gddoc_id, ver.gddoc_id, gdperdoc_permiso, per.empresa, ver.empresa, per.usu_id, ver.gdver_id  from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where per.usu_id = ".Input::get('id_udu')."  and per.empresa = ver.empresa and gdperdoc_permiso = 1 union select per.gdperdoc_id, per.gddoc_id, ver.gddoc_id, gdperdoc_permiso, per.empresa, ver.empresa, per.usu_id, ver.gdver_id  from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where per.usu_id = ".Input::get('id_udu')." and per.empresa is null and ver.empresa is null and gdperdoc_permiso = 1"));
 		return $permisos;
 	}
 
@@ -169,7 +171,7 @@ class Congdpermisosdocumentos extends Controller {
 	{
 		//$version = Modgdversiones::where('gdver_id','=',Input::get('docid'))->first(); 
 		//$permisos = Modgdpermisosdocumentos::where('gddoc_id', '=', $version->gddoc_id)->get();
-		$permisos = DB::SELECT(DB::RAW("select * , per.usu_id as usu_id from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where ver.gdver_id = ".Input::get('docid')."  and ver.empresa is null or ver.empresa = per.empresa;"));
+		$permisos = DB::SELECT(DB::RAW("select * , per.usu_id as usu_id from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where ver.gdver_id = ".Input::get('docid')." and ver.empresa = per.empresa and gdperdoc_permiso = 1 union select * , per.usu_id as usu_id from gd_permisos_documentos as per inner join gd_versiones as ver on per.gddoc_id = ver.gddoc_id where ver.gdver_id = ".Input::get('docid')." and ver.empresa is null and per.empresa is null and gdperdoc_permiso = 1 ;"));
 
 		return $permisos;
 	}

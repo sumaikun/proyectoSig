@@ -181,6 +181,7 @@ $(function() {
 function buscar_permisos(docid){
 
    $.post("buscar_permiso_per_json",{docid:docid},function(data){
+      
 
       // esta linea es para activar el boton Restablecer permisos
       $("#rest").prop('disabled', false);
@@ -189,29 +190,23 @@ function buscar_permisos(docid){
             $('.checkall').attr("checked", false);
       }else{
          $('.checkall').attr("checked", false);
-         $.each(data,function(clave,valor) {
-            //console.log('got');
-            //console.log('permiso:'+valor.gdperdoc_permiso);
-                           
-               
+         $.each(data,function(clave,valor) {               
 
-               if(valor.gdperdoc_permiso==1){
-                    
-                   $('#'+valor.usu_id+'u').prop('checked' , true);
-               }else{
-                  if(valor.empresa != null)
+            if(valor.gdperdoc_permiso==1){
+                 
+                $('#'+valor.usu_id+'u').prop('checked' , true);
+            }else{
+               if(valor.empresa != null)
+               {
+                  if(valor.gdperdoc_permiso==0 && docid == valor.gdver_id)
                   {
-                     if(valor.gdperdoc_permiso==0 && docid == valor.gdver_id)
-                     {
-                        $('#'+valor.usu_id+'u').prop('checked' , false);
-                     }  
-                  }
-                  else{
                      $('#'+valor.usu_id+'u').prop('checked' , false);
-                  }
-               }               
-                           
-            
+                  }  
+               }
+               else{
+                  $('#'+valor.usu_id+'u').prop('checked' , false);
+               }
+            }            
                    
          });
 

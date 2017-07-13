@@ -206,6 +206,8 @@ function buscar_permisos(id_udu){
    // alert(id_udu);
    $('.checkall').attr("checked", false);
    $.post("buscar_permiso_doc_json",{id_udu:id_udu},function(data){
+
+      //return alert(data);
       
       if(data.length == 0 ){
             $('.checkall').attr("checked", false);

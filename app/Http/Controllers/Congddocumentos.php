@@ -81,7 +81,7 @@ class Congddocumentos extends Controller {
 						$ver = new Modgdversiones;
 						$ver->gddoc_id = $doc->gddoc_id;
 						$ver->gdver_version = Input::get('gdver_version');
-						$ver->gdver_descripcion = Input::get('gdver_descripcion').' versión '.$empresa->abbr;
+						$ver->gdver_descripcion = Input::get('gdver_descripcion').' empresa '.$empresa->abbr;
 						$ver->gdver_fecha_version = Input::get('gdver_fecha_version');
 						$file = Input::file('arch'.$empresa->abbr);
 						$empresa->nombre = preg_replace('/\s+/','',$empresa->nombre);
@@ -115,7 +115,7 @@ class Congddocumentos extends Controller {
 							$ver = new Modgdversiones;
 							$ver->gddoc_id = $doc->gddoc_id;
 							$ver->gdver_version = Input::get('gdver_version');
-							$ver->gdver_descripcion = Input::get('gdver_descripcion').' versión '.$empresa->abbr;
+							$ver->gdver_descripcion = Input::get('gdver_descripcion').' empresa '.$empresa->abbr;
 							$ver->gdver_fecha_version = Input::get('gdver_fecha_version');
 							$ver->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
 							$ver->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
