@@ -69,6 +69,7 @@ class Congdversiones extends Controller {
 				//$preview_final = str_replace(".", "_v".$version_act->gdver_version.".", $preview_final);
 				if(File::move($version_act->gdver_ruta_preview, $preview_final)){File::delete($version_act->gdver_ruta_preview);}
 			}
+			$nempresa = $version_act->empresa; 
 		}
 		else{
 
@@ -83,7 +84,7 @@ class Congdversiones extends Controller {
 				$preview_final = str_replace(".", "_v".$version_act->gdver_version.".", $preview_final);
 				if(File::move($version_act->gdver_ruta_preview, $preview_final)){File::delete($version_act->gdver_ruta_preview);}
 			}
-	
+			$nempresa = null;	
 		}
 		
 		$version_act->gdver_estado = 'inactivo';
@@ -125,6 +126,7 @@ class Congdversiones extends Controller {
 
 				
 				$ver->usu_id = Session::get('usu_id');
+				$ver->empresa = $nempresa;
 
 				if($ver->save()){
 					return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Version actualizada con éxito!!');

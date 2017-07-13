@@ -85,8 +85,9 @@ class Congdconsecutivos extends Controller {
 						if($conse_igual->save()) $consecutivo = $conse_igual->gdcon_consecutivo;
 
 					}else{ //si el año es diferente debe empezar con 0001
-
-						$conse_dif = new Modgdconsecutivos;
+							print_r($version);
+							return '';
+							$conse_dif = new Modgdconsecutivos;
 							$conse_dif->gddoc_id = $documento->gddoc_id;
 							$conse_dif->usu_id = Session::get('usu_id');
 							$conse_dif->gdcon_consecutivo = '0001-'.date("y").'-'.$version->empresas->abbr;
@@ -100,15 +101,16 @@ class Congdconsecutivos extends Controller {
 				 }
 				 else{
 
-				 	$docu = Modgddocumentos::find($documento->gddoc_id);
-					if($docu->gddoc_anio==date("y")){
-
+				 	//$docu = Modgddocumentos::find($documento->gddoc_id);
+					if($documento->gddoc_anio==date("y")){
+							//print_r($version);
+							//return '';
 						//consecutivo igual año
 							$conse_iga = new Modgdconsecutivos;
 							$conse_iga->gddoc_id = $documento->gddoc_id;
 							$conse_iga->usu_id = Session::get('usu_id');
-							$conse_iga->gdcon_consecutivo = Metodos::arma_y_suma_cons($docu->gddoc_consecutivo_ini).'-'.$version->empresas->abbr;
-							$conse_iga->gdcon_numero = $docu->gddoc_consecutivo_ini + 1;
+							$conse_iga->gdcon_consecutivo = Metodos::arma_y_suma_cons($documento->gddoc_consecutivo_ini).'-'.$version->empresas->abbr;
+							$conse_iga->gdcon_numero = $documento->gddoc_consecutivo_ini + 1;
 							$conse_iga->gdcon_anio = date("y");
 							$conse_iga->empresa = $version->empresa;
 						

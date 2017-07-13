@@ -312,7 +312,7 @@ function consecutivo(){
 if (confirm("Esta seguro de generar un consecutivo para este documento? ")) {
    var iddoc = $("#id_doc").val();
    $.post("generarconsecutivo_json",{iddoc:iddoc},function(data){
-
+      //return alert(data);
       if(data==-1){
          $("#mencion").html("<i>Informe: </i>"); 
          $("#info").html("Usted tiene pendiente un registro para este documento");
