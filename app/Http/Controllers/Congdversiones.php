@@ -58,7 +58,7 @@ class Congdversiones extends Controller {
 
 		if($version_act->empresa!= null)
 		{
-			if($documento->gddoc_is_multcons == 1 and $documento->gddoc_is_multarch ==1)
+			if($documento->gddoc_is_multarch ==1)
 			{
 				if(File::exists($version_act->gdver_ruta_archivo)){
 				$archivo_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_archivo);			
@@ -216,7 +216,7 @@ class Congdversiones extends Controller {
 
 			if(Input::hasFile('gdver_ruta_archivo')){
 				if(File::exists($version->gdver_ruta_archivo)){
-					if($documento->gddoc_is_multcons == 1 and $documento->gddoc_is_multarch ==1)
+					if($documento->gddoc_is_multarch ==1)
 					{File::delete($version->gdver_ruta_archivo);}				
 					$file = Input::file('gdver_ruta_archivo');
 					$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $documento->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension());
@@ -228,7 +228,7 @@ class Congdversiones extends Controller {
 
 			if(Input::hasFile('gdver_ruta_preview')){
 				if (File::exists($version->gdver_ruta_preview)){
-					if($documento->gddoc_is_multcons == 1 and $documento->gddoc_is_multarch ==1)
+					if($documento->gddoc_is_multarch ==1)
 					{File::delete($version->gdver_ruta_preview);}
 					$file = Input::file('gdver_ruta_preview');
 					$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $documento->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file->getClientOriginalExtension());
