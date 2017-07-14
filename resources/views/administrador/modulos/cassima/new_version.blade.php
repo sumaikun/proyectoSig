@@ -65,10 +65,10 @@
       <div class="col-lg-6"><strong>Nueva versión</strong>
          <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">V</span>
-            <input type="text" name="version_nueva" id="version_nueva" aria-describedby="basic-addon2" class="form-control text-center" disabled="true">
+            <input type="text" name="version_nueva" id="version_nueva" aria-describedby="basic-addon2" class="form-control text-center" disabled="true">            
          </div>
-      </div>
-
+      </div>      
+      
       <div class="col-lg-6"><strong>Fecha de la versión *</strong>
          <input type="date" name="gdver_fecha_version" id="gdver_fecha_version" value="{{date('Y-m-d')}}" class="form-control" required>
       </div>
@@ -84,11 +84,14 @@
       <div class="col-lg-12"><br>
          <button type="submit" class="btn btn-success btn-md btn-block"><i class="fa fa-floppy-o"></i> Guardar</button>
       </div>
+      
+      <input type="hidden" name="reebot" value="0">
 
       <div class="col-lg-12"><small><strong>Nota: </strong>Los campos marcados con asteriscos (*) son obligatorios</small></div>
 
    </div>
 </div>
+<button class="btn btn-warning form-control" onclick="reiniciar_v()">Reiniciar Versiones</button>
 
 </div>
 
@@ -216,6 +219,23 @@ function validar_version(){
 
 
 return true;
+}
+
+
+function reiniciar_v()
+{
+   //console.log("valor del campo "+$("input[name='version_nueva']").val());
+   if($("input[name='version_nueva']").val()=="")
+   {
+      alert("Primero seleccione el documento");
+   }
+   else{
+      if(confirm("¿Desea volver a la versión 0 del documento?"))
+      {
+         $("input[name='version_nueva']").val(0);
+         $("input[name='reebot']").val(1);
+      }
+   }
 }
 
 </script>

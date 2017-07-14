@@ -93,7 +93,14 @@ class Congdversiones extends Controller {
 		if($version_act->save()){
 			$ver = new Modgdversiones;
 				$ver->gddoc_id = $documento->gddoc_id;
-				$ver->gdver_version = $version_act->gdver_version + 1;
+				if(Input::get('reebot')==1)
+				{
+					$ver->gdver_version = 0;
+				}
+				else{
+					$ver->gdver_version = $version_act->gdver_version + 1;	
+				}				
+				
 				$ver->gdver_descripcion = Input::get('gddoc_descripcion');
 				$ver->gdver_fecha_version = Input::get('gdver_fecha_version');
 
