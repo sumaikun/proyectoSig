@@ -58,28 +58,29 @@ class Congdversiones extends Controller {
 
 		if($version_act->empresa!= null)
 		{
-			if (File::exists($version_act->gdver_ruta_archivo)){
-			$archivo_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_archivo);			
-			//$archivo_final = str_replace(".", "_v".$version_act->gdver_version.".", $archivo_final);
-			if(File::move($version_act->gdver_ruta_archivo, $archivo_final)){File::delete($version_act->gdver_ruta_archivo);}
-			}	
+			if($documento->gddoc_is_multcons == 1 and $documento->gddoc_is_multarch ==1)
+			{
+				if(File::exists($version_act->gdver_ruta_archivo)){
+				$archivo_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_archivo);			
+					if(File::move($version_act->gdver_ruta_archivo, $archivo_final)){File::delete($version_act->gdver_ruta_archivo);}
+				}	
 
-			if (File::exists($version_act->gdver_ruta_preview)){
-				$preview_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_preview);
-				//$preview_final = str_replace(".", "_v".$version_act->gdver_version.".", $preview_final);
-				if(File::move($version_act->gdver_ruta_preview, $preview_final)){File::delete($version_act->gdver_ruta_preview);}
+				if(File::exists($version_act->gdver_ruta_preview)){
+					$preview_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_preview);		
+					if(File::move($version_act->gdver_ruta_preview, $preview_final)){File::delete($version_act->gdver_ruta_preview);}
+				}
 			}
 			$nempresa = $version_act->empresa; 
 		}
 		else{
 
-			if (File::exists($version_act->gdver_ruta_archivo)){
+			if(File::exists($version_act->gdver_ruta_archivo)){
 			$archivo_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_archivo);			
 			$archivo_final = str_replace(".", "_v".$version_act->gdver_version.".", $archivo_final);
 			if(File::move($version_act->gdver_ruta_archivo, $archivo_final)){File::delete($version_act->gdver_ruta_archivo);}
 			}	
 
-			if (File::exists($version_act->gdver_ruta_preview)){
+			if(File::exists($version_act->gdver_ruta_preview)){
 				$preview_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_preview);
 				$preview_final = str_replace(".", "_v".$version_act->gdver_version.".", $preview_final);
 				if(File::move($version_act->gdver_ruta_preview, $preview_final)){File::delete($version_act->gdver_ruta_preview);}
@@ -214,23 +215,25 @@ class Congdversiones extends Controller {
 			$empresa->nombre = preg_replace('/\s+/','',$empresa->nombre);
 
 			if(Input::hasFile('gdver_ruta_archivo')){
-				if (File::exists($version->gdver_ruta_archivo)){
-					if(File::delete($version->gdver_ruta_archivo)){
-						$file = Input::file('gdver_ruta_archivo');
-						$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $documento->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension());
+				if(File::exists($version->gdver_ruta_archivo)){
+					if($documento->gddoc_is_multcons == 1 and $documento->gddoc_is_multarch ==1)
+					{File::delete($version->gdver_ruta_archivo);}				
+					$file = Input::file('gdver_ruta_archivo');
+					$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $documento->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension());
 
-						$version->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$documento->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension();
-					}
+					$version->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$documento->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension();
+					
 				}	
 			}
 
 			if(Input::hasFile('gdver_ruta_preview')){
 				if (File::exists($version->gdver_ruta_preview)){
-					if(File::delete($version->gdver_ruta_preview)){
-						$file = Input::file('gdver_ruta_preview');
-						$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $documento->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file->getClientOriginalExtension());
-						$version->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$documento->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file->getClientOriginalExtension();						
-					}
+					if($documento->gddoc_is_multcons == 1 and $documento->gddoc_is_multarch ==1)
+					{File::delete($version->gdver_ruta_preview);}
+					$file = Input::file('gdver_ruta_preview');
+					$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $documento->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file->getClientOriginalExtension());
+					$version->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$documento->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file->getClientOriginalExtension();						
+					
 				}	
 			}
 
