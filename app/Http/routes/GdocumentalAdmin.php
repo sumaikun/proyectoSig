@@ -131,9 +131,9 @@ Route::any('consulta_reg_individual', function(){
 Route::post('buscar_doc_conse', 'Congdconsecutivos@doc_que_pertenece');
 
 Route::post('reg_visu_per', function(){
-  return 'bitchi';
+  return 'reg_visu_per';
 });
 
 route::post('buscar_usu_rela',function(){
-  return 'superbitchi';
+  return 'buscar_usu_rela';
 });
