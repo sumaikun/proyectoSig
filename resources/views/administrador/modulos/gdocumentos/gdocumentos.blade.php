@@ -15,6 +15,10 @@
 </section>
          
 <style>
+	.icon-img{
+		width:70px;
+		height:70px;
+	}
 </style>
 
 <!-- Cuerpo de la pagina -->
@@ -62,7 +66,7 @@
 
 <div class="col-lg-2">
 <div class="thumbnail">
-   <a href="{{ url('admin/consultar_registros') }}">
+   <a href="{{ url('admin/registros_usuario') }}">
    {{ HTML::image('admin/images/gdocumentos/user_reg.png', 'upload', array('class' => 'img-responsive icon-img')) }}
    <button type="button" class="btn btn-block btn-link btn-xs">
       <span class="text-muted">

@@ -71,7 +71,7 @@ Route::post('download_sin_consecutivo', 'Congddocumentos@download_sin_conse_json
 Route::any('consultar_registros', function(){   
    $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
    $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
-    $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')->where('roles.rol_nombre', '=', 'usuario')->get();
+    $usuarios = psig\models\Modusuarios::join('roles', 'roles.rol_id', '=', 'usuarios.rol_id')->where('roles.rol_nombre', '=', 'usuario')->where('usu_estado','=','activo')->get();
    $documentos = DB::table('gd_documentos')
     ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
     ->where('gd_versiones.gdver_estado', '=', 'activo')
@@ -80,6 +80,24 @@ Route::any('consultar_registros', function(){
     ->get();    
     
       return View::make('administrador.modulos.gdocumentos.consultar_registros', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos,'usuarios' => $usuarios));
+});
+
+Route::any('registros_usuario',function(){
+
+  $usuarios = psig\models\Modusuarios::where('usu_estado','=','activo')->get();
+  
+  if(strpos(URL::previous(),'registros_usuario'))
+  {
+    $registros = psig\models\Modgdregistros::where('usu_id','=',Input::get('user_id'))->get();
+    $usu = Input::get('user_id');
+  }
+  else{    
+    $registros = psig\models\Modgdregistros::All();
+    $usu = null;    
+  }
+  
+  return view('administrador.modulos.gdocumentos.regs_usuario',compact('usuarios','registros','usu'));
+  
 });
 
 // consultar linea de tiempo registros del usuario por documento
