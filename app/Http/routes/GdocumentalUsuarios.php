@@ -76,6 +76,14 @@ Route::any('consultar_registros', function(){
 	return View::make('usuarios.gdocumental.consultar_registros', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
 });
 
+Route::any('registros_usuario',function(){  
+  
+    $registros = psig\models\Modgdregistros::where('usu_id','=',Session::get('usu_id'))->get();
+ 
+  return view('usuarios.gdocumental.regs_usuario',compact('registros'));
+  
+});
+
 // consultar linea de tiempo registros del usuario por documento
 Route::any('timeline_registro', function(){
 	

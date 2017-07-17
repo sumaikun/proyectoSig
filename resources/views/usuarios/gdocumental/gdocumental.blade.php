@@ -23,6 +23,14 @@
    <i id="mximin" class="fa fa-expand fa-2x"></i>
 </div>
 
+<style>
+.icon-img{
+   width: 80px;
+   height: 100px;
+}
+
+</style>
+
 
 <div class="row">
       
@@ -64,6 +72,20 @@
    </a>
 </div>
 </div>
+
+<div class="col-lg-2">
+<div class="thumbnail">
+   <a href="{{ url('usuario/registros_usuario') }}">
+   {{ HTML::image('usuarios/images/gdocumentos/user_reg.png', 'upload', array('class' => 'img-responsive icon-img')) }}
+   <button type="button" class="btn btn-block btn-link btn-xs">
+      <span class="text-muted">
+         <strong>Consultar Registros</strong>
+      </span>
+   </button>
+   </a>
+</div>
+</div>
+
 
 
 @if(isset($mensaje))
