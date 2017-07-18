@@ -189,7 +189,7 @@ class Congdversiones extends Controller {
 
 		if($version->empresa != null)
 		{
-			$exist = Modgdconsecutivos::where('gddoc_id','=',$version->gddoc_id)->orderBy('gdcon_id','desc')->first();
+			$exist = Modgdconsecutivos::where('gddoc_id','=',$version->gddoc_id)->where('empresa','=',$version->empresa)->orderBy('gdcon_id','desc')->first();
 			if($exist == null)
 			{
 				$consecutivo = new Modgdconsecutivos;
