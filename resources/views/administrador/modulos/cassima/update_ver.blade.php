@@ -205,7 +205,7 @@ function buscar_informacion(id){
          console.log(data);
 
          $('#doc_idtr').val(data.documentos.gddoc_id);
-         
+
 
          $('#gdver_descripcion').val(data.documentos.gdver_descripcion);
          $("#gdver_fecha_version").val(data.documentos.gdver_fecha_version);         
@@ -246,14 +246,8 @@ function validar_version(){
       $("#gddoc_consecutivo_ini").focus();
       return false;
    } 
-   // if($('#gddoc_req_consecutivo').is(':checked') && $('#gddoc_consecutivo_ini').val()==''){
-   //    alert("Por favor debe digitar el consecutivo inicial para este documento");
-   //    $("#gddoc_consecutivo_ini").focus();
-   //    return false;
-   // }
 
-
-return true;
+   return true;
 }
 
 </script>

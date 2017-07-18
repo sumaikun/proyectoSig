@@ -5,6 +5,7 @@ use psig\Helpers\Metodos;
 use psig\models\Modgddocumentos;
 use psig\models\Modgdversiones;
 use psig\models\ListEnterprises;
+use psig\models\Modgdconsecutivos;
 use Input;
 use View;
 use Session;
@@ -186,6 +187,32 @@ class Congdversiones extends Controller {
 		$documento = $version->documento;
 		$subcategoria = $documento->subcategorias;
 
+		if($version->empresa != null)
+		{
+			$exist = Modgdconsecutivos::where('gddoc_id','=',$version->gddoc_id)->orderBy('gdcon_id','desc')->first();
+			if($exist == null)
+			{
+				$consecutivo = new Modgdconsecutivos;
+				$consecutivo->gddoc_id = $documento->gddoc_id;
+				$consecutivo->usu_id = Session::get('usu_id');
+				$consecutivo->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1).'-'.$version->empresas->abbr;
+				$consecutivo->gdcon_numero = Input::get('gddoc_consecutivo_ini');
+				$consecutivo->gdcon_anio = date("y");
+				$consecutivo->empresa = $version->empresa;
+				$consecutivo->gdcon_estado = 'cerrado';
+				$consecutivo->save();
+			}
+			else{
+				$exist->gdcon_numero = Input::get('gddoc_consecutivo_ini');
+				$exist->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1).'-'.$version->empresas->abbr;
+				$exist->save(); 
+			}
+
+		}
+		else{
+			$version->documento->gddoc_consecutivo_ini = Input::get('gddoc_consecutivo_ini');
+		}
+
 		if($version->empresa == null)
 		{
 			if(Input::hasFile('gdver_ruta_archivo')){
@@ -247,11 +274,12 @@ class Congdversiones extends Controller {
 		$version->gdver_fecha_version = Input::get('gdver_fecha_version');
 
 		$version->documento->gddoc_req_registro = Input::has('gddoc_req_registro');
+
+
 		
 
 		if(Input::has('gddoc_req_consecutivo')){
-			$version->documento->gddoc_req_consecutivo = Input::has('gddoc_req_consecutivo');
-			$version->documento->gddoc_consecutivo_ini = Input::get('gddoc_consecutivo_ini');
+			$version->documento->gddoc_req_consecutivo = Input::has('gddoc_req_consecutivo');			
 			$version->documento->gddoc_anio = date('y');
 		}else{
 			$version->documento->gddoc_req_consecutivo = Input::has('gddoc_req_consecutivo');
