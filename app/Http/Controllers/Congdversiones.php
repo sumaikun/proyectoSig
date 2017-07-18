@@ -187,7 +187,7 @@ class Congdversiones extends Controller {
 		$documento = $version->documento;
 		$subcategoria = $documento->subcategorias;
 
-		if($version->empresa != null)
+		if($version->empresa != null and Input::has('for_conse'))
 		{
 			$exist = Modgdconsecutivos::where('gddoc_id','=',$version->gddoc_id)->where('empresa','=',$version->empresa)->orderBy('gdcon_id','desc')->first();
 			if($exist == null)

@@ -101,6 +101,13 @@
             </div>
          </div>
 
+         <div class="col-lg-6"> <br>
+            <div class="checkbox checkbox-success">
+               <input type="checkbox" id="for_conse" name="for_conse" value="SI">
+               <label for="for_conse"><b>Forzar consecutivo</b></label>
+            </div>
+         </div>
+
          <div class="col-lg-12"><br>
             <button type="submit" class="btn btn-success btn-md btn-block"><i class="fa fa-floppy-o"></i> Guardar</button>
          </div>
