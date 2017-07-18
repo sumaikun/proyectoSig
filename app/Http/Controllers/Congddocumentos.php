@@ -4,6 +4,7 @@ namespace psig\Http\Controllers;
 
 use psig\Helpers\Metodos;
 use psig\models\Modgddocumentos;
+use psig\models\Modgdcategorias;
 use psig\models\Modgdsubcategorias;
 use psig\models\Modgdversiones;
 use psig\models\Modgdhvdocumentos;
@@ -348,6 +349,176 @@ class Congddocumentos extends Controller {
 	}
 
 
-	
+	public function editalldocument()
+	{
+		
+		//return Input::get('doc_idtr');
+		$empresas = ListEnterprises::where('cliente', '=', 0)->get();
+   		$documentos = DB::table('gd_documentos')
+	      ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
+	      ->where('gd_versiones.gdver_estado', '=', 'activo')
+	      ->where('gd_documentos.gddoc_estado', '=', 'activo')
+	      ->orderBy('gddoc_identificacion', 'asc')   
+	      ->get();
+	      
+   		return View::make('administrador.modulos.cassima.update_alldoc', array('documentos' => $documentos, 'empresas' => $empresas,'docid'=>Input::get('doc_idtr')));
+	}
+
+	public function updatealldocument()
+	{
+		//print_r($_POST);
+		//return '';
+
+		if(Input::get("docid") == null or Input::get("docid") == 0)
+		{
+			return 'debe seleccionar un documento para este proceso';
+		}
+
+		$doc =  Modgddocumentos::find(Input::get("docid"));
+
+		$version = Modgdversiones::where('gddoc_id','=',Input::get("docid"))->orderBy('gdver_id','desc')->first();
+
+		$version->gdver_descripcion = str_replace("empresa","",$version->gdver_descripcion);
+
+		$empresas = ListEnterprises::where('cliente','=',0)->get();
+		
+		foreach($empresas as $empresa)
+		{
+			$version->gdver_descripcion = str_replace($empresa->abbr,"",$version->gdver_descripcion);
+		}
+
+		$subcategoria = Modgdsubcategorias::find($doc->gdsub_id);
+
+		//return $version;
+			
+		if(Input::get('mult_arch') == 1)
+		{
+			$version->gdver_estado = 'inactivo';			
+
+			$empresas = ListEnterprises::where('cliente','=',0)->get();
+			foreach($empresas as $empresa)
+			{
+				$exist = Modgdversiones::where('gddoc_id','=',Input::get("docid"))->where('empresa','=',$empresa->id)->first();
+				if($exist == null)
+				{
+					$ver = new Modgdversiones;
+					$ver->gddoc_id = $doc->gddoc_id;
+					$ver->gdver_version = $version->gdver_version;
+					$ver->gdver_descripcion = $version->gdver_descripcion.' empresa '.$empresa->abbr;
+					$ver->gdver_fecha_version = $version->gdver_fecha_version;
+
+					$file = Input::file('arch'.$empresa->abbr);
+					$empresa->nombre = preg_replace('/\s+/','',$empresa->nombre);
+					$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $doc->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension());
+					$file_preview = Input::file('arch_prev'.$empresa->abbr);
+					$file_preview->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $doc->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file_preview->getClientOriginalExtension());
+					$ver->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$doc->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension();
+					$ver->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$doc->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file_preview->getClientOriginalExtension();
+
+					$ver->empresa = $empresa->id;
+					$ver->usu_id = Session::get('usu_id');
+					$ver->save();
+				}
+				else{
+
+					$file = Input::file('arch'.$empresa->abbr);
+					$empresa->nombre = preg_replace('/\s+/','',$empresa->nombre);
+					$file->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $doc->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension());
+					$file_preview = Input::file('arch_prev'.$empresa->abbr);
+					$file_preview->move($subcategoria->gdsub_directorio."/".$empresa->nombre, $doc->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file_preview->getClientOriginalExtension());
+					$exist->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$doc->gddoc_identificacion.'-'.$empresa->abbr.'.'.$file->getClientOriginalExtension();
+					$exist->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$empresa->nombre."/".$doc->gddoc_identificacion.'-'.$empresa->abbr.'_preview.'.$file_preview->getClientOriginalExtension();					
+					$exist->usu_id = Session::get('usu_id');
+					$exist->save();
+				}
+				
+				
+			}
+			
+			
+		}
+		else{
+
+			if(Input::get('mult_cons') == 1)
+			{
+				$version->gdver_estado = 'inactivo';				
+				$file = Input::file('gdver_ruta_archivo');
+				$file_preview = Input::file('gdver_ruta_preview');
+			
+				$file->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension());
+				
+				$file_preview->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension());
+
+				$empresas = ListEnterprises::where('cliente','=',0)->get();
+				
+				foreach($empresas as $empresa)
+				{
+					$exist = Modgdversiones::where('gddoc_id','=',Input::get("docid"))->where('empresa','=',$empresa->id)->first();
+					if($exist == null)
+					{
+						$ver = new Modgdversiones;
+						$ver->gddoc_id = $doc->gddoc_id;
+						$ver->gdver_version = $version->gdver_version;
+						$ver->gdver_descripcion = $version->gdver_descripcion.' empresa '.$empresa->abbr;
+						$ver->gdver_fecha_version = $version->gdver_fecha_version;
+						$ver->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
+						$ver->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
+						$ver->empresa = $empresa->id;
+						$ver->usu_id = Session::get('usu_id');
+						$ver->save();
+					}
+					else{
+						$exist->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
+						$exist->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
+						$exist->usu_id = Session::get('usu_id');
+						$exist->save();
+					}
+				}
+				$string = "finish";				
+			}
+			else{			
+				$file = Input::file('gdver_ruta_archivo');
+				$file->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension());
+				$file_preview = Input::file('gdver_ruta_preview');
+				$file_preview->move($subcategoria->gdsub_directorio, $doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension());
+				$version->gdver_ruta_archivo = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'.'.$file->getClientOriginalExtension();
+				$version->gdver_ruta_preview = $subcategoria->gdsub_directorio."/".$doc->gddoc_identificacion.'_preview.'.$file_preview->getClientOriginalExtension();
+				$version->empresa = null;
+				$version->usu_id = Session::get('usu_id');
+				$version->save();
+				$string = "finish";
+
+				$empresas = ListEnterprises::where('cliente','=',0)->get();
+				
+				foreach($empresas as $empresa)
+				{
+					$exist = Modgdversiones::where('gddoc_id','=',Input::get("docid"))->where('empresa','=',$empresa->id)->first();
+					if($exist != null)
+					{
+						$exist->gdver_estado = 'inactivo';
+						$exist->save();
+					}
+				}		
+			}				
+		}				
+
+		if(Input::has('gddoc_req_consecutivo') and $doc->gddoc_consecutivo_ini == null)
+		{
+			$doc->gddoc_consecutivo_ini = 0;
+			$doc->gddoc_anio = date("y");
+		}
+
+		$version->save();
+
+		$doc->gddoc_req_consecutivo = Input::has('gddoc_req_consecutivo');
+		$doc->gddoc_req_registro = Input::has('gddoc_req_registro');
+		$doc->gddoc_is_multcons = Input::get('mult_cons');
+		$doc->gddoc_is_multarch = Input::get('mult_arch');
+		$doc->save();
+
+
+		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Documento modificado con éxito!!');
+		
+	}
 
 }

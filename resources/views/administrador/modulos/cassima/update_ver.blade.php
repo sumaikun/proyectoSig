@@ -29,38 +29,29 @@
 <section class="content">
 
 
+<form action="updatedoc" name="form2" id="form2" method="post">
+   <input type="hidden" value="0" id="doc_idtr" name="doc_idtr">
+   <input type="hidden" value="0" id="doc_subc" name="doc_subc">    
+</form>
 
+<button class="btn btn-danger form-control" onclick="updatedocument()">Modificar como documento</button>
+
+<script>
+   function updatedocument()
+   {
+      if($("#doc_idtr").val() == 0){
+         alert("Seleccione previamente un documento");
+      }
+      else{
+          document.getElementById('form2').submit();
+      }
+   }
+</script>
+
+<br>
+<br>
 
  <form name="form1" id="form1" action="updateversion" onsubmit="return validar_version()" method="post" enctype="multipart/form-data">
-
-<!-- <div class="col-lg-6 col-xs-12">
-
-<div class="panel panel-primary">
-   <div class="panel-heading">
-      <h3 class="panel-title"><i class="fa fa-cloud-upload"></i> <strong>Información Nueva versión</strong></h3>
-   </div>
-   <div class="panel-body">
-      
-      <div class="col-lg-12"><strong>Archivo *</strong>
-         <input type="file"  name="gdver_ruta_archivo" id="gdver_ruta_archivo" class="filestyle" data-buttonText=" Seleccione" data-buttonName="btn-warning" required>
-      </div>
-
-      <div class="col-lg-12"><strong>Previsualización *</strong>
-         <input type="file"  name="gdver_ruta_preview" id="gdver_ruta_preview" class="filestyle" accept="image/x-png, image/gif, image/jpeg" data-buttonText=" Seleccione" data-buttonName="btn-success" required>
-      </div>
-      
-      <div class="col-lg-12"><br>
-         <button type="submit" class="btn btn-success btn-md btn-block"><i class="fa fa-floppy-o"></i> Guardar</button>
-      </div>
-
-      
-
-   </div>
-</div>
-
-</div> -->
-
-
 
 <div class="col-lg-6 col-xs-12">
 
@@ -118,15 +109,8 @@
 
    </div>
 </div>
-
+   
 </div>
-
-
-
-
-
-
-
 
 
 
@@ -219,9 +203,12 @@ function buscar_informacion(id){
          console.log(data);
       }else{
          console.log(data);
-         $('#gdver_descripcion').val(data.documentos.gdver_descripcion);
-         $("#gdver_fecha_version").val(data.documentos.gdver_fecha_version);
+
+         $('#doc_idtr').val(data.documentos.gddoc_id);
          
+
+         $('#gdver_descripcion').val(data.documentos.gdver_descripcion);
+         $("#gdver_fecha_version").val(data.documentos.gdver_fecha_version);         
 
          if(data.documentos.gddoc_req_registro==1){
             $('#gddoc_req_registro').prop("checked", true);

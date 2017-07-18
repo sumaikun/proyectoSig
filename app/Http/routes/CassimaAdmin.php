@@ -245,3 +245,7 @@ Route::post('buscar_hv_doc', 'Congdhvdocumentos@show');
 Route::post('save_hv_doc', 'Congdhvdocumentos@create');
 
 /***********************************************************************************************/
+
+Route::any('updatedoc', 'Congddocumentos@editalldocument');
+
+Route::post('updatealldocument','Congddocumentos@updatealldocument');
