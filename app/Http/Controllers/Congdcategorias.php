@@ -180,6 +180,23 @@ class Congdcategorias extends Controller {
 
 	}
 
+		public function changue_activation($id)
+	{		
+		$categoria = Modgdcategorias::where('gdcat_id','=',$id)->first();
+		$estado = $categoria->gdcat_estado;
+		if($estado == 'activo')
+		{
+			$categoria->gdcat_estado = 'inactivo';
+		}
+		else{
+			$categoria->gdcat_estado = 'activo';	
+		}
+
+		$categoria->save();
+		
+		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Se actualizo con éxito la categoría!!');
+	}
+
 
 
 

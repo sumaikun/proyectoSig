@@ -185,5 +185,23 @@ class Congdsubcategorias extends Controller {
 	}
 
 
+	public function changue_activation($id)
+	{
+		$subcategoria = Modgdsubcategorias::where('gdsub_id','=',$id)->first();
+		$estado = $subcategoria->gdsub_estado;
+		if($estado == 'activo')
+		{
+			$subcategoria->gdsub_estado = 'inactivo';
+		}
+		else{
+			$subcategoria->gdsub_estado = 'activo';	
+		}
+
+		$subcategoria->save();
+		
+		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Se actualizo con éxito la subcategoría!!');
+	}
+
+
 
 }

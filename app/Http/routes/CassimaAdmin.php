@@ -33,8 +33,8 @@ Route::post('registrar_sub', 'Congdsubcategorias@create');
 
 // esta ruta es para editar y ordenar las categorias y las subcategorias
 Route::any('ord_edit_cat_and_sub', function(){
-   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();
+   $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->get();
+   $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->get();
    return View::make('administrador.modulos.cassima.ord_edit_cat_and_sub', array('categorias' => $categorias, 'subcategorias' => $subcategorias));
 });
 
@@ -62,6 +62,12 @@ Route::get('ordsubcatdown/{idcat}/{idsub}', 'Congdsubcategorias@ordsubdown');
 // ordenando una subcategoria hacia arriba
 Route::get('ordsubcatup/{idcat}/{idsub}', 'Congdsubcategorias@ordsubup');
    
+// Inactivar o activar categoria
+Route::get('chague_activation_cat/{id}', 'Congdcategorias@changue_activation');
+
+// Inactivar o activar subcategoria
+Route::get('chague_activation_sub/{id}', 'Congdsubcategorias@changue_activation');
+
 /******************************************************************************************************/
 
 

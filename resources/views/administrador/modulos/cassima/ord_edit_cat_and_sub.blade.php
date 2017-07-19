@@ -40,12 +40,15 @@
          <h4 class="panel-title">
             <a data-toggle="collapse" data-parent="#accordion" href="#{{ $cat->gdcat_id.'colla' }}"><i class="fa fa-folder-open-o"></i>
             </span> {{ $cat->gdcat_nombre}}</a>
+            <span style="margin-left:60px;"> Estado: {{ $cat->gdcat_estado }}</span>
             <!-- <i class="fa fa-trash-o pull-right text-danger"></i> -->
             <a href="{{ url('admin/show_cate/'.$cat->gdcat_id) }}">
                <i class="fa fa-pencil-square-o pull-right text-warning"></i>
             </a>
             <a href="{{ url('admin/ordcatdown/'.$cat->gdcat_id) }}"><i class="fa fa-arrow-down pull-right text-success" style="margin-right:15px;"></i></a>
             <a href="{{ url('admin/ordcatup/'.$cat->gdcat_id) }}"><i class="fa fa-arrow-up pull-right text-success" style="margin-right:15px;"></i></a>
+            <a href="{{ url('admin/chague_activation_cat/'.$cat->gdcat_id) }}" title="activar/inactivar" onclick="return confirm('¿Desea cambiar el estado de la categoria?')"><i class="fa fa-exchange pull-right" aria-hidden="true" style="margin-right:10px;"></i></a>
+            
             
          </h4>
       </div>
@@ -56,14 +59,14 @@
             <li class="list-group-item">
                <i class="fa fa-angle-double-right"></i>
                <a href="#"> {{ $sub->gdsub_nombre }}</a>
+               <span style="margin-left:60px;"> Estado: {{ $sub->gdsub_estado }}</span>
                <a href="{{ url('admin/show_subcate/'.$sub->gdsub_id) }}">
                   <i class="fa fa-pencil-square-o pull-right text-warning"></i>
                </a>
-               <a href="{{ url('admin/ordsubcatdown/'.$cat->gdcat_id.'/'.$sub->gdsub_id) }}"><i class="fa fa-arrow-down pull-right" style="margin-right:15px;"></i></a>
-               <a href="{{ url('admin/ordsubcatup/'.$cat->gdcat_id.'/'.$sub->gdsub_id) }}"><i class="fa fa-arrow-up pull-right" style="margin-right:15px;"></i></a>
-            <!-- <a href="{{ url('admin/ordcatup/'.$cat->gdcat_id) }}"><i class="fa fa-arrow-up pull-right" style="margin-right:15px;"></i></a> -->
-               <!-- <i class="fa fa-trash-o pull-right text-danger"></i> -->
-               <!-- <i class="fa fa-pencil-square-o pull-right text-warning"></i> -->
+               <a href="{{ url('admin/ordsubcatdown/'.$cat->gdcat_id.'/'.$sub->gdsub_id) }}"><i class="fa fa-arrow-down pull-right" style="margin-right:10px;"></i></a>
+               <a href="{{ url('admin/ordsubcatup/'.$cat->gdcat_id.'/'.$sub->gdsub_id) }}"><i class="fa fa-arrow-up pull-right" style="margin-right:10px;"></i></a>
+               <a href="{{ url('admin/chague_activation_sub/'.$sub->gdsub_id) }}" title="activar/inactivar" onclick="return confirm('¿Desea cambiar el estado de la subcategoria?')"><i class="fa fa-exchange pull-right" aria-hidden="true" style="margin-right:10px;"></i></a>
+            
             </li>
             @endif
          @endforeach
