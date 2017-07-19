@@ -362,6 +362,9 @@ class Congddocumentos extends Controller {
 		$version_act = Modgdversiones::where('gdver_id','=',Input::get('geddoc_id'))->first();
 		$version_act->gdver_estado = 'activo';
 		$version_act->save();
+		$documento = Modgddocumentos::find($version_act->gddoc_id);
+		$documento->gddoc_estado = 'activo';
+		$documento->save();
 		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Documento Habilitado con éxito!!');
 	}
 
