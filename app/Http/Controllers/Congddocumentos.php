@@ -320,7 +320,7 @@ class Congddocumentos extends Controller {
 		// obtengo la subcategoria para sacar la tura general
 		$subcategoria = $documento->subcategorias;
 
-		$ruta_final = str_replace("activos", "obsoletos", $subcategoria->gdsub_directorio);
+		/*$ruta_final = str_replace("activos", "obsoletos", $subcategoria->gdsub_directorio);
 		
 		// antes de mover los archivos verifico si la ruta existe, si no existe se crea
 		if(file_exists($ruta_final)==false){ File::makeDirectory($ruta_final, 0755, true, true); }
@@ -335,7 +335,7 @@ class Congddocumentos extends Controller {
 			$preview_final = str_replace("activos", "obsoletos", $version_act->gdver_ruta_preview);
 			$preview_final = str_replace(".", "_v".$version_act->gdver_version.".", $preview_final);
 			if(File::move($version_act->gdver_ruta_preview, $preview_final)){File::delete($version_act->gdver_ruta_preview);}
-		}
+		}*/
 
 		$version_act->gdver_estado = 'inactivo';
 		$documento->gddoc_estado = 'inactivo';
@@ -346,6 +346,10 @@ class Congddocumentos extends Controller {
 			return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Error Inabilitado el documento!!');
 		}
 
+	}
+
+	public function enable_doc(){
+		
 	}
 
 

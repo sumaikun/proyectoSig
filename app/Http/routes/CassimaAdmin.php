@@ -227,16 +227,35 @@ Route::any('disable_doc', function(){
     ->where('gd_versiones.gdver_estado', '=', 'activo')
     ->where('gd_documentos.gddoc_estado', '=', 'activo')
     ->orderBy('gddoc_identificacion', 'asc')->get();
+
+    $tipo = "inactivar";
+
+    $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
       
-   return View::make('administrador.modulos.cassima.disable_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos));
+   return View::make('administrador.modulos.cassima.disable_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'tipo'=>$tipo, 'empresas'=>$empresas ));
+});
+
+Route::any('enable_doc', function(){
+
+   $categorias = DB::SELECT(DB::raw("SELECT DISTINCT (cat.gdcat_id), cat.* from  gd_categorias as cat inner join gd_subcategorias as sub on sub.gdcat_id = cat.gdcat_id inner join gd_documentos as doc on doc.gdsub_id = sub.gdsub_id inner join gd_versiones as ver on ver.gddoc_id = doc.gddoc_id  where ver.gdver_estado = 'inactivo' ORDER BY cat.gdcat_guia asc"));
+   $subcategorias = DB::SELECT(DB::RAW("SELECT DISTINCT (sub.gdsub_id), sub.* from  gd_subcategorias as sub inner join gd_documentos as doc on doc.gdsub_id = sub.gdsub_id inner join gd_versiones as ver on ver.gddoc_id = doc.gddoc_id  where ver.gdver_estado = 'inactivo' ORDER BY sub.gdsub_id, sub.gdsub_guia asc"));
+
+   $documentos = DB::table('gd_documentos')
+    ->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
+    ->where('gd_versiones.gdver_estado', '=', 'inactivo')    
+    ->orderBy('gddoc_identificacion', 'asc')->get();
+   
+   $tipo = "activar";
+
+   $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
+
+   return View::make('administrador.modulos.cassima.disable_doc', array('categorias' => $categorias, 'subcategorias' => $subcategorias, 'documentos' => $documentos, 'tipo'=>$tipo, 'empresas'=>$empresas));
 });
 
    
 Route::post('disabledoc', 'Congddocumentos@disable_doc');
 
-
-
-
+Route::post('enabledoc', 'Congddocumentos@enable_doc');
 
 
 /***************************************** ACTUALIZACION HV ***********************************/

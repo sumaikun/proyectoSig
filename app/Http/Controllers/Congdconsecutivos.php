@@ -2,7 +2,7 @@
 
 namespace psig\Http\Controllers;
 
-use psig\helpers\Metodos;
+use psig\Helpers\Metodos;
 use psig\models\Modgdconsecutivos;
 use psig\models\Modgddocumentos;
 use psig\models\Modgdversiones;

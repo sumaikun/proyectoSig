@@ -12,7 +12,7 @@
 @section('contenido')
 <!-- header de la pagina -->
 <section class="content-header">
-	<h1><i class="fa fa-eye-slash"></i> Inactivar Documento<!-- <small>subcategorias</small> --></h1>
+	<h1><i class="fa fa-eye-slash"></i> @if($tipo=='inactivar') Inactivar @else Activar @endif Documento<!-- <small>subcategorias</small> --></h1>
    <ol class="breadcrumb">
    	<li>
          <a href="{{ url('admin/modulos') }}">
@@ -20,7 +20,7 @@
          </a>
       </li>
       <li><a href="{{ url('admin/cassima') }}">CASSIMA</a></li>
-      <li class="active">Inactivar Documento</li>
+      <li class="active">@if($tipo=='inactivar') Inactivar Documentos @else Activar Documentos @endif</li>
     </ol>
     <!-- <hr> -->
 </section>
@@ -29,9 +29,15 @@
 <section class="content">
 
 
+@if($tipo=='inactivar')
+   <a href="{{ url('admin/enable_doc') }}"><button class="btn btn-warning form-control">Ver documentos  inactivos </button></a>
+@else
+ <a href="{{ url('admin/disable_doc') }}"><button class="btn btn-warning form-control">Ver documentos  activos </button></a> 
+@endif
+<br>
+<br>
 
-
-<form name="form1" id="form1" action="disabledoc" onsubmit="return validar()" method="post">
+<form name="form1" id="form1" action="@if($tipo=='inactivar') {{'disabledoc'}} @else {{'enabledoc'}} @endif" onsubmit="return validar()" method="post">
 
 <div class="row">
 <div class="col-lg-7 col-xs-12" style="border-right: gray 5px solid;">
@@ -115,21 +121,25 @@
          <div class="well" id="noconse">
             <div class="row">
                <div class="col-lg-12">
+                  @if($tipo=='inactivar')
                   <button type="submit" class="btn btn-lg btn-block btn-danger" data-toggle="modal" data-target=".bs-example-modal-lg">
-                     <i class="fa fa-thumbs-o-down"></i> Inactivar Documento
+                     <i class="fa fa-thumbs-o-down"></i>  {{"Inactivar Documento"}}  
                   </button>
+                  @else    
+                  <button type="submit" class="btn btn-lg btn-block btn-success" data-toggle="modal" data-target=".bs-example-modal-lg">
+                     <i class="fa fa-thumbs-o-up"></i>  {{"Activar Documento"}}  
+                  </button>                     
+                  @endif
                </div>
             </div>
          </div>
-      </div>
-
-      </div>
+      </div>      
+      </div>      
    </div>
 </div>
 
 </div>
 </form>
-
 
 </section>
 @stop
