@@ -239,46 +239,58 @@ class Congddocumentos extends Controller {
 	public function download_json(){
 	
 		//return Input::get('id_doc');
-
-		$download_doc = Modgdversiones::where('gdver_id','=',Input::get('id_doc'))->first();
-		$documento = Modgddocumentos::find($download_doc->gddoc_id);
-
-		//return $download_doc;
-
-		if($download_doc->empresa != null)
+		try
 		{
-			//return 'here';
-			$info = pathinfo($download_doc->gdver_ruta_archivo);
-			$ext = $info['extension'];
-			$nombre = $documento->gddoc_identificacion."_".Input::get('consecutivogenerado').'-'.$download_doc->empresas->abbr.".".$ext;
+			$download_doc = Modgdversiones::where('gdver_id','=',Input::get('id_doc'))->first();
+			$documento = Modgddocumentos::find($download_doc->gddoc_id);
 
-			Metodos::registrar_descarga(Session::get('usu_id'),$documento->gddoc_id);
+			//return $download_doc;
 
-			return Response::download($download_doc->gdver_ruta_archivo, $nombre);
+			if($download_doc->empresa != null)
+			{
+				//return 'here';
+				$info = pathinfo($download_doc->gdver_ruta_archivo);
+				$ext = $info['extension'];
+				$nombre = $documento->gddoc_identificacion."_".Input::get('consecutivogenerado').'-'.$download_doc->empresas->abbr.".".$ext;
+
+				Metodos::registrar_descarga(Session::get('usu_id'),$documento->gddoc_id);
+
+				return Response::download($download_doc->gdver_ruta_archivo, $nombre);
+			}
+
+
+			else
+			{
+				//return 'here2';			
+
+				$version = $documento->versiones()->where('gdver_estado', 'activo')->get();
+
+				$info = pathinfo($version[0]->gdver_ruta_archivo);
+				$ext = $info['extension'];
+
+				$nombre = $documento->gddoc_identificacion."_".Input::get('consecutivogenerado').".".$ext;
+
+				Metodos::registrar_descarga(Session::get('usu_id'),$documento->gddoc_id);
+
+				return Response::download($version[0]->gdver_ruta_archivo, $nombre);	
+			}	
 		}
-
-
-		else
-		{
-			//return 'here2';			
-
-			$version = $documento->versiones()->where('gdver_estado', 'activo')->get();
-
-			$info = pathinfo($version[0]->gdver_ruta_archivo);
-			$ext = $info['extension'];
-
-			$nombre = $documento->gddoc_identificacion."_".Input::get('consecutivogenerado').".".$ext;
-
-			Metodos::registrar_descarga(Session::get('usu_id'),$documento->gddoc_id);
-
-			return Response::download($version[0]->gdver_ruta_archivo, $nombre);	
+		catch(\Exception $e){
+		    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Necesita generar una nueva versión del documento!!');
 		}
+		
 		
 	}
 
 	public function download_sin_conse_json(){
-		Metodos::registrar_descarga(Session::get('usu_id'),Input::get('iddoc_hidden'));
-		return Response::download(Input::get('download'));
+		try{
+    		Metodos::registrar_descarga(Session::get('usu_id'),Input::get('iddoc_hidden'));
+			return Response::download(Input::get('download'));
+		} 
+		catch(\Exception $e){
+		    return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Necesita generar una nueva versión del documento!!');
+		}
+		
 	}
 
 
