@@ -176,14 +176,24 @@ class Congddocumentos extends Controller {
 	// busca la informacion de un documento espesifico
 	public function store_json(){
 
-
+		/*$estado = Modgdversiones::where('gdver_id','=',Input::get('iddoc'))->value('gdver_estado');
 	
-		$documentos = DB::table('gd_documentos')
-   		->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
+		if($estado = "activo")
+		{
+			$documentos = DB::table('gd_documentos')
+	   		->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')
     		->where('gd_versiones.gdver_estado', '=', 'activo')
     		->where('gd_versiones.gdver_id', '=', Input::get('iddoc'))
-    		->where('gd_documentos.gddoc_estado', '=', 'activo')->first();
-
+    		->where('gd_documentos.gddoc_estado', '=', 'activo')->first();	
+		}
+		else{
+			$documentos = DB::table('gd_documentos')
+	   		->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')    		
+    		->where('gd_versiones.gdver_id', '=', Input::get('iddoc'))->first();    			
+		}*/
+		$documentos = DB::table('gd_documentos')
+	   		->join('gd_versiones', 'gd_versiones.gddoc_id', '=', 'gd_documentos.gddoc_id')    		
+    		->where('gd_versiones.gdver_id', '=', Input::get('iddoc'))->first();
 
     	//return Response::json(compact('documentos'));	 
     	
@@ -311,12 +321,12 @@ class Congddocumentos extends Controller {
 	}
 
 
-	public function disable_doc(){
+	public function disable_doc(){		
 
 		// obtengo el documento y la version actual del documento
-		$documento = Modgddocumentos::find(Input::get('geddoc_id'));
-		$version_act = $documento->versiones()->where('gdver_estado', 'activo')->first();
-
+		
+		$version_act = Modgdversiones::where('gdver_id','=',Input::get('geddoc_id'))->first();
+		$documento = Modgddocumentos::find($version_act->gddoc_id);
 		// obtengo la subcategoria para sacar la tura general
 		$subcategoria = $documento->subcategorias;
 
@@ -338,9 +348,9 @@ class Congddocumentos extends Controller {
 		}*/
 
 		$version_act->gdver_estado = 'inactivo';
-		$documento->gddoc_estado = 'inactivo';
+		//$documento->gddoc_estado = 'inactivo';
 
-		if($version_act->save() && $documento->save()){
+		if($version_act->save()){
 			return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Documento Inabilitado con éxito!!');
 		}else{
 			return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Error Inabilitado el documento!!');
@@ -349,7 +359,10 @@ class Congddocumentos extends Controller {
 	}
 
 	public function enable_doc(){
-		
+		$version_act = Modgdversiones::where('gdver_id','=',Input::get('geddoc_id'))->first();
+		$version_act->gdver_estado = 'activo';
+		$version_act->save();
+		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Documento Habilitado con éxito!!');
 	}
 
 

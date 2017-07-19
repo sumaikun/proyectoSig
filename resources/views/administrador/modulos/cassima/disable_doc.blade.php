@@ -72,7 +72,7 @@
                @foreach ($documentos as $doc)
                   @if($sub->gdsub_id == $doc->gdsub_id)
                      <li class="correte">
-                        <input type="radio" name="geddoc_id" class="geddoc_id" id="{{$doc->gddoc_id.'doc'}}" value="{{$doc->gddoc_id}}" onclick="buscar_informacion({{$doc->gddoc_id}})">
+                        <input type="radio" name="geddoc_id" class="geddoc_id" id="{{$doc->gddoc_id.'doc'}}" value="{{$doc->gdver_id}}" onclick="buscar_informacion({{$doc->gdver_id}})">
                         <label for="{{$doc->gddoc_id.'doc'}}">{{$doc->gddoc_identificacion." ".$doc->gdver_descripcion }}</label>
                      </li>
                   @endif
@@ -93,6 +93,14 @@
 
 </div>
 
+<style>
+  .cons_empresas{
+    display:none;
+  }
+  #cons_todas{
+    display:none;
+  }
+</style>
 
 <div class="col-lg-5">
    <div class="panel panel-default">
@@ -115,6 +123,10 @@
          <li><strong>Requiere consecutivo: </strong><span id="req"></span></li>
          <li><strong>Consecutivo inicial: </strong><span id="conse_ini"></span></li>
          <!-- <li><strong>Ruta Archivo: </strong><span id="ruta"></span></li> -->
+         <li id="cons_todas"><h4><small><strong>Ultimo Consecutivo: </strong></small><span id="ultimoconse" class="label label-success"></span></h4></li>
+         @foreach($empresas as $empresa)
+          <li class="cons_empresas"><strong>Ultimo Consecutivo {{$empresa->abbr}}: </strong><span id="cons_{{$empresa->abbr}}"></span></li>
+        @endforeach
       </ul>
 
       <div class="panel-footer">
@@ -149,14 +161,26 @@
 @section('script')
 <script type="text/javascript">
 
+var tipo = "{{$tipo}}";
 
 function validar(){
 
    if($('.geddoc_id').is(':checked')==false){
       alert("Por favor selecciona un documento del la estructura de documentos");
       return false;
-   }else if(!confirm("Está seguro de Inabilitar el documento?")){
-      return false;
+   }else
+    {
+      if(tipo=="activar")
+      {
+        string = "¿Está seguro de Habilitar el documento?";
+      }
+      else{
+        string = "¿Está seguro de Inabilitar el documento?"; 
+      }
+      if(!confirm(string))
+      {
+        return false;
+      } 
    }
 }
 
@@ -166,22 +190,77 @@ function buscar_informacion(id){
    
    $.post("buscar_info_doc_json",{iddoc:id},function(data){
 
-      if(data.length!=0){
-         
+      //return alert(data);
+
+      if(data.length==0){
+         console.log(data);
+      }else{
+          //console.log("total empresas "+data.empresas[0].nombre);
          $("#identificacion").html(data.documentos.gddoc_identificacion); 
-         $("#desc").html(data.documentos.gdver_descripcion); 
          $("#version").html("V"+data.documentos.gdver_version); 
-         $("#fecha_version").html(data.documentos.gdver_fecha_version); 
+         $("#desc").html(data.documentos.gdver_descripcion); 
+         $("#fecha_version").html(data.documentos.gdver_fecha_version);          
+
 
          if(data.documentos.gddoc_req_consecutivo==1){
+              $(".cons_empresas").show();
+              $("#cons_todas").show();
+            if(data.documentos.gddoc_is_multcons==1)
+            {
+              console.log('entra a mult cons');
+              $(".cons_empresas").show();
+              $("#cons_todas").hide();
+              for(var i in data.consecutivo){
+                  $("#cons_"+i).empty();
+                  $("#cons_"+i).html(data.consecutivo[i]);                  
+                }
+              
+            }
+            else{
+              //console.log('no es mult cons'+data.documentos.gddoc_req_consecutivo);
+              $(".cons_empresas").hide();
+              $("#cons_todas").show(); 
+            }
+
             $("#req").html("SI");   
             $("#conse_ini").html(armar_sonsecutivo(data.documentos.gddoc_consecutivo_ini)+"-"+data.documentos.gddoc_anio);  
+            
+            
+
+            if(data.consecutivo!=null){
+
+              if(data.documentos.gddoc_is_multcons==1)
+              {
+                //console.log('entré');
+
+                 for (var i=0 ; i<data.empresas.length ; i++)
+                 {
+                    $("#cons_"+data.empresas[i].abbr).html(data.consecutivo[i]);
+                    $("#cons_"+data.empresas[i].abbr).html();
+                 }
+              }
+              else{                
+               $("#ultimoconse").html(data.consecutivo.gdcon_consecutivo);
+              }
+            }else{
+               $("#ultimoconse").html('');
+            }
+            
          }else{
+
+            $(".cons_empresas").hide();
+            $("#cons_todas").hide();
+
+            
+
+            
+            
             $("#req").html("NO");   
             $("#conse_ini").html('');
-         }
-      }
+            $("#ultimoconse").html('');
+         }         
 
+      }   
    });
 }
 
