@@ -171,7 +171,7 @@ Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
 //-----------------------------------------------------------------------------------------------------                        
 Route::any("all_registers",function(){
       
-   $usuarios = psig\models\Modusuarios::where('usu_estado','=','activo')->get();
+   $usuarios = psig\models\Modusuarios::All();
   
   if(strpos(URL::previous(),'all_registers'))
   {
