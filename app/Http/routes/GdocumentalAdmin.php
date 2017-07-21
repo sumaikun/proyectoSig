@@ -29,8 +29,9 @@ Route::any('download_doc', function(){
       ->orderBy('gddoc_identificacion', 'asc')   
       ->get();
 
-    $categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
-    $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();      
+    $categorias = DB::SELECT(DB::RAW("select DISTINCT(cat.gdcat_id),cat.*   from gd_categorias as cat INNER JOIN gd_subcategorias as sub on cat.gdcat_id = sub.gdcat_id inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id where  cat.gdcat_estado = 'activo'"));
+
+    $subcategorias = DB::SELECT(DB::RAW("select DISTINCT(sub.gdsub_id), sub.*  from gd_subcategorias as sub inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id where sub.gdsub_estado = 'activo' ORDER BY sub.gdcat_id, sub.gdsub_guia ASC"));      
   }
 
    $empresas = psig\models\ListEnterprises::where('cliente', '=', 0)->get();
