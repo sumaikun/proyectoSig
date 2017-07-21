@@ -27,7 +27,7 @@ Route::any('download_doc', function(){
       /*$categorias = psig\models\Modgdcategorias::orderBy('gdcat_guia', 'asc')->where('gdcat_estado','=','activo')->get();
       $subcategorias = psig\models\Modgdsubcategorias::orderBy('gdcat_id')->orderBy('gdsub_guia', 'asc')->where('gdsub_estado','=','activo')->get();*/
 
-      $categorias = DB::SELECT(DB::RAW("select DISTINCT(cat.gdcat_id),cat.*   from gd_categorias as cat INNER JOIN gd_subcategorias as sub on cat.gdcat_id = sub.gdcat_id inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id INNER JOIN gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where  sub.gdsub_estado = 'activo'  and per.usu_id = ".Session::get('usu_id')." and per.gdperdoc_permiso = 1  ORDER BY sub.gdcat_id, sub.gdsub_guia ASC"));
+      $categorias = DB::SELECT(DB::RAW("select DISTINCT(cat.gdcat_id),cat.*   from gd_categorias as cat INNER JOIN gd_subcategorias as sub on cat.gdcat_id = sub.gdcat_id inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id INNER JOIN gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where  sub.gdsub_estado = 'activo' and cat.gdcat_estado = 'activo'  and per.usu_id = ".Session::get('usu_id')." and per.gdperdoc_permiso = 1  ORDER BY sub.gdcat_id, sub.gdsub_guia ASC"));
 
       $subcategorias = DB::SELECT(DB::RAW("select DISTINCT(sub.gdsub_id),sub.*  from gd_subcategorias as sub inner join gd_documentos as doc on sub.gdsub_id = doc.gdsub_id INNER JOIN gd_permisos_documentos as per on doc.gddoc_id = per.gddoc_id where  sub.gdsub_estado = 'activo'  and per.usu_id = ".Session::get('usu_id')." and per.gdperdoc_permiso = 1  ORDER BY sub.gdcat_id, sub.gdsub_guia ASC"));
 
