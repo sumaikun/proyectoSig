@@ -44,7 +44,7 @@ class Conactividades extends Controller
     	 }
     	 else
     	 {
-    	 	return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', '¡Actividad registrada con éxito!');
+    	 	return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', '¡Actividad registrada con éxito!');
     	 }			
     	
     }
@@ -55,13 +55,14 @@ class Conactividades extends Controller
     	$id = Metodos::id_generator($empresa,'id');
     	$empresa->id = $id;
     	$empresa->nombre = Input::get('emp_nombre');
-    	$empresa->save();
+    	$empresa->cliente = 1;
+        $empresa->save();
         if(Session::get('rol_nombre')=='administrador'){
     		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', '¡Empresa registrada con éxito!');
     	 }
     	 else
     	 {
-    	 	return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', '¡Empresa registrada con éxito!');
+    	 	return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', '¡Empresa registrada con éxito!');
     	 }
     }
 
