@@ -52,6 +52,19 @@ Route::any('actividades/list', function(){
      return View::make('actividades.usuario.listaactividades',compact('registros','actividades','empresas','propias'));
 });
 
+Route::any('actividades/parameters', function(){
+
+    $permisos = psig\models\Modpermisosact::where('user_id','=',Session::get('usu_id'))->value('permisos');
+    $array = explode(",",$permisos);
+    if(!in_array('modificar_parametros', $array))
+    {
+      return " ";
+    }
+
+   $actividades = psig\models\ListActivities::orderBy('nombre')->get();
+   $empresas = psig\models\ListEnterprises::where('cliente','=',1)->OrderBy('nombre')->get();
+   return View::make('actividades.usuario.parametros', array('actividades' => $actividades,'empresas'=>$empresas));
+});
 
 Route::post('actividades/registraractividad','Conactividades@store');
 
@@ -143,3 +156,15 @@ Route::get('actividades/activity_list/{id}/{year}','Conactividades@lista');
 Route::get('actividades/detailinfo/{fecha}/{id}','Conactividades@detailinfo');
 
 Route::get('actividades/reg_edit/{id}','Conactividades@edit');
+
+Route::post('actividades/registrartpact', 'Conactividades@createAct');
+
+Route::post('actividades/registrarempresa', 'Conactividades@createEmp');    
+
+Route::get('actividades/editAct/{id}', 'Conactividades@showAct');
+
+Route::get('actividades/editEmp/{id}', 'Conactividades@showEmp');
+
+Route::post('actividades/updateAct','Conactividades@updateAct');
+
+Route::post('actividades/updateEmp','Conactividades@updateEmp');

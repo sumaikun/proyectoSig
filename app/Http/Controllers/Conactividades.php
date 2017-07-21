@@ -38,12 +38,13 @@ class Conactividades extends Controller
     	$id = Metodos::id_generator($actividad,'id');
     	$actividad->id = $id;
     	$actividad->nombre = Input::get('act_nombre');
-    	if($actividad->save()){
-    		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Actividad registrada con éxito!!');
+    	$actividad->save();
+        if(Session::get('rol_nombre')=='administrador'){
+    		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', '¡Actividad registrada con éxito!');
     	 }
     	 else
     	 {
-    	 	return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+    	 	return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', '¡Actividad registrada con éxito!');
     	 }			
     	
     }
@@ -54,25 +55,39 @@ class Conactividades extends Controller
     	$id = Metodos::id_generator($empresa,'id');
     	$empresa->id = $id;
     	$empresa->nombre = Input::get('emp_nombre');
-    	if($empresa->save()){
-    		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Empresa registrada con éxito!!');
+    	$empresa->save();
+        if(Session::get('rol_nombre')=='administrador'){
+    		return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', '¡Empresa registrada con éxito!');
     	 }
     	 else
     	 {
-    	 	return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
+    	 	return View::make('usuarios.cosas.resultado_volver')->with('funcion', false)->with('mensaje', '¡Empresa registrada con éxito!');
     	 }
     }
 
     public function showAct($id)
     {
        $actividad = ListActivities::find($id);
-       return View::make('actividades.admin.update_parameter',array('actividad'=>$actividad));
+       if(Session::get('rol_nombre')=='usuario')
+       {
+            return View::make('actividades.usuario.update_parameter',array('actividad'=>$actividad));
+       }
+       else{
+            return View::make('actividades.admin.update_parameter',array('actividad'=>$actividad)); 
+       }
+       
     }
 
     public function showEmp($id)
     {
         $empresa = ListEnterprises::find($id);
-        return View::make('actividades.admin.update_parameter',array('empresa'=>$empresa));
+        if(Session::get('rol_nombre')=='usuario')
+        {
+            return View::make('actividades.usuario.update_parameter',array('actividad'=>$actividad));
+        }
+        else{
+            return View::make('actividades.admin.update_parameter',array('empresa'=>$empresa));    
+        }        
     }
 
     public function updateAct()
@@ -80,13 +95,13 @@ class Conactividades extends Controller
         $id = Input::get('id');
         $actividad = ListActivities::find($id);
         $actividad->nombre = Input::get('nombre');
-        if($actividad ->save()){
+        $actividad ->save();
+        if(Session::get('rol_nombre')=='administrador'){
             return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Parametro actualizado con éxito!!');
         } 
         else{
-
-            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-        }        
+            return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Parametro actualizado con éxito!!');  
+        }             
         
     }
 
@@ -95,13 +110,13 @@ class Conactividades extends Controller
         $id = Input::get('id');
         $empresa = ListEnterprises::find($id);
         $empresa->nombre = Input::get('nombre');
-        if($empresa ->save()){
+        $empresa ->save();
+        if(Session::get('rol_nombre')=='administrador'){
             return View::make('administrador.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Parametro actualizado con éxito!!');
-        } 
+        }
         else{
-
-            return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un error');
-        }   
+            return View::make('usuarios.cosas.resultado_volver')->with('funcion', true)->with('mensaje', 'Parametro actualizado con éxito!!');  
+        }        
         
     }
 
@@ -504,7 +519,7 @@ class Conactividades extends Controller
 
         $chain = '';
 
-        for($i=1;$i<3;$i++)
+        for($i=1;$i<4;$i++)
         {
             if($request['permiso'.$i]!=null)
             {

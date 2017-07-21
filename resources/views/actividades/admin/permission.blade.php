@@ -60,7 +60,9 @@
                           <label for="carg_nombre">ver todos los usuarios</label>
                           <input type="checkbox" name="permiso1"  value="ver_todos_usuarios">                       
                           <label for="carg_nombre">revisar reportes</label>
-                          <input type="checkbox" name="permiso2"  value="revisar_reportes">                       
+                          <input type="checkbox" name="permiso2"  value="revisar_reportes">
+                          <label for="carg_nombre">Modificar parametros</label>
+                          <input type="checkbox" name="permiso3"  value="modificar_parametros">                       
                         </div>
                    </div>  
               </div>

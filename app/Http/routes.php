@@ -168,9 +168,28 @@ Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
 
 //CAPACITACION-----------------------------------------------------------------------------------
                                              require (__DIR__ . '/routes/CapacitacionUsuario.php');
-//-----------------------------------------------------------------------------------------------------                                                
+//-----------------------------------------------------------------------------------------------------                        
+Route::any("all_registers",function(){
+      
+   $usuarios = psig\models\Modusuarios::where('usu_estado','=','activo')->get();
+  
+  if(strpos(URL::previous(),'all_registers'))
+  {
+   //return 'sd';
+    $registros = psig\models\Modgdregistros::where('usu_id','=',Input::get('user_id'))->get();
+    $usu = Input::get('user_id');
+  }
+  else{    
+    $registros = psig\models\Modgdregistros::All();
+    $usu = null;    
+  }
+  
+  return view('usuarios.gdocumental.all_regs',compact('usuarios','registros','usu'));
+
+   });                        
 
 });
+
 
 
 

@@ -75,7 +75,16 @@
    @if(Session::get('capacitacion'))
       <li @if($op=='capacitacion') {{'class="active"'}} @endif>
          <a href="{{ url('usuario/capacitacion') }}">
-            <i class="fa fa-child"></i> Capacitaciones
+            <i class="fa fa-bug"></i> Capacitaciones
+         </a>
+      </li>
+   @endif
+   
+   
+   @if(Session::get('todos los registros'))
+      <li @if($op=='todos los registros') {{'class="active"'}} @endif>
+         <a href="{{ url('usuario/all_registers') }}">
+            <i class="fa fa-users"></i> Todos los registros
          </a>
       </li>
    @endif

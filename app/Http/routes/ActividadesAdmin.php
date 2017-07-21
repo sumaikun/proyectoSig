@@ -48,7 +48,7 @@ Route::any('actividades/list', function(){
 
 Route::any('actividades/parameters', function(){
    $actividades = psig\models\ListActivities::orderBy('nombre')->get();
-   $empresas = psig\models\ListEnterprises::OrderBy('nombre')->get();
+   $empresas = psig\models\ListEnterprises::where('cliente','=',1)->OrderBy('nombre')->get();
    return View::make('actividades.admin.parametros', array('actividades' => $actividades,'empresas'=>$empresas));
 });
 
