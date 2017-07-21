@@ -85,7 +85,7 @@ Route::any('consultar_registros', function(){
 
 Route::any('registros_usuario',function(){
 
-  $usuarios = psig\models\Modusuarios::where('usu_estado','=','activo')->get();
+  $usuarios = DB::SELECT(DB::RAW("select DISTINCT(us.usu_id),us.* from usuarios as us inner join gd_registros as reg on reg.usu_id = us.usu_id ORDER BY us.usu_nombres"));
   
   if(strpos(URL::previous(),'registros_usuario'))
   {

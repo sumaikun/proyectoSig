@@ -171,7 +171,7 @@ Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
 //-----------------------------------------------------------------------------------------------------                        
 Route::any("all_registers",function(){
       
-   $usuarios = psig\models\Modusuarios::All();
+   $usuarios = DB::SELECT(DB::RAW("select DISTINCT(us.usu_id),us.* from usuarios as us inner join gd_registros as reg on reg.usu_id = us.usu_id ORDER BY us.usu_nombres"));
   
   if(strpos(URL::previous(),'all_registers'))
   {
