@@ -119,7 +119,7 @@ class Conusuarios extends Controller {
 			$usuario->rol_id = Input::get('rol_id');
 			$usuario->carg_id = Input::get('carg_id');
 			$usuario->depe_id = Input::get('depe_id');
-
+			$destinationPath ='fotos';
 
 			if (Input::hasFile('usu_foto')){
 	
