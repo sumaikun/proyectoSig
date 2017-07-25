@@ -59,6 +59,7 @@
         center: 'title',
         right: 'month'
       },
+      defaultDate: '{{$registro->fecha_ingreso}}',
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
       drop: function() {
@@ -67,16 +68,36 @@
           // if so, remove the element from the "Draggable Events" list
           $(this).remove();
         }
+      },
+      selectable: true,
+      selectHelper: true,
+      select: function(start, end) {        
+        var comparestart = new Date('{{$registro->fecha_ingreso}}');
+        var comparefinish = new Date('{{$registro->fecha_salida}}');
+        //console.log("fecha: "+start+" compare:"+compare.getTime());
+        var eventData;
+        if(start >=comparestart.getTime() &&  end <= comparefinish.getTime()){
+            var title = prompt('Prueba de selección:');
+            if (title) {
+            eventData = {            
+              title: title,
+              start: start,
+              color  : '#A2897B',            
+              end: end
+            };
+
+            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+          }  
+        }        
+        $('#calendar').fullCalendar('unselect');
       }
     });
 
 
   });
   $(document).ready(function() {
-      var myCalendar = $('#calendar');
-      myCalendar.fullCalendar({defaultDate: '2017-03-31',
-      editable: false,
-      eventLimit: false});
+
+    var myCalendar = $('#calendar');      
 
     var myEvent = {
       title: "Alquiler",

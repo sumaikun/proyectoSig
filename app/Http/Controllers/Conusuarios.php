@@ -186,23 +186,14 @@ class Conusuarios extends Controller {
 	}
 
 
-	/**
-	 * Store a newly created resource in storage.
-	 *
-	 * @return Response
-	 */
+
 	public function store(){
 		$usuario =Modusuarios::where('usu_email', '=', Input::get('email').'@grupo-sig.com')->first();
 		return $usuario;
 	}
 
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	public function show($id){
 		$roles = Modroles::orderBy('rol_nombre')->get();
     	$dependencias = Moddependencias::orderBy('depe_nombre')->get();
@@ -212,12 +203,7 @@ class Conusuarios extends Controller {
 	}
 
 
-	/**
-	 * Show the form for editing the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	public function listado_json()
 	{
 		$usuarios = Modusuarios::all();
@@ -235,12 +221,7 @@ class Conusuarios extends Controller {
 
 
 	
-	/**
-	 * Update the specified resource in storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+
 	public function update(){
 		$usuario = Modusuarios::find(Input::get('usu_id'));
 			$usuario->usu_nombres = Input::get('usu_nombres');
@@ -282,12 +263,7 @@ class Conusuarios extends Controller {
 	}
 
 
-	/**
-	 * Remove the specified resource from storage.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
+	// this function
 	public function destroy($id)
 	{
 		//
