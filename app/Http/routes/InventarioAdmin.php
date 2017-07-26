@@ -67,7 +67,7 @@ Route::post('inventario/alquilar','Coninventario@alquilar');
 
 Route::get('inventario/Detalles/{id}','Coninventario@details');
 
-Route::get('inventario/Detalles/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}','Coninventario@edit_alquilar');
+Route::get('inventario/Detalles/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}/{valor2}/{cantidad}','Coninventario@edit_alquilar');
 
 Route::post('inventario/newComponent','Coninventario@createcomp');
 

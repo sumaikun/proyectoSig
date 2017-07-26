@@ -239,8 +239,13 @@
         </div>
 
         <div class="form-group">      
-            <label class="form-control">Valor diario</label>
+            <label class="form-control">Valor estandar</label>
             <input type="number" min="10000" name="valor" class="form-control">            
+        </div>
+
+        <div class="form-group">      
+            <label class="form-control">Valor en receso</label>
+            <input type="number" min="0" name="valor2" class="form-control">            
         </div>
         
         <button type="submit" onclick="clicked();" class="btn btn-success">

@@ -77,16 +77,16 @@
         //console.log("fecha: "+start+" compare:"+compare.getTime());
         var eventData;
         if(start >=comparestart.getTime() &&  end <= comparefinish.getTime()){
-            var title = prompt('Prueba de selección:');
+            var title = modal_calendar();
             if (title) {
-            eventData = {            
+            /*eventData = {            
               title: title,
               start: start,
               color  : '#A2897B',            
               end: end
             };
 
-            $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+            $('#calendar').fullCalendar('renderEvent', eventData, true);*/ // stick? = true
           }  
         }        
         $('#calendar').fullCalendar('unselect');
@@ -158,11 +158,18 @@
           <td style="text-align: center"> <input type="date" name="fecha2" onblur="update_calendar()" value="{{$registro->fecha_salida}}"></td>          
         </tr>
          <tr>
-          <td style="text-align: center">Valor</td>          
+          <td style="text-align: center">Valor Estandar</td>          
         </tr>
         <tr>
           <td style="text-align: center">$<input type="number" name="valor" onblur="update_calendar()" value="{{$registro->valor}}"></td>          
         </tr>
+         <tr>
+          <td style="text-align: center">Valor Receso</td>          
+        </tr>
+        <tr>
+          <td style="text-align: center">$<input type="number" name="valor2" onblur="update_calendar()" value="{{$registro->valor2}}"></td>          
+        </tr>
+          <input type="hidden" name="cantidad_v" value="{{$registro->cantidad_valor2}}">
          <tr>
           <td style="text-align: center">Valor total</td>          
         </tr>
@@ -177,13 +184,62 @@
   </div>      
 </section>
 
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Opciones de calendario en alquiler</h4>
+      </div>
+      <div class="modal-body">        
+        <button class="btn btn-primary form-control" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">¿Es un dia de receso?</button>
+        <br>
+          <div class="collapse" id="collapseExample">
+          <div class="card card-block">
+              <div class="form-group">
+                    <label class="form-control">Si</label><input type="radio" class="form-control" name="day" value="si">
+                    <label class="form-control">No</label><input type="radio" class="form-control" name="day" value="no" checked>
+              </div>        
+          </div>
+        </div>
+
+        <button class="btn btn-primary form-control" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">Crear Anotación</button>
+        <br>
+          <div class="collapse" id="collapseExample2">
+          <div class="card card-block">
+              <div class="form-group">
+                    <label class="form-control">Anotación</label>
+                    <textarea  class="form-control" name="day" ></textarea>                    
+              </div>        
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-dismiss="modal">Guardar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 @stop
 
 
 
 <script>
+
+  Number.prototype.format = function(n, x, s, c) {
+      var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+          num = this.toFixed(Math.max(0, ~~n));
+
+      return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+  };
+
   function update_calendar()
   {
     console.log($("input[name='fecha1']").val());
@@ -199,7 +255,7 @@
     myCalendar.fullCalendar('renderEvent', myEvent, true);
     $("#total").empty();
     var vtotal = taking_away_days()*$("input[name='valor']").val();
-    $("#total").append(vtotal);
+    $("#total").append("$"+vtotal.format(2, 3, '.', ','));
 
   }
 
@@ -216,9 +272,22 @@
 
   function update_data()
   {
-      $.get("modify_rent_data/"+{{$registro->id}}+"/"+$("input[name='fecha2']").val()+"/"+$("input[name='fecha1']").val()+"/"+$("input[name='valor']").val(), function(res, sta){
-        alert('datos modificados con éxito');
+      $.get("modify_rent_data/"+{{$registro->id}}+"/"+$("input[name='fecha2']").val()+"/"+$("input[name='fecha1']").val()+"/"+$("input[name='valor']").val()+"/"+$("input[name='valor2']").val()+"/"+$("input[name='cantidad_v']").val(), function(res, sta){
+        if(res == "denied")
+        {
+          alert('El valor de receso no puede ser mayor al valor estandar');
+        }
+        else{
+          alert('datos modificados con éxito');  
+        }
+        
       });
+  }
+
+  function modal_calendar()
+  {
+    $("#myModal").modal("show");
+    return "check";
   }
   
   //https://codepen.io/subodhghulaxe/pen/myxyJg

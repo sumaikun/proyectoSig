@@ -132,11 +132,17 @@ class Coninventario extends Controller
 
     public function alquilar(Request $request)
     {
+        //print_r($_POST);
+        //return "";
         $serial = InvSeriales::where('id','=',$request->objectid)->first();
         //return $serial->id_status;
         if($serial->id_status==3 || $serial->id_status==2)
         {
             return $this->common_answer('El elemento no esta disponible para esta solicitud!!',false);              
+        }
+        if($request->valor2 > $request->valor)
+        {
+            return $this->common_answer('El valor de receso no debe ser mayor al valor estandar de alquiler!!',false);   
         }
         else{
 
@@ -145,6 +151,7 @@ class Coninventario extends Controller
             $alquiler->id_usuario = Session::get('usu_id');
             $alquiler->id_serial = $request->objectid;
             $alquiler->valor = $request->valor;
+            $alquiler->valor2 = $request->valor2;
             $alquiler->fecha_ingreso = $request->fecha1;
             $alquiler->fecha_salida = $request->fecha2;
             $alquiler->id_empresa = $request->empresa;
@@ -156,13 +163,20 @@ class Coninventario extends Controller
             
     }
 
-    public function edit_alquilar($id,$fecha2,$fecha1,$valor)
+    public function edit_alquilar($id,$fecha2,$fecha1,$valor,$valor2,$cantidad)
     {
+        if($valor2>$valor)
+        {
+            return "denied";
+        }
         $alquiler = InvAlquiler::where('id','=',$id)->first();
         $alquiler->valor = $valor;
+        $alquiler->valor2 = $valor2;
+        $alquiler->cantidad_valor2 = $cantidad;
         $alquiler->fecha_ingreso = $fecha1;
         $alquiler->fecha_salida = $fecha2;
-        $alquiler->save();            
+        $alquiler->save();
+        //return "saved";            
     }
 
     public function details($id)
@@ -175,7 +189,7 @@ class Coninventario extends Controller
         }
         if($status==1)
         {
-            return $this->common_answer('El elemento se encuentra en bodega',true);
+            return $this->common_answer('El elemento se encuentra en bodega',false);
         }
         
     }
