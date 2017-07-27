@@ -78,7 +78,9 @@
         var eventData;
         if(start >=comparestart.getTime() &&  end <= comparefinish.getTime()){
             var title = modal_calendar();
+
             if (title) {
+              $("#tempdate").val(start);
             /*eventData = {            
               title: title,
               start: start,
@@ -217,9 +219,9 @@
           </div>
         </div>
       </div>
-
+      <input type="hidden" id="tempdate" value="">
       <div class="modal-footer">
-        <button type="button" class="btn btn-success" data-dismiss="modal">Guardar</button>
+        <button type="button" onclick="modal_form()"  class="btn btn-success" data-dismiss="modal">Guardar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -288,6 +290,22 @@
   {
     $("#myModal").modal("show");
     return "check";
+  }
+
+  function modal_form()
+  {
+    dateObj = $("#tempdate").val();
+    var dateObj = new Date();
+    var month = dateObj.getUTCMonth() + 1; //months from 1-12
+    var day = dateObj.getUTCDate();
+    var year = dateObj.getUTCFullYear();
+
+    newdate = year + "/" + month + "/" + day;
+    console.log("date "+newdate);
+    
+    $.post("calendar_options", {} ,function(data){
+          alert(data);
+      });
   }
   
   //https://codepen.io/subodhghulaxe/pen/myxyJg

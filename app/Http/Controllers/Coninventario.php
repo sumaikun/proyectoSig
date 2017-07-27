@@ -20,6 +20,10 @@ use psig\models\InvReparacion;
 
 use psig\models\InvComponentes;
 
+use psig\models\InvAlquilerCom;
+
+use psig\models\InvAlquilerRec;
+
 use psig\Helpers\Metodos;
 
 use Session;
@@ -231,6 +235,73 @@ class Coninventario extends Controller
             return $this->common_answer('Registro creado',true);
         }
             
+    }
+
+    public function calendar_action(Request $request)
+    {
+        return "test";
+        $validate = InvAlquilerRec::where('fecha_receso','=',$request->fecha)->where('id_alquiler','=',$request->alquiler)->first();
+        $validate2 = InvAlquilerCom::where('fecha_comentario','=',$request->fecha)->where('id_alquiler','=',$request->alquiler)->first();
+
+        if($request->es_receso == "si")
+        {
+            if($validate == null)
+            {
+               $sql = DB::select(DB::raw("select max(id) as id from inventario_alquiler_recesos"));
+               $id = $sql->id;
+               if($id == null)
+               {
+                    $id=1;
+               }
+               else{
+                    $id += 1;
+               }
+
+               $receso = new InvAlquilerRec;
+               $receso->id = $id;
+               $receso->fecha_receso = $request->fecha;
+               $receso->id_alquiler = $request->alquiler;
+               $receso->estado = 1;
+               $receso->save(); 
+
+            }
+        }
+        else{
+            if($validate != null)
+            {
+                $validate->estado = 1;
+                $validate->save();
+            }    
+        }
+        if($request->comentario != null)
+        {
+            if($validate2!=null)
+            {
+                $validate2->comentario=$request->comentario;
+                $validate2->save();
+            }
+            else{
+                $sql = DB::select(DB::raw("select max(id) as id from inventario_alquiler_comentarios"));
+               $id = $sql->id;
+               if($id == null)
+               {
+                    $id=1;
+               }
+               else{
+                    $id += 1;
+               }
+
+               $comentario = new InvAlquilerCom;
+               $comentario->id = $id;
+               $comentario->fecha_comentario = $request->fecha;
+               $comentario->id_alquiler = $request->alquiler;
+               $comentario->comentario = $request->comentario;
+               $comentario->estado = 1;
+               $receso->save();            
+            }
+        }
+
+
     }
 
     private function common_answer($string,$bool)

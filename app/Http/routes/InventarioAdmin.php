@@ -72,3 +72,5 @@ Route::get('inventario/Detalles/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}/
 Route::post('inventario/newComponent','Coninventario@createcomp');
 
 Route::post('inventario/reparar','Coninventario@reparar');
+
+Route::post('inventario/Detalles/calendar_options','Coninventario@calendar_action');
