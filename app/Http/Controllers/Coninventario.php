@@ -32,6 +32,8 @@ use View;
 
 use \Storage;
 
+use DB;
+
 class Coninventario extends Controller
 {
        public function createCat($nombre)
@@ -239,7 +241,8 @@ class Coninventario extends Controller
 
     public function calendar_action(Request $request)
     {
-        return "test";
+        //return "test";
+
         $validate = InvAlquilerRec::where('fecha_receso','=',$request->fecha)->where('id_alquiler','=',$request->alquiler)->first();
         $validate2 = InvAlquilerCom::where('fecha_comentario','=',$request->fecha)->where('id_alquiler','=',$request->alquiler)->first();
 
@@ -248,7 +251,7 @@ class Coninventario extends Controller
             if($validate == null)
             {
                $sql = DB::select(DB::raw("select max(id) as id from inventario_alquiler_recesos"));
-               $id = $sql->id;
+               $id = $sql[0]->id;
                if($id == null)
                {
                     $id=1;
@@ -262,15 +265,32 @@ class Coninventario extends Controller
                $receso->fecha_receso = $request->fecha;
                $receso->id_alquiler = $request->alquiler;
                $receso->estado = 1;
-               $receso->save(); 
+               $receso->save();
 
+               $alquiler= InvAlquiler::where('id','=',$request->alquiler)->first();
+               $alquiler->cantidad_valor2 += 1;
+               $alquiler->save();
+               //echo "guardo receso"; 
+
+            }
+            else{
+                $validate->estado = 1;
+                $validate->save();
+                $alquiler= InvAlquiler::where('id','=',$request->alquiler)->first();
+                $alquiler->cantidad_valor2 += 1;
+                $alquiler->save();
+                   
             }
         }
         else{
             if($validate != null)
             {
-                $validate->estado = 1;
+                $validate->estado = 0;
                 $validate->save();
+                $alquiler= InvAlquiler::where('id','=',$request->alquiler)->first();
+                $alquiler->cantidad_valor2 -= 1;
+                $alquiler->save();
+                //echo "quito receso";
             }    
         }
         if($request->comentario != null)
@@ -279,10 +299,12 @@ class Coninventario extends Controller
             {
                 $validate2->comentario=$request->comentario;
                 $validate2->save();
+                //echo "actualizo comentario";
             }
             else{
                 $sql = DB::select(DB::raw("select max(id) as id from inventario_alquiler_comentarios"));
-               $id = $sql->id;
+                //return $sql[0]->id;
+               $id = $sql[0]->id;
                if($id == null)
                {
                     $id=1;
@@ -297,11 +319,12 @@ class Coninventario extends Controller
                $comentario->id_alquiler = $request->alquiler;
                $comentario->comentario = $request->comentario;
                $comentario->estado = 1;
-               $receso->save();            
+               $comentario->save();
+               //echo "guardo anotacion";            
             }
         }
 
-
+        return "datos guardados";
     }
 
     private function common_answer($string,$bool)

@@ -176,7 +176,7 @@
           <td style="text-align: center">Valor total</td>          
         </tr>
         <tr>
-          <td style="text-align: center"> <span id="total">{{psig\Helpers\Metodos::asDollars((int)psig\Helpers\horas_minutos::taking_away_days($registro->fecha_salida,$registro->fecha_ingreso)*$registro->valor)}}</span> </td>          
+          <td style="text-align: center"> <span id="total">{{psig\Helpers\Metodos::asDollars((int)psig\Helpers\horas_minutos::taking_away_days($registro->fecha_salida,$registro->fecha_ingreso)*$registro->valor-($registro->cantidad_valor2*$registro->valor2))}}</span> </td>          
         </tr>
         <tr>
           <td style="text-align: center"><button onclick="update_data()" class="btn btn-warning">Guardar</button></td>          
@@ -202,8 +202,8 @@
           <div class="collapse" id="collapseExample">
           <div class="card card-block">
               <div class="form-group">
-                    <label class="form-control">Si</label><input type="radio" class="form-control" name="day" value="si">
-                    <label class="form-control">No</label><input type="radio" class="form-control" name="day" value="no" checked>
+                    <label class="form-control">Si</label><input type="radio" class="form-control" name="receso" value="si">
+                    <label class="form-control">No</label><input type="radio" class="form-control" name="receso" value="no" checked>
               </div>        
           </div>
         </div>
@@ -214,7 +214,7 @@
           <div class="card card-block">
               <div class="form-group">
                     <label class="form-control">Anotación</label>
-                    <textarea  class="form-control" name="day" ></textarea>                    
+                    <textarea  class="form-control" name="anotacion" ></textarea>                    
               </div>        
           </div>
         </div>
@@ -303,7 +303,7 @@
     newdate = year + "/" + month + "/" + day;
     console.log("date "+newdate);
     
-    $.post("calendar_options", {} ,function(data){
+    $.post("calendar_options", {alquiler:{{$registro->id}},fecha:newdate,comentario:$("textarea[name='anotacion']").val(),es_receso:$("input[name='receso']:checked").val()} ,function(data){
           alert(data);
       });
   }
