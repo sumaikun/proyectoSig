@@ -26,6 +26,10 @@
 
 <script>
 
+  var recesos = <?php echo json_encode($recesos) ?>;
+
+  var anotaciones = <?php echo json_encode($anotaciones) ?>;
+
   $(document).ready(function() {
 
 
@@ -59,7 +63,7 @@
         center: 'title',
         right: 'month'
       },
-      defaultDate: '{{$registro->fecha_ingreso}}',
+      defaultDate: '{{$registro->fecha_ingreso}}',       
       editable: true,
       droppable: true, // this allows things to be dropped onto the calendar
       drop: function() {
@@ -92,7 +96,18 @@
           }  
         }        
         $('#calendar').fullCalendar('unselect');
-      }
+      },
+      eventClick: function(event) {
+          if (event.comentario) {
+            modal_anotation(event.comentario,event.id);
+            return false;
+          }
+          if (event.receso)
+          {
+            delete_receso(event.id);
+          }
+        }
+
     });
 
 
@@ -108,8 +123,49 @@
       end: '{{$registro->fecha_salida}}' 
     };        
 
-    myCalendar.fullCalendar('renderEvent', myEvent, true);    
+    myCalendar.fullCalendar('renderEvent', myEvent, true);  
+
+    generate_recesos(recesos);
+    generate_anotaciones(anotaciones);
+
   });
+
+  function generate_recesos(recesos)
+  {
+      for(var i =0; i<recesos.length; i++)
+    {
+      Event = {
+      title: "Receso",
+      allDay: true,
+      receso: '1',
+      id: recesos[i].id,
+      color  : '#DF0101', 
+      start: recesos[i].fecha_receso 
+      
+      };
+      $('#calendar').fullCalendar('renderEvent', Event, true);
+      console.log(recesos[i]);
+    }
+  }
+
+  function generate_anotaciones(anotaciones)
+  {
+    for(var i =0; i<anotaciones.length; i++)
+    {
+      Event = {
+      title: "Anotación",
+      allDay: true,
+      id: anotaciones[i].id,
+      comentario: anotaciones[i].comentario, 
+      color  : '#088A08', 
+      start: anotaciones[i].fecha_comentario 
+        
+      };
+      
+      $('#calendar').fullCalendar('renderEvent', Event, true);
+      console.log(anotaciones[i]);
+    }
+  }
 
 </script><!-- Cuerpo de la pagina -->
 <style>
@@ -217,7 +273,7 @@
                     <textarea  class="form-control" name="anotacion" ></textarea>                    
               </div>        
           </div>
-        </div>
+        </div>               
       </div>
       <input type="hidden" id="tempdate" value="">
       <div class="modal-footer">
@@ -228,10 +284,36 @@
 
   </div>
 </div>
+  
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Anotación</h4>
+      </div>
+      <div class="modal-body">
+        <div id="anotation_text"></div>
+        <input id="id_deleteanotation" type="hidden">     
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="delete_anotation()"  class="btn btn-success" data-dismiss="modal">Eliminar anotación</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 
 @stop
 
+<?php
+  //echo $anotaciones;
 
+?>
 
 <script>
 
@@ -289,23 +371,51 @@
   function modal_calendar()
   {
     $("#myModal").modal("show");
+    $("textarea[name='anotacion']").val("");
     return "check";
   }
 
   function modal_form()
-  {
-    dateObj = $("#tempdate").val();
-    var dateObj = new Date();
+  {    
+    var dateObj = new Date($("#tempdate").val());
     var month = dateObj.getUTCMonth() + 1; //months from 1-12
     var day = dateObj.getUTCDate();
     var year = dateObj.getUTCFullYear();
 
     newdate = year + "/" + month + "/" + day;
     console.log("date "+newdate);
-    
+    //return "";
     $.post("calendar_options", {alquiler:{{$registro->id}},fecha:newdate,comentario:$("textarea[name='anotacion']").val(),es_receso:$("input[name='receso']:checked").val()} ,function(data){
           alert(data);
       });
+  }
+
+  function modal_anotation(text,id)
+  {
+    $("#id_deleteanotation").val(id);
+    $("#anotation_text").empty();
+    $("#anotation_text").append(text);
+    $("#myModal2").modal('show');
+  }
+
+  function delete_anotation()
+  {
+    if(confirm("Desea eliminar la anotación"))
+    {
+      $.post("delete_anotation", {id:$("#id_deleteanotation").val()} ,function(data){
+          alert(data);
+      });
+    }
+  }
+
+  function delete_receso(idres)
+  {
+    if(confirm("Desea eliminar el dia de receso"))
+    {
+      $.post("delete_rest", {id:idres} ,function(data){
+          alert(data);
+      });
+    }
   }
   
   //https://codepen.io/subodhghulaxe/pen/myxyJg

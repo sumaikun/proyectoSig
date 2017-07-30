@@ -187,11 +187,19 @@ class Coninventario extends Controller
 
     public function details($id)
     {
+
         $status = InvSeriales::where('id','=',$id)->value('id_status');
         if($status==3)
         {
-            $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();        
-            return View::make('inventario.admin.detalles',compact('registro'));    
+            $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();
+
+            $anotaciones = InvAlquilerCom::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get(); 
+
+            $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
+
+            //return $recesos;
+                
+            return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos'));    
         }
         if($status==1)
         {
@@ -323,8 +331,32 @@ class Coninventario extends Controller
                //echo "guardo anotacion";            
             }
         }
+        else{
+            if($validate2!=null)
+            {
+                $validate2->estado=0;
+                $validate2->save();
+                //echo "actualizo comentario";
+            }
+        }
 
         return "datos guardados";
+    }
+
+    function delete_anotation(Request $request)
+    {
+        DB::delete("delete from inventario_alquiler_comentarios where id = ".$request->id);
+        return "Anotación eliminada";   
+    }
+
+    function delete_rest(Request $request)
+    {
+        $rest = InvAlquilerRec::where('id','=',$request->id)->first();
+        $alquiler= InvAlquiler::where('id','=',$rest->id_alquiler)->first();
+        $alquiler->cantidad_valor2 -= 1;
+        $alquiler->save();
+        DB::delete("delete from inventario_alquiler_recesos where id = ".$request->id);
+        return "Anotación eliminada";   
     }
 
     private function common_answer($string,$bool)

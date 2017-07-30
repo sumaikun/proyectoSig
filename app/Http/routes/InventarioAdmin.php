@@ -74,3 +74,7 @@ Route::post('inventario/newComponent','Coninventario@createcomp');
 Route::post('inventario/reparar','Coninventario@reparar');
 
 Route::post('inventario/Detalles/calendar_options','Coninventario@calendar_action');
+
+Route::post('inventario/Detalles/delete_anotation','Coninventario@delete_anotation');
+
+Route::post('inventario/Detalles/delete_rest','Coninventario@delete_rest');
