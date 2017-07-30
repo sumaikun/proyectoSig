@@ -171,9 +171,16 @@ class Coninventario extends Controller
 
     public function edit_alquilar($id,$fecha2,$fecha1,$valor,$valor2,$cantidad)
     {
+        $validate = InvAlquilerCom::where('id_alquiler','=',$id)->whereNotBetween('fecha_comentario', array($fecha1,$fecha2))->first();
+        $validate2 = InvAlquilerRec::where('id_alquiler','=',$id)->whereNotBetween('fecha_receso', array($fecha1,$fecha2))->first();
+        if($validate != null or $validate2!= null)
+        {
+            return "No pueden editarse las fechas de alquiler ya que hay dias de receso o anotaciones fuera del rango de las nuevas fechas";
+        }
+
         if($valor2>$valor)
         {
-            return "denied";
+            return "El valor de los dias de receso no puede ser mayor al valor de los días estandar";
         }
         $alquiler = InvAlquiler::where('id','=',$id)->first();
         $alquiler->valor = $valor;
@@ -182,7 +189,7 @@ class Coninventario extends Controller
         $alquiler->fecha_ingreso = $fecha1;
         $alquiler->fecha_salida = $fecha2;
         $alquiler->save();
-        //return "saved";            
+        return "Datos modificados";            
     }
 
     public function details($id)

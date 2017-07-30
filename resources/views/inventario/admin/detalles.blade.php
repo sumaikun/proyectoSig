@@ -357,13 +357,7 @@
   function update_data()
   {
       $.get("modify_rent_data/"+{{$registro->id}}+"/"+$("input[name='fecha2']").val()+"/"+$("input[name='fecha1']").val()+"/"+$("input[name='valor']").val()+"/"+$("input[name='valor2']").val()+"/"+$("input[name='cantidad_v']").val(), function(res, sta){
-        if(res == "denied")
-        {
-          alert('El valor de receso no puede ser mayor al valor estandar');
-        }
-        else{
-          alert('datos modificados con éxito');  
-        }
+        alert(res);
         
       });
   }
