@@ -78,3 +78,9 @@ Route::post('inventario/Detalles/calendar_options','Coninventario@calendar_actio
 Route::post('inventario/Detalles/delete_anotation','Coninventario@delete_anotation');
 
 Route::post('inventario/Detalles/delete_rest','Coninventario@delete_rest');
+
+Route::get('inventario/Detalles/get_all_res/{id}','Coninventario@get_all_res');
+
+Route::get('inventario/Detalles/get_all_anotations/{id}','Coninventario@get_all_anotations');
+
+Route::get('inventario/Detalles/get_main_event/{id}','Coninventario@get_main_event');

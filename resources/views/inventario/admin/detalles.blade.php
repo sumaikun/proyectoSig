@@ -337,10 +337,17 @@
     };        
 
     myCalendar.fullCalendar('renderEvent', myEvent, true);
-    $("#total").empty();
-    var vtotal = taking_away_days()*$("input[name='valor']").val();
-    $("#total").append("$"+vtotal.format(2, 3, '.', ','));
 
+    update_all_calendar();
+
+    $("#total").empty();
+      result1 = taking_away_days()*$("input[name='valor']").val();
+      console.log(result1);
+      result2 = $("input[name='cantidad_v']").val()*$("input[name='valor2']").val();      
+      console.log(result2);
+      var vtotal = result1 - result2;
+      console.log(vtotal);
+      $("#total").append("$"+vtotal.format(2, 3, '.', ','));
   }
 
 
@@ -378,10 +385,15 @@
 
     newdate = year + "/" + month + "/" + day;
     console.log("date "+newdate);
-    //return "";
+    
+    var myCalendar = $('#calendar');
+    myCalendar.fullCalendar('removeEvents');
+
     $.post("calendar_options", {alquiler:{{$registro->id}},fecha:newdate,comentario:$("textarea[name='anotacion']").val(),es_receso:$("input[name='receso']:checked").val()} ,function(data){
           alert(data);
       });
+    update_all_calendar();
+    get_main_event();
   }
 
   function modal_anotation(text,id)
@@ -400,6 +412,10 @@
           alert(data);
       });
     }
+    var myCalendar = $('#calendar');
+    myCalendar.fullCalendar('removeEvents');
+    update_all_calendar();
+    get_main_event();
   }
 
   function delete_receso(idres)
@@ -410,8 +426,83 @@
           alert(data);
       });
     }
+    var myCalendar = $('#calendar');
+    myCalendar.fullCalendar('removeEvents');
+    update_all_calendar();
+    get_main_event();
   }
-  
+
+  function update_all_calendar()
+  {
+    $.get("get_all_res/"+{{$registro->id}}, function(res, sta){                 
+          var recesos = res.recesos;
+          for(var i =0; i<recesos.length; i++)
+          {
+            Event = {
+            title: "Receso",
+            allDay: true,
+            receso: '1',
+            id: recesos[i].id,
+            color  : '#DF0101', 
+            start: recesos[i].fecha_receso 
+            
+            };
+            $('#calendar').fullCalendar('renderEvent', Event, true);
+            console.log(recesos[i]);
+          }      
+      });
+      $.get("get_all_anotations/"+{{$registro->id}}, function(res, sta){  
+        console.log(res.anotaciones);      
+         var anotaciones = res.anotaciones;
+         for(var i =0; i<anotaciones.length; i++)
+          {
+            Event = {
+            title: "Anotación",
+            allDay: true,
+            id: anotaciones[i].id,
+            comentario: anotaciones[i].comentario, 
+            color  : '#088A08', 
+            start: anotaciones[i].fecha_comentario 
+              
+            };
+            
+            $('#calendar').fullCalendar('renderEvent', Event, true);
+            console.log(anotaciones[i]);
+          }
+      });
+  }
+  function get_main_event()
+  {
+    $.get("get_main_event/"+{{$registro->id}}, function(res, sta){
+      var main = res.main; 
+      var myCalendar = $('#calendar');
+      
+      myEvent = {
+        title: "Alquiler",
+        allDay: true,
+        start: main.fecha_ingreso,
+        end: main.fecha_salida 
+      };        
+
+      myCalendar.fullCalendar('renderEvent', myEvent, true);
+      $("input[name='fecha1']").val(main.fecha_ingreso);
+      $("input[name='fecha2']").val(main.fecha_salida);
+      $("input[name='cantidad_v']").val(main.cantidad_valor2);
+
+      $("#total").empty();
+      console.log(taking_away_days());
+      console.log($("input[name='valor']").val());
+      console.log($("input[name='cantidad_v']").val());
+      console.log($("input[name='valor2']").val());
+      result1 = taking_away_days()*$("input[name='valor']").val();
+      console.log(result1);
+      result2 = $("input[name='cantidad_v']").val()*$("input[name='valor2']").val();      
+      console.log(result2);
+      var vtotal = result1 - result2;
+      console.log(vtotal);
+      $("#total").append("$"+vtotal.format(2, 3, '.', ','));
+    });
+  }
   //https://codepen.io/subodhghulaxe/pen/myxyJg
 </script>
 

@@ -366,6 +366,25 @@ class Coninventario extends Controller
         return "Anotación eliminada";   
     }
 
+    function get_all_res($id)
+    {
+        $recesos = InvAlquilerRec::where('id_alquiler','=',$id)->where('estado','=',1)->get();
+        return response()->json(['recesos' =>$recesos]);
+                
+    }
+
+    function get_all_anotations($id)
+    {
+        $anotaciones =  InvAlquilerCom::where('id_alquiler','=',$id)->get();
+        return response()->json(['anotaciones' =>$anotaciones]);         
+    }
+
+    function get_main_event($id)
+    {
+        $main = InvAlquiler::where('id','=',$id)->first();
+        return response()->json(['main' =>$main]);
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')
