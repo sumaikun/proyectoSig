@@ -193,7 +193,7 @@ class Coninventario extends Controller
     }
 
     public function details($id)
-    {
+    {        //Alquier
 
         $status = InvSeriales::where('id','=',$id)->value('id_status');
         if($status==3)
@@ -208,12 +208,21 @@ class Coninventario extends Controller
                 
             return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos'));    
         }
+
+        if($status==2)
+        {
+            $registro = InvReparacion::where('id_seriales','=',$id)->orderby('id','desc')->first();
+           
+            return View::make('inventario.admin.detalles2',compact('registro'));
+        }
+
         if($status==1)
         {
             return $this->common_answer('El elemento se encuentra en bodega',false);
         }
         
     }
+
 
 
     public function createcomp(Request $request)
