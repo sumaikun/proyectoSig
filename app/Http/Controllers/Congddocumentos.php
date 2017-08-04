@@ -41,11 +41,12 @@ class Congddocumentos extends Controller {
 		//print_r($_POST);
 		//return '';
 		// pregunto si existe la identificacion del documento
-		if(Input::get('gdver_fecha_version') == null or Input::get('gdver_version') == null or Input::get('gdver_descripcion'))
+		//return  "valor fecha ".strtotime(Input::get('gdver_fecha_version'));
+		if(Input::get('gdver_fecha_version') == null or Input::get('gdver_version') == null or Input::get('gdver_descripcion')== null or strtotime(Input::get('gdver_fecha_version')) == 0)
 		{
 			return View::make('administrador.cosas.resultado_volver')->with('funcion', false)->with('mensaje', 'Hubo un problema para recibir los datos del formulario intentelo nuevamente!!');
 		}
-		return 'reached';
+		
 		$existe = Modgddocumentos::where('gddoc_identificacion', '=', trim(Input::get('gddoc_identificacion')))->exists();
 
 		if($existe){

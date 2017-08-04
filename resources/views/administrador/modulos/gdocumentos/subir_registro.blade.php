@@ -53,7 +53,7 @@
                      </td>
                      <td>{{ $consecutivo->gdcon_consecutivo }}</td>
                      <td>{{ $consecutivo->documentos->gddoc_identificacion }}</td>
-                     <td>@if(isset($consecutivo->documentos->versiones()->where('gdver_estado', 'activo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion)){{ $consecutivo->documentos->versiones()->where('gdver_estado', 'activo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion }}@else{{$consecutivo->documentos->versiones()->where('gdver_estado', 'inactivo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion}} @endif</td>
+                     <td>@if(isset($consecutivo->documentos->versiones()->where('gdver_estado', 'activo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion)){{ $consecutivo->documentos->versiones()->where('gdver_estado', 'activo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion }}@elseif(isset($consecutivo->documentos->versiones()->where('gdver_estado', 'inactivo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion)){{$consecutivo->documentos->versiones()->where('gdver_estado', 'inactivo')->where('empresa', $consecutivo->empresa)->first()->gdver_descripcion}}@else{{$consecutivo->documentos->versiones()->where('gdver_estado', 'inactivo')->first()->gdver_descripcion}} @endif</td>
                      <td>{{ $consecutivo->gdcon_creacion }}</td>
                   </tr>
                @endforeach
