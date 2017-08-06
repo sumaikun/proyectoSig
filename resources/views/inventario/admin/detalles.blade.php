@@ -15,7 +15,7 @@
 
   <h1><i class="fa fa-plus-circle"></i> Detalles  <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
-    <li><a href="{{ url('admin/actividades') }}""><i class="fa fa-users"></i> Inventario</a></li>
+    <li><a href="{{ url('admin/actividades') }}"><i class="fa fa-users"></i> Inventario</a></li>
       <li class="active">Calendario</li>
     </ol>
     <!-- <hr> -->
