@@ -391,9 +391,10 @@
 
     $.post("calendar_options", {alquiler:{{$registro->id}},fecha:newdate,comentario:$("textarea[name='anotacion']").val(),es_receso:$("input[name='receso']:checked").val()} ,function(data){
           alert(data);
+          update_all_calendar();
+          get_main_event();
       });
-    update_all_calendar();
-    get_main_event();
+    
   }
 
   function modal_anotation(text,id)
