@@ -410,12 +410,13 @@
     {
       $.post("delete_anotation", {id:$("#id_deleteanotation").val()} ,function(data){
           alert(data);
+            var myCalendar = $('#calendar');
+            myCalendar.fullCalendar('removeEvents');
+            update_all_calendar();
+            get_main_event();
       });
     }
-    var myCalendar = $('#calendar');
-    myCalendar.fullCalendar('removeEvents');
-    update_all_calendar();
-    get_main_event();
+   
   }
 
   function delete_receso(idres)
@@ -424,12 +425,13 @@
     {
       $.post("delete_rest", {id:idres} ,function(data){
           alert(data);
+          var myCalendar = $('#calendar');
+          myCalendar.fullCalendar('removeEvents');
+          update_all_calendar();
+          get_main_event();
       });
     }
-    var myCalendar = $('#calendar');
-    myCalendar.fullCalendar('removeEvents');
-    update_all_calendar();
-    get_main_event();
+    
   }
 
   function update_all_calendar()
