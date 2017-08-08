@@ -24,6 +24,8 @@ use psig\models\InvAlquilerCom;
 
 use psig\models\InvAlquilerRec;
 
+use psig\models\InvRepSeg;
+
 use psig\Helpers\Metodos;
 
 use Session;
@@ -392,6 +394,62 @@ class Coninventario extends Controller
     {
         $main = InvAlquiler::where('id','=',$id)->first();
         return response()->json(['main' =>$main]);
+    }
+
+    public function delete_reparacion($id)
+    {
+        return "Registro eliminado";            
+        DB::delete("delete from inventario_reparacion where id = ".$id);
+        return "Registro eliminado";   
+    }
+
+    public function edit_reparacion_fecha(Request $request)
+    {
+        $reparacion = InvReparacion::where('id','=',$request->id)->first();
+        $reparacion->fecha = $request->fecha;
+        $reparacion->save();
+        return "fecha modificada";
+    }
+
+    public function edit_reparacion_comentario(Request $request)
+    {
+        $reparacion = InvReparacion::where('id','=',$request->id)->first();
+        $reparacion->info_extra = $request->comentario;
+        $reparacion->save();
+        return "comentario modificado";   
+    }
+
+    public function create_seguimiento(Request $request)
+    {
+        //print_r($_POST);
+        //return "";
+        $seguimiento = new InvRepSeg();
+        $sql = DB::select(DB::raw("select max(id) as id from inventario_reparacion_seguimiento"));
+           $id = $sql[0]->id;
+           if($id == null)
+           {
+                $id=1;
+           }
+           else{
+                $id += 1;
+           }
+        $seguimiento->id = $id;
+        $seguimiento->seguimiento = $request->seguimiento;
+        $seguimiento->id_reparacion = $request->id;
+        $seguimiento->fecha = date("Ymd");
+        $seguimiento->type = 0;
+        $seguimiento->usuario = Session::get('usu_id');
+        $seguimiento->save();
+        return "Seguimiento creado";     
+
+    }
+
+    public function table_seguimiento($id)
+    {   
+        $seguimientos = InvRepSeg::where('id_reparacion','=',$id)->get();
+        //return $seguimientos;        
+        return view('inventario.ajax.seguimientos',compact('seguimientos'));
+
     }
 
     private function common_answer($string,$bool)

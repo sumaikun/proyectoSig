@@ -84,3 +84,13 @@ Route::get('inventario/Detalles/get_all_res/{id}','Coninventario@get_all_res');
 Route::get('inventario/Detalles/get_all_anotations/{id}','Coninventario@get_all_anotations');
 
 Route::get('inventario/Detalles/get_main_event/{id}','Coninventario@get_main_event');
+
+Route::get('inventario/Detalles/deletereparacion/{id}','Coninventario@delete_reparacion');
+
+Route::post('inventario/Detalles/addrepairdate/{id}','Coninventario@edit_reparacion_fecha');
+
+Route::post('inventario/Detalles/addrepaircomment}','Coninventario@edit_reparacion_comentario');
+
+Route::post('inventario/Detalles/create_seguimiento','Coninventario@create_seguimiento');
+
+Route::get('inventario/Detalles/table_seguimiento/{id}','Coninventario@table_seguimiento');
