@@ -21,7 +21,7 @@
         <td>{{$seguimiento->id}}</td>
         <td>{{$seguimiento->fecha}}</td>
         <td>{{$seguimiento->seguimiento}}&nbsp&nbsp&nbsp<button title="editar" onclick="modal_edit({{$seguimiento->id}})"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-        <td>{{$seguimiento->usuario}}</td>
+        <td>{{$seguimiento->usuarios->usu_nombres}} {{$seguimiento->usuarios->usu_apellido1}}</td>
         <td>  <button title='eliminar' onclick='delete_register({{$seguimiento->id}})'><i class='fa fa-trash' aria-hidden='true'></i></button> </td>
        </tr>
       @endforeach 
