@@ -452,6 +452,21 @@ class Coninventario extends Controller
 
     }
 
+    public function delete_seguimiento($id)
+    {
+        //$seguimientos = InvRepSeg::where('id','=',$id)->get();
+        DB::delete("delete from inventario_reparacion_seguimiento where id = ".$id);
+        return "!El seguimiento ha sido eliminado¡";
+    }
+
+    public function update_seguimiento(Request $request)
+    {
+        $seguimiento = InvRepSeg::where('id','=',$request->id)->first();
+        $seguimiento->seguimiento = $request->seguimiento;
+        $seguimiento->save();
+        return "Seguimiento actualizado";
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

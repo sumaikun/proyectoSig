@@ -94,3 +94,7 @@ Route::post('inventario/Detalles/addrepaircomment}','Coninventario@edit_reparaci
 Route::post('inventario/Detalles/create_seguimiento','Coninventario@create_seguimiento');
 
 Route::get('inventario/Detalles/table_seguimiento/{id}','Coninventario@table_seguimiento');
+
+Route::get('inventario/Detalles/delete_seguimiento/{id}','Coninventario@delete_seguimiento');
+
+Route::post('inventario/Detalles/update_seguimiento','Coninventario@update_seguimiento');
