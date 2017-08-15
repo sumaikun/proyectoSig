@@ -61,7 +61,22 @@ class Coninventario extends Controller
         $element->codigo = $request->codigo;
         $element->descripcion = $request->descripcion;          
         $element->cantidad = $request->cantidad;
-        $element->categoria = $request->categoria;  
+        $element->categoria = $request->categoria;
+        
+        if($request->file('archivo'))
+        {
+            $archivo = $request->file('archivo');
+            $ext = $archivo->getClientOriginalExtension();
+
+            if(strpos($ext, 'pdf')!== false)
+            {
+                $element->archivo=$this->filemanage($archivo,'archivo_inventario');
+            }
+            else{
+                return $this->common_answer('!Solamente se aceptan archivos de tipo pdf!',false);            
+            }
+        }        
+          
         $element->save();
         for($i=1; $i<=$request->cantidad;$i++ )
         {
@@ -86,6 +101,19 @@ class Coninventario extends Controller
         $element->codigo = $request->codigo;
         $element->descripcion = $request->descripcion; 
         $element->categoria = $request->categoria;
+        if($request->file('archivo'))
+        {
+            $archivo = $request->file('archivo');
+            $ext = $archivo->getClientOriginalExtension();
+
+            if(strpos($ext, 'pdf')!== false)
+            {
+                $element->archivo=$this->filemanage($archivo,'archivo_inventario');
+            }
+            else{
+                return $this->common_answer('!Solamente se aceptan archivos de tipo pdf!',false);            
+            }
+        }  
         $element->save();
         return $this->common_answer('Elemento editado con éxito!!',true);        
     }
@@ -405,9 +433,29 @@ class Coninventario extends Controller
 
     public function edit_reparacion_fecha(Request $request)
     {
-        $reparacion = InvReparacion::where('id','=',$request->id)->first();
+        $reparacion = InvReparacion::where('id','=',$request->id)->first();        
+
+        $seguimiento = new InvRepSeg();
+        $sql = DB::select(DB::raw("select max(id) as id from inventario_reparacion_seguimiento"));
+           $id = $sql[0]->id;
+           if($id == null)
+           {
+                $id=1;
+           }
+           else{
+                $id += 1;
+           }
+        $seguimiento->id = $id;
+        $seguimiento->seguimiento = "El usuario ".Session::get('usu_nombres')." realizó una edición de la fecha de ".$reparacion->fecha." a ".$request->fecha;
+        $seguimiento->id_reparacion = $request->id;
+        $seguimiento->fecha = date("Ymd");
+        $seguimiento->type = 1;
+        $seguimiento->usuario = Session::get('usu_id');
+        $seguimiento->save();
+
         $reparacion->fecha = $request->fecha;
         $reparacion->save();
+        
         return "fecha modificada";
     }
 
@@ -416,6 +464,24 @@ class Coninventario extends Controller
         $reparacion = InvReparacion::where('id','=',$request->id)->first();
         $reparacion->info_extra = $request->comentario;
         $reparacion->save();
+        $seguimiento = new InvRepSeg();
+        $sql = DB::select(DB::raw("select max(id) as id from inventario_reparacion_seguimiento"));
+           $id = $sql[0]->id;
+           if($id == null)
+           {
+                $id=1;
+           }
+           else{
+                $id += 1;
+           }
+        $seguimiento->id = $id;
+        $seguimiento->seguimiento = "El usuario ".Session::get('usu_nombres')." realizó una edición del comentario";
+        $seguimiento->id_reparacion = $request->id;
+        $seguimiento->fecha = date("Ymd");
+        $seguimiento->type = 1;
+        $seguimiento->usuario = Session::get('usu_id');
+        $seguimiento->save();
+        
         return "comentario modificado";   
     }
 
@@ -434,7 +500,7 @@ class Coninventario extends Controller
                 $id += 1;
            }
         $seguimiento->id = $id;
-        $seguimiento->seguimiento = $request->seguimiento;
+        $seguimiento->seguimiento = "El usuario ".Session::get('usu_nombres')." realizó una edición de la fecha";
         $seguimiento->id_reparacion = $request->id;
         $seguimiento->fecha = date("Ymd");
         $seguimiento->type = 0;
@@ -465,6 +531,20 @@ class Coninventario extends Controller
         $seguimiento->seguimiento = $request->seguimiento;
         $seguimiento->save();
         return "Seguimiento actualizado";
+    }
+
+    public function download_pdf($id)
+    {
+        $file = InvElementos::where('id','=',$id)->value('archivo');
+        if(file_exists(storage_path('archivo_inventario/'.$file)))
+        {
+            $file_path = storage_path('archivo_inventario/'.$file);
+            return response()->download($file_path);
+        
+        }
+        else {
+            return "no existe el documento";
+        }             
     }
 
     private function common_answer($string,$bool)

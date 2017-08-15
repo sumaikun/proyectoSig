@@ -77,11 +77,16 @@
                     @endforeach
                     <option value='new'>+ NUEVA CATEGORIA</button></option>
                   </select>    
-              </div>          
+              </div> 
+
+              <div class="form-group">         
+                <label>Archivo</label>
+                <input class="form-control" name="archivo" type="file">
+              </div>
 
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
                 <button type="submit" onclick="clicked();" class="btn btn-success">
-                      <i class="fa fa-floppy-o"></i> <b>Insertar</b>
+                      <i class="fa fa-floppy-o"></i> <b>Crear &nbsp&nbsp</b>
                 </button>
                 <button type="reset" class="btn btn-danger pull-right" style="margin-right:10px;"><i class="fa fa-eraser"></i> <b>Limpiar</b></button>      
               </div>

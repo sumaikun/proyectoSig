@@ -25,7 +25,12 @@
           @endforeach
           <option value='new'>+ NUEVA CATEGORIA</button></option>
         </select>    
-    </div>          
+    </div> 
+
+    <div class="form-group">         
+      <label>Archivo</label>
+      <input class="form-control" name="archivo" type="file">
+    </div>         
 
           
       <button type="submit" onclick="clicked();" class="btn btn-success">
