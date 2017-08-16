@@ -547,6 +547,11 @@ class Coninventario extends Controller
         }             
     }
 
+    public function pdf_viewer()
+    {
+        return view("inventario.pdf.viewer");
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

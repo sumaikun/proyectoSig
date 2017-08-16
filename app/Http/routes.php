@@ -248,3 +248,5 @@ Route::get('registrar', function(){
 Route::any('prueba', function(){
 	return View::make('emails.nuevo_usuario');
 });
+
+Route::get('pdf/pdfviewer','Coninventario@pdf_viewer');

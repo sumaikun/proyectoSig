@@ -100,3 +100,4 @@ Route::get('inventario/Detalles/delete_seguimiento/{id}','Coninventario@delete_s
 Route::post('inventario/Detalles/update_seguimiento','Coninventario@update_seguimiento');
 
 Route::get('inventario/downloadpdf/{id}','Coninventario@download_pdf');
+
