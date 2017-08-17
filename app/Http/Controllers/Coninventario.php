@@ -28,9 +28,13 @@ use psig\models\InvRepSeg;
 
 use psig\Helpers\Metodos;
 
+use Redirect;
+
 use Session;
 
 use View;
+
+use File;
 
 use \Storage;
 
@@ -500,7 +504,7 @@ class Coninventario extends Controller
                 $id += 1;
            }
         $seguimiento->id = $id;
-        $seguimiento->seguimiento = "El usuario ".Session::get('usu_nombres')." realizó una edición de la fecha";
+        $seguimiento->seguimiento = $request->seguimiento;
         $seguimiento->id_reparacion = $request->id;
         $seguimiento->fecha = date("Ymd");
         $seguimiento->type = 0;
@@ -539,7 +543,12 @@ class Coninventario extends Controller
         if(file_exists(storage_path('archivo_inventario/'.$file)))
         {
             $file_path = storage_path('archivo_inventario/'.$file);
-            return response()->download($file_path);
+            $dest_path = public_path('pdf/'.$file);
+
+            File::copy($file_path,$dest_path);
+
+            return Redirect::to('pdf/pdfviewer?file='.$file);
+            //return response()->download($file_path);
         
         }
         else {
