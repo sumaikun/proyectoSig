@@ -34,7 +34,7 @@
 
           
       <button type="submit" onclick="clicked();" class="btn btn-success">
-            <i class="fa fa-floppy-o"></i> <b>Editar</b>
+            <i class="fa fa-floppy-o"></i> <b>Guardar</b>
       </button>
 
 

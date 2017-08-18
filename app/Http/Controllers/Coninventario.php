@@ -28,6 +28,8 @@ use psig\models\InvRepSeg;
 
 use psig\Helpers\Metodos;
 
+use psig\Helpers\horas_minutos;
+
 use Redirect;
 
 use Session;
@@ -559,6 +561,36 @@ class Coninventario extends Controller
     public function pdf_viewer()
     {
         return view("inventario.pdf.viewer");
+    }
+
+
+    public function check_alerts()
+    {
+        $alerts = [];
+        $alquileres = InvAlquiler::All();
+        foreach($alquileres as $alquiler)
+        {
+            if(horas_minutos::taking_away_days($alquiler->fecha_salida,date("Ymd"))<25)
+            {
+                $alert = [];
+                $alert['tipo'] = "alquiler";
+                $alert['id'] = $alquiler->id;
+                array_push($alerts, $alert);
+            }
+        }
+
+        $mantenimientos = InvReparacion::All();
+        foreach($mantenimientos as $mantenimiento)
+        {
+            if(horas_minutos::taking_away_days($mantenimiento->fecha,date("Ymd"))<25)
+            {
+                $alert = [];
+                $alert['tipo'] = "mantenimiento";
+                $alert['id'] = $alquiler->id;
+                array_push($alerts, $alert);
+            }
+        }
+        return $alerts;
     }
 
     private function common_answer($string,$bool)
