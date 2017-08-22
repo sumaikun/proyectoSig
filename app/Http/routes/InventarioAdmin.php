@@ -106,3 +106,8 @@ Route::get('inventario/check_alerts','Coninventario@check_alerts');
 Route::get('inventario/info/{id}/{tipo}','Coninventario@info_alert');
 
 Route::get('inventario/quit_alerts','Coninventario@quit_alerts');
+
+Route::get('inventario/Permisos',function(){
+  $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->where('usu_estado','=','activo')->get();
+  return view('inventario.admin.permisos',compact('usuarios'));
+});

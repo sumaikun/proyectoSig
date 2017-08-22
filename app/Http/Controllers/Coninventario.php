@@ -587,7 +587,7 @@ class Coninventario extends Controller
         $mantenimientos = InvReparacion::All();
         foreach($mantenimientos as $mantenimiento)
         {
-            if(horas_minutos::taking_away_days($mantenimiento->fecha,date("Ymd"))<25)
+            if(horas_minutos::taking_away_days($mantenimiento->fecha,date("Ymd"))<10)
             {
                 $alert = [];
                 $alert['tipo'] = "mantenimiento";
