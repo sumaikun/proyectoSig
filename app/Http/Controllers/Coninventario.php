@@ -575,6 +575,11 @@ class Coninventario extends Controller
                 $alert = [];
                 $alert['tipo'] = "alquiler";
                 $alert['id'] = $alquiler->id;
+                $serial = InvSeriales::where('id','=',$alquiler->id_serial)->first();
+                //echo "serial :".$serial->id.",";
+                $elemento = InvElementos::where('id','=',$serial->id_elementos)->first();                             
+                $categoria = InvCategorias::where('id','=',$elemento->categoria)->first();
+                $alert['comment'] = "El periodo de alquiler del elemento ".$categoria->nombre." con el serial ".$serial->valor." esta proximo a vencerse";
                 array_push($alerts, $alert);
             }
         }
@@ -586,11 +591,43 @@ class Coninventario extends Controller
             {
                 $alert = [];
                 $alert['tipo'] = "mantenimiento";
-                $alert['id'] = $alquiler->id;
+                $alert['id'] = $mantenimiento->id;
+                $alert['comment'] = "El periodo de mantenimiento del elemento con el serial esta proximo a vencerse";
                 array_push($alerts, $alert);
             }
         }
-        return $alerts;
+        return view('inventario.ajax.alerts_table',compact('alerts')); 
+    }
+
+    public function info_alert($id,$tipo)
+    {
+        if($tipo == 'alquiler')
+        {
+            $registro = InvAlquiler::where('id','=',$id)->orderby('id','desc')->first();
+
+            $anotaciones = InvAlquilerCom::where('id_alquiler','=',$id)->get(); 
+
+            $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
+
+            //return $recesos;
+                
+            return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos')); 
+        }
+        if($tipo == 'mantenimiento')
+        {
+            $registro = InvReparacion::where('id','=',$id)->orderby('id','desc')->first();
+           
+            return View::make('inventario.admin.detalles2',compact('registro'));
+        }
+        else{
+            return $this->common_answer('No es posible',false);
+        }
+    }
+
+    public function quit_alerts()
+    {
+        Session::put('no_show_alerts',1);
+        return Redirect::to('admin/inventario');
     }
 
     private function common_answer($string,$bool)

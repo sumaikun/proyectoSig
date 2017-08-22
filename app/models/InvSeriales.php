@@ -9,4 +9,9 @@ class InvSeriales extends Model
 {
     use SoftDeletes;
     protected $table = 'inventario_seriales';
+
+    public function elemento(){
+
+    	return $this->belongsTo('psig\models\InvElementos','id_elementos','id');
+    }
 }

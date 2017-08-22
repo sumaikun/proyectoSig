@@ -102,3 +102,7 @@ Route::post('inventario/Detalles/update_seguimiento','Coninventario@update_segui
 Route::get('inventario/downloadpdf/{id}','Coninventario@download_pdf');
 
 Route::get('inventario/check_alerts','Coninventario@check_alerts');
+
+Route::get('inventario/info/{id}/{tipo}','Coninventario@info_alert');
+
+Route::get('inventario/quit_alerts','Coninventario@quit_alerts');

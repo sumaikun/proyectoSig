@@ -9,4 +9,9 @@ class InvReparacion extends Model
 {
     use SoftDeletes;
     protected $table = 'inventario_reparacion';
+
+    public function serial(){
+
+    	return $this->belongsTo('psig\models\InvSeriales','id_serial','id');
+    }
 }

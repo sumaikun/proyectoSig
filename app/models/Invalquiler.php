@@ -10,4 +10,9 @@ class InvAlquiler extends Model
     use SoftDeletes;
 
     protected $table = 'inventario_alquiler';
+
+    public function serial(){
+
+    	return $this->belongsTo('psig\models\InvSeriales','id_serial','id');
+    }
 }

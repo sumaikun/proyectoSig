@@ -64,19 +64,33 @@
          </div>
          <div class="modal-footer">
             <button type="button"  id="close_category" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            <button type="submit" id="save_category"   class="btn btn-success" data-dismiss="modal"><i class="fa fa-floppy-o"></i>Entendido no me las muestres mas</button>
+            <button onclick="quit_alerts()" type="submit" id="save_category"   class="btn btn-success" data-dismiss="modal"><i class="fa fa-floppy-o"></i>Entendido no me las muestres mas</button>
          </div>
       </div>
    </div>
 </div>
 
 <script>
+
+@if(session::get('no_show_alerts')==null)
+
 $( document ).ready(function() {
     $.get("inventario/check_alerts", function(res, sta){
          $("#ajax-content").append(res);
          $("#myModal").modal('show');
       });
 });
+
+@endif
+
+function quit_alerts()
+{
+	if(confirm("Quitar las alertas hará que no se muestren hasta su proximo inicio de sesión ¿Esta de acuerdo?"))
+	{
+		window.location.href= "inventario/quit_alerts";		
+	}
+
+}
 </script>
 
 @stop
