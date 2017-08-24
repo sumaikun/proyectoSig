@@ -1,3 +1,4 @@
+
 <ul class="nav nav-sidebar">
 
    <li @if($op=='inicio') {{'class="active"'}} @endif>
@@ -30,12 +31,10 @@
    </li>
    @endif
    
-</ul>
-
-
-@if(Session::get('cassima') or Session::get('admin reporte'))
+   @if(Session::get('cassima') or Session::get('admin reporte'))
    <hr><i class="fa fa-cogs"></i> Administración <hr>
-@endif
+   @endif   
+</ul>
 
 <ul class="nav nav-sidebar">
    

@@ -22,22 +22,53 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.3.0/fullcalendar.min.js" type="text/javascript"></script>
 
 </head>
-<body>
+
 
 @yield('barra_usuario')
-   
-<div class="container-fluid">
-<div class="row">
-      
-      <div class="col-lg-2 sidebar" id="menula">
-         @yield('menu_lateral')
-      </div>
-      
-      <div class="col-lg-10 col-lg-offset-2 main" id="conte">
-         @yield('contenido')
-      </div>
+<body class="skin-black">
 
-</div>
+<div class="container-fluid">
+  <div class="row">
+        
+        <div class="col-lg-2 sidebar" id="menula">
+            <aside class="left-side sidebar-offcanvas">
+            <!-- sidebar: style can be found in sidebar.less -->
+               <section class="sidebar">
+               <!-- Sidebar user panel -->
+                  <div class="user-panel">
+                     <div class="pull-left image">
+                        @if(Session::get('usu_foto'))
+                              {{ HTML::image(Session::get('usu_foto'), 'foto', array('class' => 'img-responsive circle')) }}
+                           @else
+                              <img src="http://placehold.it/120x120" alt="Alternate Text" class="img-responsive" />
+                           @endif
+                        <!-- <img src="img/avatar3.png" class="img-circle" alt="User Image" /> -->
+                     </div>
+                     <br>
+                     <div class="pull-left info">
+                        <p>Hola!, {{ucwords (Session::get('usu_nombres'))}}</p>
+                        <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                     </div>
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <div>
+                    @yield('menu_lateral')
+                  </div>
+               </section>
+           
+            </aside> 
+           
+        </div>
+        
+        <div class="col-lg-10  main" id="conte">
+           @yield('contenido')
+        </div>
+
+  </div>
 </div>
 
 

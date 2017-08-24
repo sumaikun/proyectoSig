@@ -180,8 +180,8 @@ Route::any("all_registers",function(){
     $usu = Input::get('user_id');
   }
   else{    
-    $registros = psig\models\Modgdregistros::All();
-    $usu = null;    
+    $registros = psig\models\Modgdregistros::where('usu_id','=',Session::get('usu_id'))->get();;
+    $usu = Session::get('usu_id');    
   }
   
   return view('usuarios.gdocumental.all_regs',compact('usuarios','registros','usu'));
