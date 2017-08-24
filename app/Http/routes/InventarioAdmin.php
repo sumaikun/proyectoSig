@@ -111,3 +111,7 @@ Route::get('inventario/Permisos',function(){
   $usuarios = psig\models\Modusuarios::OrderBy('usu_nombres')->where('rol_id','!=','1')->where('usu_estado','=','activo')->get();
   return view('inventario.admin.permisos',compact('usuarios'));
 });
+
+Route::post('inventario/asignaPermisos','Coninventario@asigna_permisos');
+
+Route::get('inventario/permi_asoc/{id}','Coninventario@check_permission');

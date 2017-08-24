@@ -27,9 +27,8 @@
 <section class="content" style="max-width: 800px;" >
 
   
-
+  <form action="asignaPermisos" method="post"> 
     <div class="col-lg-8 col-sm-8 table-responsive" style="max-height: 580px;">
-
       <div class="panel-group" >
         <div class="panel panel-default">
           <div class="panel-heading"><strong>Administración de elementos</strong></div>
@@ -37,17 +36,17 @@
             <ul>
               <li>
                 <label class="form-control">Crear elementos</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos1" value="inventario_crear"  type="checkbox">
               </li>
               <br>
               <li>
                 <label class="form-control">Editar elementos</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos2" value="inventario_editar" type="checkbox">
               </li>
               <br>
               <li>
                 <label class="form-control">Eliminar elementos</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos3" value="inventario_eliminar" type="checkbox">
               </li>
             </ul>
           </div>
@@ -61,12 +60,12 @@
             <ul>
               <li>
                 <label class="form-control">Observar Alquileres</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos4" value="observar_alquileres" type="checkbox">
               </li>
               <br>
               <li>
                 <label class="form-control">Cambiar Alquileres</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos5" value="cambiar_alquileres" type="checkbox">
               </li>            
             </ul>
           </div>
@@ -80,12 +79,12 @@
             <ul>
               <li>
                 <label class="form-control">Observar Mantenimiento</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos6" value="observar_mantenimiento" type="checkbox">
               </li>
               <br>
               <li>
                 <label class="form-control">Cambiar Mantenimiento</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos7" value="cambiar_mantenimiento" type="checkbox">
               </li>            
             </ul>
           </div>
@@ -99,7 +98,7 @@
             <ul>
               <li>
                 <label class="form-control">Observar alertas</label>
-                <input class="form-control" type="checkbox">
+                <input class="form-control" name="permisos8" value="ver_alertas" type="checkbox">
               </li>                        
             </ul>
           </div>
@@ -110,7 +109,7 @@
 
     <div class="col-lg-4 col-sm-4">
       <label for="carg_nombre">Usuario</label>
-        <select class="form-control" id="usuario" name="usuario" size="15">
+        <select class="form-control" id="usuario" name="usuario" size="15" required>
           <option value="">Selecciona</option>
           @foreach($usuarios as $usuario)
           <option value={{$usuario->usu_id}}> {{$usuario->usu_nombres}} {{$usuario->usu_apellido1}}</option>
@@ -119,7 +118,7 @@
       <button class="btn btn-success form-control">Guardar</button>  
     </div>
 
-    
+   </form> 
 
 </section>
 
@@ -157,6 +156,36 @@
  
 
 @section('script')
+<script type="text/javascript">
+function validar()
+{
+   on_preload();
+   return true;
+}
+
+$(document).ready(function() {
+  $("#usuario").change(event => {
+      $('input:checkbox').removeAttr('checked');
+
+      $.get(`permi_asoc/${event.target.value}`, function(res, sta){
+        if(res!='inexistence')
+        {
+          array = res.split(',');
+          console.log(array);
+          for(i=0;i<array.length;i++){
+            if(array[i]!=''){
+              $( "input[value="+array[i]+"]").prop('checked', true);
+              console.log('valor del array '+array[i]);
+            }
+          }
+          //
+        }
+      });    
+  });
+});
+
+
+</script>
 
 @stop
 

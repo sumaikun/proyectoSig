@@ -26,6 +26,8 @@ use psig\models\InvAlquilerRec;
 
 use psig\models\InvRepSeg;
 
+use psig\models\InvPermisos;
+
 use psig\Helpers\Metodos;
 
 use psig\Helpers\horas_minutos;
@@ -628,6 +630,61 @@ class Coninventario extends Controller
     {
         Session::put('no_show_alerts',1);
         return Redirect::to('admin/inventario');
+    }
+
+    public function asigna_permisos(Request $request)
+    {
+        //print_r($_POST);
+        //return "";
+        $permisos =  new InvPermisos;
+
+        $existence = InvPermisos::where('usuario','=',$request->usuario)->first();
+
+        if($existence==null)
+        {
+             $sql = DB::select(DB::raw("select max(id) as id from permisos_inventario"));
+               $id = $sql[0]->id;
+               if($id == null)
+               {
+                    $id=1;
+               }
+               else{
+                    $id += 1;
+               }
+            $permisos->id = $id;                        
+        }   
+        else{
+            $permisos = $existence;
+        }     
+
+        $permisos->usuario = $request->usuario;
+
+        $chain = '';
+
+        for($i=1;$i<8;$i++)
+        {
+            if($request['permisos'.$i]!=null)
+            {
+                $chain = $chain.$request['permisos'.$i].',';
+            }
+        }
+
+        $permisos->permisos = $chain;
+
+        //return $permisos;
+
+        $permisos->save();
+        return $this->common_answer("Permisos asignados con exito!!",true);
+    }
+
+    public function check_permission($id){
+        $existence = InvPermisos::where('usuario','=',$id)->first();
+        if($existence!=null){
+            return $existence->permisos;
+        }
+        else {
+            return 'inexistence';
+        }        
     }
 
     private function common_answer($string,$bool)
