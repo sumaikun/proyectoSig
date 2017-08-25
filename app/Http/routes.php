@@ -168,7 +168,12 @@ Route::any('inicio', function(){	 return View::make('usuarios.inicio');  });
 
 //CAPACITACION-----------------------------------------------------------------------------------
                                              require (__DIR__ . '/routes/CapacitacionUsuario.php');
-//-----------------------------------------------------------------------------------------------------                        
+//-----------------------------------------------------------------------------------------------------
+
+//INVENTARIO-----------------------------------------------------------------------------------
+                                             require (__DIR__ . '/routes/InventarioUsuario.php');
+//----------------------------------------------------------------------------------------------------- 
+
 Route::any("all_registers",function(){
       
    $usuarios = DB::SELECT(DB::RAW("select DISTINCT(us.usu_id),us.* from usuarios as us inner join gd_registros as reg on reg.usu_id = us.usu_id ORDER BY us.usu_nombres"));

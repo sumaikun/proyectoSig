@@ -1,15 +1,29 @@
-@extends('administrador.layouts.layout')
+@extends('usuarios.layouts.layout')
 
 
-@section('menu')
-    @include('administrador.layouts.menu', array('op'=>'usuarios'))
+@section('barra_usuario')
+  @include('usuarios.layouts.barra_usuario', array('op'=>'inicio'))
 @stop
+
+
+@section('menu_lateral')
+  @include('usuarios.layouts.menu_lateral', array('op'=>'inicio'))
+@stop
+
 
 @section('css')
    {{ HTML::style('general/css/icono_info.css') }}
 @stop
 
+
+
+
 @section('contenido')
+
+<?php
+//echo "soy un texto";
+  //echo Session::get('inventario_editar');
+ ?>
 <!-- header de la pagina -->
 <section class="content-header">
 	<h1><i class="fa fa-users"></i> Inventario <!-- <small>Nuevo usuario</small> --></h1>
@@ -24,20 +38,19 @@
 <section class="content" style="height:500px;">
 
 
-
+@if(Session::get('inventario_crear')!=null)
 <div class="col-lg-2">
-	<a href="{{ url('admin/inventario/create') }}">
+	<a href="{{ url('usuario/inventario/create') }}">
 	<div class="thumbnail">
 		{{ HTML::image('admin/images/inventarios/create.png', 'categoria', array('class' => 'center-block')) }}
 		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Ingresar Elemento</span></button>
 	</div>
 	</a>
 </div>
-
-
+@endif
 
 <div class="col-lg-2">
-	<a href="{{ url('admin/inventario/Gestion') }}">
+	<a href="{{ url('usuario/inventario/Gestion') }}">
 	<div class="thumbnail">
 		{{ HTML::image('admin/images/inventarios/list.png', 'categoria', array('class' => 'center-block')) }}
 		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de Inventario</span></button>
@@ -45,14 +58,7 @@
 	</a>
 </div>
 
-<div class="col-lg-2">
-	<a href="{{ url('admin/inventario/Permisos') }}">
-	<div class="thumbnail">
-		{{ HTML::image('admin/images/inventarios/permission.png', 'categoria', array('class' => 'center-block')) }}
-		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Permisos de Inventario</span></button>
-	</div>
-	</a>
-</div>
+
 
 
 </section>
@@ -83,7 +89,7 @@
 
 <script>
 
-@if(session::get('no_show_alerts')==null)
+@if(session::get('no_show_alerts')==null and Session::get('ver_alertas')!=null)
 
 $( document ).ready(function() {
     $.get("inventario/check_alerts", function(res, sta){

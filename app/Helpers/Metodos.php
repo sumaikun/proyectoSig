@@ -12,6 +12,7 @@ use psig\models\Modusuarios;
 use psig\models\modActividad;
 use psig\models\Modfactura;
 use psig\models\Modpermisosfac;
+use psig\models\InvPermisos;
 use Session;
 use DB;
 use psig\models\ListEnterprises;
@@ -399,6 +400,44 @@ class Metodos{
 	    	}
 	    	if(in_array('ges_ciudades', $array)){
 	    		 Session::put('ges_ciudades','ges_ciudades'); 
+	    	}
+    	
+    		return true;	
+    	}
+    
+    	
+    }
+
+
+    public static function exist_inv_permission($id){
+    	$query = InvPermisos::where('usuario','=',$id)->first();
+    	//echo $query;
+    	if($query!=null)
+    	{
+	    	$array = explode(',', $query->permisos);
+	    	if(in_array('inventario_crear', $array)){
+	    		 Session::put('inventario_crear','inventario_crear'); 
+	    	}
+	    	if(in_array('inventario_editar', $array)){
+	    		 Session::put('inventario_editar','inventario_editar'); 
+	    	}
+	    	if(in_array('inventario_eliminar', $array)){
+	    		 Session::put('inventario_eliminar','inventario_eliminar'); 
+	    	}	    	
+	    	if(in_array('observar_alquileres', $array)){
+	    		 Session::put('observar_alquileres','observar_alquileres'); 
+	    	}
+	    	if(in_array('cambiar_alquileres', $array)){
+	    		 Session::put('cambiar_alquileres','cambiar_alquileres'); 
+	    	}
+	    	if(in_array('ges_ciudades', $array)){
+	    		 Session::put('observar_mantenimiento','observar_mantenimiento'); 
+	    	}
+	    	if(in_array('ges_ciudades', $array)){
+	    		 Session::put('cambiar_mantenimiento','cambiar_mantenimiento'); 
+	    	}
+	    	if(in_array('ges_ciudades', $array)){
+	    		 Session::put('ver_alertas','ver_alertas'); 
 	    	}
     	
     		return true;	

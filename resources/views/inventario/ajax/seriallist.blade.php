@@ -18,13 +18,19 @@
       @foreach($seriales as $serial)
         <tr>
           <td> {{$serial->id}} </td>
-          <td> {{$serial->valor}} <a href="#" data-toggle="modal" onclick="edit_name({{$serial->id}},'{{$serial->valor}}')" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></td>
+          <td> {{$serial->valor}} @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_editar')!=null)<a href="#" data-toggle="modal" onclick="edit_name({{$serial->id}},'{{$serial->valor}}')" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a>@endif</td>
           <td> {{$serial->nombre}} </td>
            <td>
+           @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_crear')!=null)
            <a href="#" data-toggle="modal" onclick="rentthis({{$serial->id}})" data-target="#myModal3" title="Alquilar" style="margin-left: 5px;"  @if($serial->id_status != 1) class="inactive" @endif><i class="fa fa-briefcase" aria-hidden="true"></i></a>
+           @endif
            <a href="Detalles/{{$serial->id}}" title="Detalles" style="margin-left: 5px;" @if($serial->id_status == 1) class="inactive" @endif><i class="fa fa-calendar" aria-hidden="true"></i></a>
+           @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_crear')!=null)
            <a href="#" data-target="#myModalRep"   data-toggle="modal" onclick="fixthis({{$serial->id}})" title="Reparación" style="margin-left: 5px;" @if($serial->id_status != 1) class="inactive" @endif><i class="fa fa-life-ring" aria-hidden="true"></i></a>
+           @endif
+           @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_eliminar')!=null)
            <a href="serialdelete/{{$serial->id}}" onclick="return confirm_action()" title="Borrar" style="margin-left: 5px;"><i class="fa fa-times" aria-hidden="true"></i></a>
+           @endif
            </td>            
         </tr>
       @endforeach  

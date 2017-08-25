@@ -87,6 +87,14 @@
          </a>
       </li>
    @endif
+
+   @if(psig\Helpers\Metodos::exist_inv_permission(Session::get('usu_id'))==true)
+   <li>
+      <a href="{{ url('usuario/inventario') }}">
+         <i class="fa fa-envelope"></i> Inventario
+      </a>
+   </li>
+   @endif
  
 </ul>
       
