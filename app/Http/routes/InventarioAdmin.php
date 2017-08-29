@@ -28,6 +28,11 @@ Route::get('inventario/Gestion', function(){
 	return View::make('inventario.admin.gestion',compact('elementos','estados','empresas'));
 });
 
+Route::get('inventario/Gestion2', function(){  
+  $consumibles =  psig\models\InvConsumibles::All();          
+  return View::make('inventario.admin.gestion2',compact('consumibles'));
+});
+
 Route::get('inventario/insertar_categoria/{nombre}','Coninventario@createCat');
 
 Route::get('inventario/insertar_status/{nombre}','Coninventario@createSta');
@@ -115,3 +120,17 @@ Route::get('inventario/Permisos',function(){
 Route::post('inventario/asignaPermisos','Coninventario@asigna_permisos');
 
 Route::get('inventario/permi_asoc/{id}','Coninventario@check_permission');
+
+Route::get('inventario/create2', function(){
+   return view('inventario.admin.create2');
+});
+
+Route::post('inventario/addConsumible','Coninventario@createCons');
+
+Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
+
+Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
+
+Route::get('inventario/consumible/edit_element/{id}','Coninventario@editConsumible');
+
+Route::post('inventario/updateConsumible','Coninventario@updateConsumible');

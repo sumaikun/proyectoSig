@@ -28,6 +28,8 @@ use psig\models\InvRepSeg;
 
 use psig\models\InvPermisos;
 
+use psig\models\InvConsumibles;
+
 use psig\Helpers\Metodos;
 
 use psig\Helpers\horas_minutos;
@@ -694,7 +696,7 @@ class Coninventario extends Controller
 
         $chain = '';
 
-        for($i=1;$i<8;$i++)
+        for($i=1;$i<9;$i++)
         {
             if($request['permisos'.$i]!=null)
             {
@@ -718,6 +720,43 @@ class Coninventario extends Controller
         else {
             return 'inexistence';
         }        
+    }
+
+    public function createCons(Request $request)
+    {
+        //return "crear consumible";
+        $consumible = new InvConsumibles;
+        $id = Metodos::id_generator($consumible,'id');
+        $consumible->id = $id;
+        $consumible->codigo = $request->codigo;
+        $consumible->descripcion = $request->descripcion;
+        $consumible->cantidad = $request->cantidad;
+        $consumible->serial_general =  $request->serial;
+        $consumible->save();
+        return $this->common_answer("!Consumible creado!",true);
+    }
+
+    public function editConsumible($id)
+    {
+        $consumible = InvConsumibles::where('id','=',$id)->first();
+        return view('inventario.ajax.edit_consumible',compact('consumible'));
+    }
+
+    public function updateConsumible(Request $request)
+    {
+        $consumible = InvConsumibles::where('id','=',$request->id)->first();
+        $consumible->codigo = $request->codigo;
+        $consumible->descripcion = $request->descripcion;
+        $consumible->cantidad = $request->cantidad;
+        $consumible->serial_general =  $request->serial;
+        $consumible->save();
+        return $this->common_answer("!Consumible actualizado!",true);
+    }
+
+    public function deleteConsumible($id)
+    {
+        DB::delete("delete from inventario_consumibles where id = ".$id);
+        return $this->common_answer("!Consumible eliminado!",true);
     }
 
     private function common_answer($string,$bool)
