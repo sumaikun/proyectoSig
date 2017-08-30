@@ -104,6 +104,24 @@
           </div>
         </div>
       </div>
+
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Consumibles</strong></div>
+          <div class="panel-body">
+            <ul>
+              <li>
+                <label class="form-control">Crear consumibles</label>
+                <input class="form-control" name="permisos9" value="crear_consumibles" type="checkbox">
+              </li>
+              <li>
+                <label class="form-control">Manipular consumibles</label>
+                <input class="form-control" name="permisos10" value="man_consumibles" type="checkbox">
+              </li>                        
+            </ul>
+          </div>
+        </div>
+      </div>
       
     </div>
 

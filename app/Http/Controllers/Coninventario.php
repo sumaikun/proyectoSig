@@ -696,7 +696,7 @@ class Coninventario extends Controller
 
         $chain = '';
 
-        for($i=1;$i<9;$i++)
+        for($i=1;$i<11;$i++)
         {
             if($request['permisos'.$i]!=null)
             {

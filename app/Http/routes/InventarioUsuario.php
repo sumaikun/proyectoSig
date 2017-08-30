@@ -107,3 +107,21 @@ Route::get('inventario/info/{id}/{tipo}','Coninventario@info_alert');
 
 Route::get('inventario/quit_alerts','Coninventario@quit_alerts');
 
+Route::get('inventario/create2', function(){
+   return view('inventario.usuario.create2');
+});
+
+Route::post('inventario/addConsumible','Coninventario@createCons');
+
+Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
+
+Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
+
+Route::get('inventario/consumible/edit_element/{id}','Coninventario@editConsumible');
+
+Route::post('inventario/updateConsumible','Coninventario@updateConsumible');
+
+Route::get('inventario/Gestion2', function(){  
+  $consumibles =  psig\models\InvConsumibles::All();          
+  return View::make('inventario.usuario.gestion2',compact('consumibles'));
+});

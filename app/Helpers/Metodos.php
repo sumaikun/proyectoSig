@@ -439,6 +439,12 @@ class Metodos{
 	    	if(in_array('ges_ciudades', $array)){
 	    		 Session::put('ver_alertas','ver_alertas'); 
 	    	}
+	    	if(in_array('crear_consumibles', $array)){
+	    		 Session::put('crear_consumibles','crear_consumibles'); 
+	    	}
+	    	if(in_array('man_consumibles', $array)){
+	    		 Session::put('man_consumibles','man_consumibles'); 
+	    	}
     	
     		return true;	
     	}

@@ -58,6 +58,25 @@
 	</a>
 </div>
 
+@if(Session::get('crear_consumibles')!=null)
+<div class="col-lg-2">
+  <a href="{{ url('usuario/inventario/create2') }}">
+  <div class="thumbnail">
+    {{ HTML::image('admin/images/inventarios/generate.jpg', 'categoria', array('class' => 'center-block')) }}
+    <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Crear consumibles</span></button>
+  </div>
+  </a>
+</div>
+@endif
+
+<div class="col-lg-2">
+  <a href="{{ url('usuario/inventario/Gestion2') }}">
+  <div class="thumbnail">
+    {{ HTML::image('admin/images/inventarios/list2.png', 'categoria', array('class' => 'center-block')) }}
+    <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de consumibles</span></button>
+  </div>
+  </a>
+</div>
 
 
 
