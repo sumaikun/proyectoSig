@@ -609,5 +609,24 @@ function big_text_edit(elem){
    
 }
 
+$('#geofer_valor_inicial').on('change keyup', function() {
+  // Remove invalid characters
+  var sanitized = $(this).val().replace('.', ',');
+  // Update value
+  $(this).val(sanitized);
+});
+
+$('#geofer_ult_valor_cot').on('change keyup', function() {
+  // Remove invalid characters
+  var sanitized = $(this).val().replace('.', ',');
+  $(this).val(sanitized);
+});
+
+$('#geofer_val_factura').on('change keyup', function() {
+  // Remove invalid characters
+  var sanitized = $(this).val().replace('.', ',');
+  $(this).val(sanitized);
+});
+
 </script>
 @stop
