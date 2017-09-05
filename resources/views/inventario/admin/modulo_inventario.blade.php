@@ -23,55 +23,63 @@
 <!-- Cuerpo de la pagina -->
 <section class="content" style="height:500px;">
 
+<div class="row">
 
-
-<div class="col-lg-2">
-	<a href="{{ url('admin/inventario/create') }}">
-	<div class="thumbnail">
-		{{ HTML::image('admin/images/inventarios/create.png', 'categoria', array('class' => 'center-block')) }}
-		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Ingresar Elemento</span></button>
-	</div>
-	</a>
-</div>
-
-
-
-<div class="col-lg-2">
-	<a href="{{ url('admin/inventario/Gestion') }}">
-	<div class="thumbnail">
-		{{ HTML::image('admin/images/inventarios/list.png', 'categoria', array('class' => 'center-block')) }}
-		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de Inventario</span></button>
-	</div>
-	</a>
-</div>
-
-<div class="col-lg-2">
-	<a href="{{ url('admin/inventario/Permisos') }}">
-	<div class="thumbnail">
-		{{ HTML::image('admin/images/inventarios/permission.png', 'categoria', array('class' => 'center-block')) }}
-		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Permisos de Inventario</span></button>
-	</div>
-	</a>
-</div>
-
-<div class="col-lg-2">
-  <a href="{{ url('admin/inventario/create2') }}">
-  <div class="thumbnail">
-    {{ HTML::image('admin/images/inventarios/generate.jpg', 'categoria', array('class' => 'center-block')) }}
-    <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Crear consumibles</span></button>
+  <div class="col-lg-2">
+  	<a href="{{ url('admin/inventario/create') }}">
+  	<div class="thumbnail">
+  		{{ HTML::image('admin/images/inventarios/create.png', 'categoria', array('class' => 'center-block')) }}
+  		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Ingresar Elemento</span></button>
+  	</div>
+  	</a>
   </div>
-  </a>
-</div>
 
-<div class="col-lg-2">
-  <a href="{{ url('admin/inventario/Gestion2') }}">
-  <div class="thumbnail">
-    {{ HTML::image('admin/images/inventarios/list2.png', 'categoria', array('class' => 'center-block')) }}
-    <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de consumibles</span></button>
+  <div class="col-lg-2">
+  	<a href="{{ url('admin/inventario/Gestion') }}">
+  	<div class="thumbnail">
+  		{{ HTML::image('admin/images/inventarios/list.png', 'categoria', array('class' => 'center-block')) }}
+  		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de Inventario</span></button>
+  	</div>
+  	</a>
   </div>
-  </a>
-</div>
 
+  <div class="col-lg-2">
+  	<a href="{{ url('admin/inventario/Permisos') }}">
+  	<div class="thumbnail">
+  		{{ HTML::image('admin/images/inventarios/permission.png', 'categoria', array('class' => 'center-block')) }}
+  		<button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Permisos de Inventario</span></button>
+  	</div>
+  	</a>
+  </div>
+
+  <div class="col-lg-2">
+    <a href="{{ url('admin/inventario/create2') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/inventarios/generate.jpg', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Crear consumibles</span></button>
+    </div>
+    </a>
+  </div>
+
+  <div class="col-lg-2">
+    <a href="{{ url('admin/inventario/Gestion2') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/inventarios/list2.png', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de consumibles</span></button>
+    </div>
+    </a>
+  </div>
+
+  <div class="col-lg-2">
+    <a href="{{ url('admin/inventario/Unidades') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/inventarios/unities.png', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de unidades</span></button>
+    </div>
+    </a>
+  </div>
+
+</div>
 
 </section>
 

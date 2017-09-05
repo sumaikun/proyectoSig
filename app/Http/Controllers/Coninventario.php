@@ -30,6 +30,8 @@ use psig\models\InvPermisos;
 
 use psig\models\InvConsumibles;
 
+use psig\models\InvUnidades;
+
 use psig\Helpers\Metodos;
 
 use psig\Helpers\horas_minutos;
@@ -757,6 +759,49 @@ class Coninventario extends Controller
     {
         DB::delete("delete from inventario_consumibles where id = ".$id);
         return $this->common_answer("!Consumible eliminado!",true);
+    }
+
+    public function crear_unidad(Request $request)
+    {
+        $unidad = new InvUnidades;
+        $unidad->id = Metodos::id_generator($unidad,'id');
+        $unidad->placa = $request->placa;
+        $unidad->descripcion = $request->descripcion;
+        $unidad->save();
+        return $this->common_answer("!Unidad creada!",true);
+    }
+
+    public function editar_unidad($id)
+    {
+        $unidad = InvUnidades::where('id','=',$id)->first();
+        return $unidad;
+    }
+
+    public function update_unidad(Request $request)
+    {
+        $unidad = InvUnidades::where('id','=',$request->id)->first();
+        $unidad->placa = $request->placa_edit;
+        $unidad->descripcion = $request->descripcion_edit;
+        $unidad->save();
+        return $this->common_answer("!Unidad actualizada!",true);   
+    }
+
+    public function delete_unidad($id)
+    {
+        $unidad = InvUnidades::where('id','=',$id)->first();
+        $unidad->delete();
+        return $this->common_answer("!Unidad eliminada!",true);
+    }
+
+    public function asignar_unidad($id,$unity)
+    {
+        if($unity == 0)
+        {
+            $unity = null;
+        }
+        $serial = InvSeriales::where('id','=',$id)->first();
+        $serial->id_inventario_unidades = $unity;
+        $serial->save();
     }
 
     private function common_answer($string,$bool)

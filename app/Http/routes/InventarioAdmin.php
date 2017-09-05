@@ -29,8 +29,9 @@ Route::get('inventario/Gestion', function(){
 });
 
 Route::get('inventario/Gestion2', function(){  
-  $consumibles =  psig\models\InvConsumibles::All();          
-  return View::make('inventario.admin.gestion2',compact('consumibles'));
+  $consumibles =  psig\models\InvConsumibles::All();
+  $unidades = psig\models\InvUnidades::lists('placa','id');          
+  return View::make('inventario.admin.gestion2',compact('consumibles','unidades'));
 });
 
 Route::get('inventario/insertar_categoria/{nombre}','Coninventario@createCat');
@@ -42,9 +43,10 @@ Route::post('inventario/addElemento','Coninventario@createEle');
 Route::post('inventario/editElemento','Coninventario@editEle');
 
 Route::get('inventario/get_seriales/{id}',function($id){
-  $seriales = DB::SELECT(DB::RAW("select s.id_status,s.id,s.valor,e.nombre, s.id_elementos from inventario_seriales as s INNER JOIN inventario_status as e on s.id_status = e.id where s.deleted_at is null and s.id_elementos=".$id));  
-  
-  return View::make('inventario.ajax.seriallist',compact('seriales','id'));
+  $seriales = DB::SELECT(DB::RAW("select s.id_status,s.id,s.valor,e.nombre, s.id_elementos, s.id_inventario_unidades from inventario_seriales as s INNER JOIN inventario_status as e on s.id_status = e.id where s.deleted_at is null and s.id_elementos=".$id));  
+  $unidades = psig\models\InvUnidades::lists('placa','id');
+  //return $unidades;
+  return View::make('inventario.ajax.seriallist',compact('seriales','id','unidades'));
 
 });
 
@@ -134,3 +136,18 @@ Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
 Route::get('inventario/consumible/edit_element/{id}','Coninventario@editConsumible');
 
 Route::post('inventario/updateConsumible','Coninventario@updateConsumible');
+
+Route::get('inventario/Unidades',function(){
+  $unidades = psig\models\InvUnidades::get();
+  return view('inventario.admin.gestion3',compact('unidades'));
+});
+
+Route::post('inventario/crear_unidad','Coninventario@crear_unidad');
+
+Route::get('inventario/editar_unidad/{id}','Coninventario@editar_unidad');
+
+Route::post('inventario/update_unidad','Coninventario@update_unidad');
+
+Route::get('inventario/delete_unidad/{id}','Coninventario@delete_unidad');
+
+Route::get('inventario/asignar_unidad/{id}/{unidad}','Coninventario@asignar_unidad');

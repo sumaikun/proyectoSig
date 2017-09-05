@@ -59,7 +59,8 @@
                   <td> {{$consumible->descripcion}}</td>             
                   <td style="text-align: center;"> {{$consumible->cantidad}}</td>                  
                   <td> {{$consumible->serial_general}}</td>                  
-                  <td><a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>  
+                  <td><a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <a href="#" onclick="modal_unidades('{{$consumible->id}}')"><i class="fa fa-car" aria-hidden="true" title="Unidades"></i></a></td>  
                 </tr>  
               @endforeach
             </tbody>
@@ -88,7 +89,33 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div id="modalUnidades" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Unidad perteneciente</h4>
+      </div>
+      <div class="modal-body">
+        <label class="form-control">Unidad asignada</label>
+        <select class="form-control" name='asignunidad'>
+          <option value="0">Sin unidad</option>
+          @foreach($unidades as $key => $temp)
+            <option value=" {{$key}} ">{{$temp}}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="asignar_unidad()">Asignar</button>      
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
 <script type="text/javascript">
@@ -103,6 +130,14 @@
          $("#ajax-content").empty();
          $("#ajax-content").append(res);
       });
+  }
+
+  var unidad_id;
+
+  function modal_unidades(id)
+  {
+    unidad_id = id;
+    $("#modalUnidades").modal('show');
   }
  
 </script>

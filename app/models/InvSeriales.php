@@ -14,4 +14,9 @@ class InvSeriales extends Model
 
     	return $this->belongsTo('psig\models\InvElementos','id_elementos','id');
     }
+
+    public function unidad(){
+
+    	return $this->belongsTo('psig\models\InvUnidades','id_inventario_unidades','id');
+    }
 }
