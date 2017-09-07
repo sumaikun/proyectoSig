@@ -804,6 +804,45 @@ class Coninventario extends Controller
         $serial->save();
     }
 
+    public function distribuir_unidades(Request $request)
+    {
+        $unidades = InvUnidades::lists('placa','id');
+        $unidad_base = InvConsumibles::where('id','=',$request->id)->first();
+        
+
+        foreach ($unidades as $key => $value) {
+
+            if($request->$value != null)
+            {
+                $unidad_base->cantidad = $unidad_base->cantidad - $request->$value;  
+                $val = InvConsumibles::where('serial_general','=',$unidad_base->serial_general)->where('id_inventario_unidades','=',$key)->first();
+
+                if($val == null)
+                {
+                    $consumible = new InvConsumibles;
+                    $id = Metodos::id_generator($consumible,'id');
+                    $consumible->id = $id;
+                    $consumible->codigo = $unidad_base->codigo;
+                    $consumible->descripcion = $unidad_base->descripcion;
+                    $consumible->cantidad = $request->$value;
+                    $consumible->serial_general =  $unidad_base->serial_general;
+                    $consumible->id_inventario_unidades = $key;
+                    $consumible->save();
+                      
+                }
+                else{
+                    $val->cantidad = $val->cantidad+$request->$value;
+                    $val->save();
+                    
+                }
+                
+            }
+            
+        }
+        $unidad_base->save();
+        return $this->common_answer("!Consumible distribuido!",true);
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

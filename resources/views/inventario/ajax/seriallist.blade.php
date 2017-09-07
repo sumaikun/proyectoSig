@@ -20,7 +20,7 @@
         <tr>
           <td> {{$serial->id}} </td>
           <td> {{$serial->valor}} @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_editar')!=null)<a href="#" data-toggle="modal" onclick="edit_name({{$serial->id}},'{{$serial->valor}}')" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a>@endif</td>
-          <td> @if($serial->id_inventario_unidades!=null){{$unidades[$serial->id_inventario_unidades]}} @endif</td>
+          <td> @if($serial->id_inventario_unidades!=null){{$unidades[$serial->id_inventario_unidades]}} @else  {{"BODEGA SIG"}} @endif</td>
           <td> {{$serial->nombre}} </td>
            <td>
            @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_crear')!=null)

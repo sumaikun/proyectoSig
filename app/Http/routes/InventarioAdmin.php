@@ -151,3 +151,5 @@ Route::post('inventario/update_unidad','Coninventario@update_unidad');
 Route::get('inventario/delete_unidad/{id}','Coninventario@delete_unidad');
 
 Route::get('inventario/asignar_unidad/{id}/{unidad}','Coninventario@asignar_unidad');
+
+Route::post('inventario/distribuir_unidades','Coninventario@distribuir_unidades');
