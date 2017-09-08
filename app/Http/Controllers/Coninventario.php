@@ -843,6 +843,21 @@ class Coninventario extends Controller
         return $this->common_answer("!Consumible distribuido!",true);
     }
 
+    public function datos_unidad_seriales($id)
+    {
+        $categorias = InvCategorias::lists('nombre','id');
+        $seriales = InvSeriales::where('id_inventario_unidades','=',$id)->get();
+        return view('inventario.ajax.unidades_seriales',compact('seriales','categorias'));
+
+    }
+
+    public function datos_unidad_consumibles($id)
+    {        
+        $consumibles = InvConsumibles::where('id_inventario_unidades','=',$id)->get();
+        return view('inventario.ajax.unidades_consumibles',compact('consumibles'));
+
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

@@ -153,3 +153,7 @@ Route::get('inventario/delete_unidad/{id}','Coninventario@delete_unidad');
 Route::get('inventario/asignar_unidad/{id}/{unidad}','Coninventario@asignar_unidad');
 
 Route::post('inventario/distribuir_unidades','Coninventario@distribuir_unidades');
+
+Route::get('inventario/datos_unidad_seriales/{id}','Coninventario@datos_unidad_seriales');
+
+Route::get('inventario/datos_unidad_consumibles/{id}','Coninventario@datos_unidad_consumibles');

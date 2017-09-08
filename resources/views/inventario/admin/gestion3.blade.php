@@ -39,7 +39,7 @@
          </div>
       </div>
       <div class="panel-body">
-          
+        <div class="table-responsive ocultar_400px">
          <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
             <thead>
                <tr class="active">
@@ -51,14 +51,51 @@
             </thead>
             <tbody>
               @foreach($unidades as $unidad)
+              <tr>
                 <td>{{$unidad->id}}</td>
                 <td>{{$unidad->placa}}</td>
                 <td>{{$unidad->descripcion}}</td>
-                <td><a href="#" onclick="edit_unidad({{$unidad->id}})" title="editar"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="delete_unidad/{{$unidad->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
+                <td>
+                <a href="#" onclick="edit_unidad({{$unidad->id}})" title="editar"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
+                <a href="delete_unidad/{{$unidad->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                <a href="#"><i onclick="datos_unidad({{$unidad->id}})"  title="herramientas y consumibles asociados" class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                </td>
+              </tr>
               @endforeach
             </tbody>
          </table>
+         </div>
          <button onclick="nueva_unidad()">Crear nueva unidad</button>
+      </div>      
+   </div>
+</div>
+
+  <div class="col-lg-6">
+   <div class="panel panel-primary">
+      <div class="panel-heading" style="min-height: 35px;">
+         <div class="col-lg-10">
+         <h3 class="panel-title"><i class="fa fa-list"></i> Herramientas de la unidad</h3>
+         </div> 
+          <div class="col-log-2">            
+         </div>
+      </div>
+      <div class="panel-body">
+        <div id="ajax-content"></div>        
+      </div>      
+   </div>
+</div>
+
+  <div class="col-lg-6">
+   <div class="panel panel-primary">
+      <div class="panel-heading" style="min-height: 35px;">
+         <div class="col-lg-10">
+         <h3 class="panel-title"><i class="fa fa-list"></i> Consumibles de la unidad</h3>
+         </div> 
+          <div class="col-log-2">            
+         </div>
+      </div>
+      <div class="panel-body">
+        <div id="ajax-content2"></div>        
       </div>      
    </div>
 </div>
@@ -134,6 +171,7 @@
                 "url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
             }
     });
+    
   });
 
   function nueva_unidad()
@@ -147,6 +185,7 @@
 
   function edit_unidad(id)
   {
+    $("textarea[name='descripcion_edit']").empty();
     $.get("editar_unidad/"+id,function(res,sta){
       $("input[name='id']").val(res.id);
       $("input[name='placa_edit']").val(res.placa);
@@ -154,6 +193,31 @@
       $("#myModal2").modal("show");
 
     })
+  }
+
+  function datos_unidad(id)
+  {
+     $.get("datos_unidad_seriales/"+id,function(res,sta){      
+        $("#ajax-content").empty();
+        $("#ajax-content").append(res);
+        $('#example2').DataTable({
+          "bSort": false,
+          "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+            }
+        });
+      });
+
+     $.get("datos_unidad_consumibles/"+id,function(res,sta){      
+        $("#ajax-content2").empty();
+        $("#ajax-content2").append(res);
+        $('#example3').DataTable({
+          "bSort": false,
+          "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+            }
+        });
+      });
   }
 
 </script>
