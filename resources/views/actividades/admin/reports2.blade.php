@@ -102,19 +102,19 @@
                 @foreach($empresas as $empresa)
                   <tr>
                     <td>{{$empresa->nombre}}</td>
-                    <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-01')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-01')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-02')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-02')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-03')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-03')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-04')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-04')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-05')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-05')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-06')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-06')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-07')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-07')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-08')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-08')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-09')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-09')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-10')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-10')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-11')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-11')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-12')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-12')}}h</span></td>
-                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_year_per_ent($empresa->tp_empresa,$year)}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_year_total_ent($empresa->tp_empresa,$year)}}h</span></td>
+                    <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-01')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-01')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-02')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-02')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-03')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-03')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-04')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-04')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-05')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-05')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-06')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-06')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-07')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-07')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-08')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-08')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-09')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-09')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-10')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-10')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-11')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-11')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_month_per_ent($empresa->tp_empresa,$year.'-12')}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_month_total_ent($empresa->tp_empresa,$year.'-12')}}</span></td>
+                   <td> <span class="td_per">{{psig\Helpers\Metodos::hr_year_per_ent($empresa->tp_empresa,$year)}}%</span><span class="td_hr">{{psig\Helpers\Metodos::hr_year_total_ent($empresa->tp_empresa,$year)}}</span></td>
                   </tr>  
                 @endforeach
                 <tr style="border-width: 5px Important; border-style: solid; ">

@@ -30,7 +30,12 @@
     <div class="form-group">         
       <label>Archivo</label>
       <input class="form-control" name="archivo" type="file">
-    </div>         
+    </div>
+
+    <div class="form-group">         
+      <label>Precio</label>
+      <input class="form-control" value="$element->precio" min="1000" name="precio" type="number">
+    </div>           
 
           
       <button type="submit" onclick="clicked();" class="btn btn-success">

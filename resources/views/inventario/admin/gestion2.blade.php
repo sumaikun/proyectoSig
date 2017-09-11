@@ -52,7 +52,8 @@
                   <th><strong>Descripción</strong></th>                                 
                   <th><strong>Cantidad</strong></th>
                   <th><strong>serial general</strong></th> 
-                  <th><strong>Unidad</strong></th>                 
+                  <th><strong>Unidad</strong></th>
+                  <th><strong>Precio</strong></th>                  
                   <th><strong>Opciones</strong></th>
                </tr>
             </thead>
@@ -63,8 +64,9 @@
                   <td style="width:110px;"> {{$consumible->codigo}} </td>
                   <td> {{$consumible->descripcion}}</td>             
                   <td style="text-align: center;"> {{$consumible->cantidad}}</td>                  
-                  <td> {{$consumible->serial_general}}</td>                  
-                  <td> @if($consumible->id_inventario_unidades == null) {{"BODEGA SIG"}} @else {{$unidades[$consumible->id_inventario_unidades]}} @endif </td> 
+                  <td> {{$consumible->serial_general}}</td>                                    
+                  <td> @if($consumible->id_inventario_unidades == null) {{"BODEGA SIG"}} @else {{$unidades[$consumible->id_inventario_unidades]}} @endif </td>
+                  <td> {{$consumible->precio}}</td> 
                   <td><a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                   <a href="#"  @if($consumible->id_inventario_unidades == null) onclick="modal_unidades('{{$consumible->id}}','{{$consumible->cantidad}}')" @endif><i class="fa fa-car" aria-hidden="true" title="Distribuir Unidades"></i></a></td>  
                 </tr>  

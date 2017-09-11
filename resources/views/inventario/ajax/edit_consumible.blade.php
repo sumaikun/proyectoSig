@@ -21,6 +21,11 @@
         <label>Serial general</label>
         <input class="form-control" name="serial"   type="text" value="{{$consumible->serial_general}}"  id="serial" required>  
     </div>
+
+    <div class="form-group">      
+        <label>Precio</label>
+        <input class="form-control" name="precio"   type="number" value="{{$consumible->precio}}"  id="precio" required>  
+    </div>
           
       <button type="submit" onclick="clicked();" class="btn btn-success">
             <i class="fa fa-floppy-o"></i> <b>Guardar</b>

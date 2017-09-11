@@ -74,7 +74,8 @@ class Coninventario extends Controller
         $element->descripcion = $request->descripcion;          
         $element->cantidad = $request->cantidad;
         $element->categoria = $request->categoria;
-        
+        $element->categoria = $request->categoria;
+        $element->precio = $request->precio;
         if($request->file('archivo'))
         {
             $archivo = $request->file('archivo');
@@ -113,6 +114,7 @@ class Coninventario extends Controller
         $element->codigo = $request->codigo;
         $element->descripcion = $request->descripcion; 
         $element->categoria = $request->categoria;
+        $element->precio = $request->precio;
         if($request->file('archivo'))
         {
             $archivo = $request->file('archivo');
@@ -734,6 +736,7 @@ class Coninventario extends Controller
         $consumible->descripcion = $request->descripcion;
         $consumible->cantidad = $request->cantidad;
         $consumible->serial_general =  $request->serial;
+        $consumible->precio = $request->precio;
         $consumible->save();
         return $this->common_answer("!Consumible creado!",true);
     }
@@ -751,6 +754,7 @@ class Coninventario extends Controller
         $consumible->descripcion = $request->descripcion;
         $consumible->cantidad = $request->cantidad;
         $consumible->serial_general =  $request->serial;
+        $consumible->precio = $request->precio;
         $consumible->save();
         return $this->common_answer("!Consumible actualizado!",true);
     }
@@ -856,6 +860,14 @@ class Coninventario extends Controller
         $consumibles = InvConsumibles::where('id_inventario_unidades','=',$id)->get();
         return view('inventario.ajax.unidades_consumibles',compact('consumibles'));
 
+    }
+
+    public function backSerial($id)
+    {
+        $serial = InvSeriales::where('id','=',$id)->first();
+        $serial->id_status = 1;
+        $serial->save();
+        return $this->common_answer("!Herramienta regresada a bodega!",true);   
     }
 
     private function common_answer($string,$bool)
