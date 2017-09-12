@@ -870,6 +870,13 @@ class Coninventario extends Controller
         return $this->common_answer("!Herramienta regresada a bodega!",true);   
     }
 
+    public function precio_elemento($id)
+    {
+        $serial = InvSeriales::where('id','=',$id)->value('id_elementos');
+        $precio = InvElementos::where('id','=',$serial)->value('precio');
+        return $precio;
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

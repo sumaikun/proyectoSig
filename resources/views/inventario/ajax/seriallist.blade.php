@@ -93,6 +93,9 @@
  {
    $("#rent_form").trigger("reset");
    $("#objectid").val(id);
+   $.get('getprecioelemento/'+id,function(res,sta){
+      $("input[name='valor']").val(res);    
+    })
  }
 
  function fixthis(id)
