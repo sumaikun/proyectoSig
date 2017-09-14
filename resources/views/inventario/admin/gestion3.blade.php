@@ -151,7 +151,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="input" class="btn btn-primary">Editar</button>
+        <button type="input" class="btn btn-primary">Guardar</button>
       </div>
       </form>
     </div>

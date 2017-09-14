@@ -40,7 +40,7 @@
       @endforeach  
     </tbody>
  </table>
- <button class="btn btn-primary"  onclick="new_serial({{$id}})" title="crear nuevo"><span class="glyphicon glyphicon-plus"></span></button>
+ <button class="btn btn-primary"  onclick="new_serial({{$id}})" title="crear nuevo"><span class="glyphicon glyphicon-plus"></span>&nbspCrear Nuevo</button>
 
 
 <!-- Modal -->

@@ -9,7 +9,7 @@
 
     <div class="form-group">      
         <label>Descripción</label>
-        <textarea class="form-control" name="descripcion" style="height: 100px;"   id="descripcion" required>{{$consumible->descripcion}}</textarea>  
+        <textarea class="form-control" name="descripcion" style="height: 100px;"   id="descripcion" >{{$consumible->descripcion}}</textarea>  
     </div>
 
     <div class="form-group">      
@@ -24,7 +24,7 @@
 
     <div class="form-group">      
         <label>Precio</label>
-        <input class="form-control" name="precio"   type="number" value="{{$consumible->precio}}"  id="precio" required>  
+        <input class="form-control" name="precio"   type="number" value="{{$consumible->precio}}"  id="precio" >  
     </div>
           
       <button type="submit" onclick="clicked();" class="btn btn-success">

@@ -877,6 +877,23 @@ class Coninventario extends Controller
         return $precio;
     }
 
+    public function regresar_unidades(Request $request)
+    {
+       $consumible = InvConsumibles::where('id','=',$request->id)->first();
+       $original = InvConsumibles::where('codigo','=',$consumible->codigo)->where('id_inventario_unidades','=',null)->first();
+         $original->cantidad = $original->cantidad+$request->total;
+         $original->save();
+       if($request->total == $consumible->cantidad)
+       {         
+         DB::delete("delete from inventario_consumibles where id = ".$request->id);
+       }
+       else{
+         $consumible->cantidad = $consumible->cantidad-$request->total;
+         $consumible->save(); 
+       }
+       return $this->common_answer("!Consumibles regresados a bodega!",true);
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

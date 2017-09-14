@@ -161,3 +161,5 @@ Route::get('inventario/datos_unidad_seriales/{id}','Coninventario@datos_unidad_s
 Route::get('inventario/datos_unidad_consumibles/{id}','Coninventario@datos_unidad_consumibles');
 
 Route::get('inventario/getprecioelemento/{id}','Coninventario@precio_elemento');
+
+Route::post('inventario/regresar_unidades','Coninventario@regresar_unidades');
