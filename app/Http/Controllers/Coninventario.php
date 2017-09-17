@@ -32,6 +32,8 @@ use psig\models\InvConsumibles;
 
 use psig\models\InvUnidades;
 
+use psig\models\InvTickets;
+
 use psig\Helpers\Metodos;
 
 use psig\Helpers\horas_minutos;
@@ -892,6 +894,25 @@ class Coninventario extends Controller
          $consumible->save(); 
        }
        return $this->common_answer("!Consumibles regresados a bodega!",true);
+    }
+
+    public function entregar_consumible(Request $request)
+    {
+        $ticket = new InvTickets;
+        $ticket->id = Metodos::id_generator($ticket,'id');
+        $ticket->consumible_id = $request->id;
+        $ticket->cantidad = $request->cantidad;
+        $ticket->comentario = $request->comentario;
+        $ticket->fecha = $request->date;
+        $ticket->cliente = $request->cliente;
+        $ticket->precio = $request->precio;
+        $ticket->save();
+
+        $consumible = InvConsumibles::where('id','=',$request->id)->first();
+        $consumible->cantidad = $consumible->cantidad-$request->cantidad;
+        $consumible->save();
+
+        return $this->common_answer("!Consumibles entregados!",true);    
     }
 
     private function common_answer($string,$bool)

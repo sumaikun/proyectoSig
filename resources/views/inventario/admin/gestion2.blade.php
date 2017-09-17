@@ -68,7 +68,9 @@
                   <td> @if($consumible->id_inventario_unidades == null) {{"BODEGA SIG"}} @else {{$unidades[$consumible->id_inventario_unidades]}} @endif </td>
                   <td> {{$consumible->precio}}</td> 
                   <td>@if($consumible->id_inventario_unidades == null) <a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></i></a> @endif <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                  <a href="#"  @if($consumible->id_inventario_unidades == null) onclick="modal_unidades('{{$consumible->id}}','{{$consumible->cantidad}}')" > <i class="fa fa-car" aria-hidden="true" title="Distribuir Unidades"></i> @else  onclick="modal_regresar('{{$consumible->id}}','{{$consumible->cantidad}}')"> <i class="fa fa-sort-desc" title="regresar consumibles a bodega" aria-hidden="true"></i> @endif</a></td>  
+                  <a href="#"  @if($consumible->id_inventario_unidades == null) onclick="modal_unidades('{{$consumible->id}}','{{$consumible->cantidad}}')" > <i class="fa fa-car" aria-hidden="true" title="Distribuir Unidades"></i> @else  onclick="modal_regresar('{{$consumible->id}}','{{$consumible->cantidad}}')"> <i class="fa fa-sort-desc" title="regresar consumibles a bodega" aria-hidden="true"></i> @endif</a>
+                  @if($consumible->id_inventario_unidades == null) <a href="#" onclick="entregar_consumible('{{$consumible->id}}','{{$consumible->precio}}','{{$consumible->cantidad}}')" title="entregar consumibles"><i class="fa fa-users" aria-hidden="true"></i></a>  @endif
+                  </td>  
                 </tr>  
               @endforeach
             </tbody>
@@ -143,6 +145,56 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" onclick="regresar_unidades()">Regresar</button>      
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modalEntregar" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Entregar consumible</h4>
+      </div>
+      <div class="modal-body">        
+        <form method="post" id="myForm3" action="entregar_consumible">
+            <input id="entregarid" name="id" type="hidden">
+            <label class="form-control">Cliente</label>
+            <div class="form-group">
+              <select name="cliente" id="entregar_cliente" class="form-control" required>
+                <option value="">Selecciona</option>
+                @foreach($empresas as $key=>$temp)
+                  <option value="{{$key}}"> {{$temp}} </option>
+                @endforeach
+                <option value=0>Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-control">fecha</label>
+              <input type='date' name='date' id='entregar_fecha' class='form-control' max=<?php echo date('Y-m-d'); ?>>
+            </div> 
+            <div class="form-group">
+              <label class="form-control">Cantidad</label>
+              <input name="cantidad" min='1' id="entregar_cantidad" onblur="generate_entregar_precio()" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-control">Precio</label>
+              <input name="precio" min='0' id="entregar_precio" class="form-control">
+            </div>
+            <div class="form-group">
+              <label class="form-control">Comentario</label>
+              <textarea name="comentario" class="form-control"></textarea>
+            </div>  
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" onclick="entregar_consumible_ok()">Entregar</button>      
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
@@ -237,6 +289,73 @@ $(document).ready(function() {
     else{
       alert("la cantidad debe ser mayor a 0 y menor o igual a "+cantidadr);
     }
+  }
+
+  var entregarcantidad;
+
+  var entregarprecio;
+
+  function entregar_consumible(id,precio,cantidad)
+  {
+    $("#entregarid").val(id);
+    $("#modalEntregar").modal('show');
+    entregarcantidad = cantidad;
+    entregarprecio = precio;
+  }
+
+  function generate_entregar_precio()
+  {
+       console.log($("#entregar_cantidad").val()+" "+entregarcantidad);
+
+      if(parseInt($("#entregar_cantidad").val())>entregarcantidad)
+      {
+        alert('la cantidad definida debe ser mayor a 0 y menor a la cantidad de consumibles disponibles');
+        $("#entregar_cantidad").val(1);
+        $("#entregar_cantidad").focus();
+        return '';
+      }
+      if(parseInt($("#entregar_cantidad").val())<1)
+      {
+        alert('la cantidad definida debe ser mayor a 0 y menor a la cantidad de consumibles disponibles');
+        $("#entregar_cantidad").val(1);
+        $("#entregar_cantidad").focus();
+        return '';
+      }
+      var generateprecio = entregarcantidad*entregarprecio;
+      $("#entregar_precio").val(generateprecio);
+  }
+
+  function entregar_consumible_ok()
+  {
+
+    if(parseInt($("#entregar_cantidad").val())>entregarcantidad || parseInt($("#entregar_cantidad").val())<1)
+    {
+        alert('la cantidad definida debe ser mayor a 0 y menor a la cantidad de consumibles disponibles');
+        $("#entregar_cantidad").val(1);
+        $("#entregar_cantidad").focus();
+        return '';
+    }
+
+    if($("#entregar_precio").val()<0)
+    {
+      alert('el valor minimo para entregar consumible es de $0 pesos');
+      return '';
+    }
+
+    if($("#entregar_cliente").val()=="")
+    {
+      alert('Seleccione un cliente valido');
+      return '';
+    }
+
+    if($("#entregar_fecha").val()=="")
+    {
+      alert('Seleccione una fecha');
+      return '';
+    }
+
+      document.getElementById("myForm3").submit();
+
   }
  
 </script>

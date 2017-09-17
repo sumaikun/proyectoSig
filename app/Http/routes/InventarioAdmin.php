@@ -30,8 +30,9 @@ Route::get('inventario/Gestion', function(){
 
 Route::get('inventario/Gestion2', function(){  
   $consumibles =  psig\models\InvConsumibles::All();
-  $unidades = psig\models\InvUnidades::lists('placa','id');          
-  return View::make('inventario.admin.gestion2',compact('consumibles','unidades'));
+  $unidades = psig\models\InvUnidades::lists('placa','id');
+  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');          
+  return View::make('inventario.admin.gestion2',compact('consumibles','unidades','empresas'));
 });
 
 Route::get('inventario/insertar_categoria/{nombre}','Coninventario@createCat');
@@ -163,3 +164,5 @@ Route::get('inventario/datos_unidad_consumibles/{id}','Coninventario@datos_unida
 Route::get('inventario/getprecioelemento/{id}','Coninventario@precio_elemento');
 
 Route::post('inventario/regresar_unidades','Coninventario@regresar_unidades');
+
+Route::post('inventario/entregar_consumible','Coninventario@entregar_consumible');
