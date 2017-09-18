@@ -273,7 +273,7 @@ class Coninventario extends Controller
             $alquiler->id = Metodos::id_generator($alquiler,'id');
             $alquiler->id_usuario = Session::get('usu_id');
             $alquiler->id_serial = $request->objectid;
-            $alquiler->valor = $request->valor;
+            $alquiler->valor = $request->valor;            
             $alquiler->valor2 = $request->valor2;
             $alquiler->fecha_ingreso = $request->fecha1;
             $alquiler->fecha_salida = $request->fecha2;
@@ -321,13 +321,15 @@ class Coninventario extends Controller
 
             $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
 
+            $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+
             //return $recesos;
             if(Session::get('rol_nombre')=='administrador'){
-                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos'));
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas'));
             }
             else{
                 if(Session::get('observar_alquileres')!=null)
-                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos'));}
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
                 else{return "no tiene permisos";}
                 
             }
@@ -1053,9 +1055,28 @@ class Coninventario extends Controller
     }
 
     public function delete_tickets($id)
-    {
+    {        
         DB::delete("delete from inventario_tickets where id = ".$id);
         return $this->common_answer("!Ticket eliminado!",true);
+    }
+
+    public function edit_tickets($id)
+    {
+        $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+        $ticket = InvTickets::where('id','=',$id)->first();
+        return view('inventario.ajax.edit_ticket',compact('ticket','empresas'));
+    }
+
+    public function update_tickets(Request $request)
+    {
+        $ticket = InvTickets::where('id','=',$request->id)->first();
+        $ticket->cantidad = $request->cantidad;
+        $ticket->comentario = $request->comentario;
+        $ticket->fecha = $request->date;
+        $ticket->cliente = $request->cliente;
+        $ticket->precio = $request->precio;
+        $ticket->save();
+        return $this->common_answer("!Ticket actualizado!",true);
     }
 
     private function common_answer($string,$bool)

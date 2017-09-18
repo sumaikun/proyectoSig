@@ -236,6 +236,9 @@
         </tr>
         <tr>
           <td style="text-align: center"><button onclick="update_data()" class="btn btn-warning">Guardar</button></td>          
+        </tr>
+        <tr>
+         Cliente: {{$empresas[$registro->id_empresa]}}
         </tr>    
       </tbody>
     </table>

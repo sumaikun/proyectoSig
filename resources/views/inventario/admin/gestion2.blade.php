@@ -225,6 +225,26 @@
   </div>
 </div>
 
+<div id="Ajaxmodal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><span id="ajax-title2"></span></h4>
+      </div>
+      <div class="modal-body">        
+        <div id="ajax-content3"></div>
+      </div>
+      <div class="modal-footer">              
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script type="text/javascript">
 $(document).ready(function() {
     
@@ -388,6 +408,18 @@ $(document).ready(function() {
          $('#ajax-content2').empty();
          $('#ajax-content2').append(res);
          $("#Ajaxmodal").modal('show');
+      }); 
+  }
+
+  function edit_ticket(id)
+  {
+    $.get("consumible/edit_ticket/"+id, function(res, sta){
+         $("#Ajaxmodal").modal('hide');
+         $('#ajax-title2').empty();
+         $('#ajax-title2').append('Editar tickets');
+         $('#ajax-content3').empty();
+         $('#ajax-content3').append(res);
+         $("#Ajaxmodal2").modal('show');
       }); 
   }
  

@@ -26,7 +26,7 @@
            <td> {{$ticket->cantidad}} </td>
            <td> {{$ticket->precio}} </td>
            <td> {{$ticket->comentario}} </td>
-           <td>  <a href="#" data-toggle="modal" onclick="edit_element({{$ticket->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="ticketdelete/{{$ticket->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>  </td>           
+           <td>  <a href="#"  onclick="edit_ticket({{$ticket->id}})" title="editar" ><i class="fa fa-pencil" aria-hidden="true"></i></a> <a href="consumible/ticketdelete/{{$ticket->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>  </td>           
         </tr>
       @endforeach  
     </tbody>
