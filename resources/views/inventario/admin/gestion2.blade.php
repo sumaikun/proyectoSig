@@ -50,7 +50,7 @@
                   <th>#</th>
                   <th><strong>Codigo</strong></th>
                   <th><strong>Descripción</strong></th>                                 
-                  <th><strong>Cantidad</strong></th>
+                  <th width='10px;'><strong>Cantidad disponible</strong></th>
                   <th><strong>serial general</strong></th> 
                   <th><strong>Unidad</strong></th>
                   <th><strong>Precio</strong></th>                  
@@ -63,13 +63,14 @@
                   <td> {{$consumible->id}} </td>
                   <td style="width:110px;"> {{$consumible->codigo}} </td>
                   <td> {{$consumible->descripcion}}</td>             
-                  <td style="text-align: center;"> {{$consumible->cantidad}}</td>                  
+                  <td width='10px;' style="text-align: center;"> {{$consumible->cantidad}}</td>                  
                   <td> {{$consumible->serial_general}}</td>                                    
                   <td> @if($consumible->id_inventario_unidades == null) {{"BODEGA SIG"}} @else {{$unidades[$consumible->id_inventario_unidades]}} @endif </td>
                   <td> {{$consumible->precio}}</td> 
                   <td>@if($consumible->id_inventario_unidades == null) <a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></i></a> @endif <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                   <a href="#"  @if($consumible->id_inventario_unidades == null) onclick="modal_unidades('{{$consumible->id}}','{{$consumible->cantidad}}')" > <i class="fa fa-car" aria-hidden="true" title="Distribuir Unidades"></i> @else  onclick="modal_regresar('{{$consumible->id}}','{{$consumible->cantidad}}')"> <i class="fa fa-sort-desc" title="regresar consumibles a bodega" aria-hidden="true"></i> @endif</a>
                   @if($consumible->id_inventario_unidades == null) <a href="#" onclick="entregar_consumible('{{$consumible->id}}','{{$consumible->precio}}','{{$consumible->cantidad}}')" title="entregar consumibles"><i class="fa fa-users" aria-hidden="true"></i></a>  @endif
+                  <a href="#" onclick="informacion_tickets({{$consumible->id}})" title="informacion de tickets"><i class="fa fa-ticket" aria-hidden="true"></i></a>
                   </td>  
                 </tr>  
               @endforeach
@@ -202,6 +203,27 @@
   </div>
 </div>
 
+
+<!-- Modal -->
+<div id="Ajaxmodal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><span id="ajax-title"></span></h4>
+      </div>
+      <div class="modal-body">        
+        <div id="ajax-content2"></div>
+      </div>
+      <div class="modal-footer">              
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -356,6 +378,17 @@ $(document).ready(function() {
 
       document.getElementById("myForm3").submit();
 
+  }
+
+  function informacion_tickets(id)
+  {
+    $.get("consumible/tickets_table/"+id, function(res, sta){
+         $('#ajax-title').empty();
+         $('#ajax-title').append('Lista de tickets');
+         $('#ajax-content2').empty();
+         $('#ajax-content2').append(res);
+         $("#Ajaxmodal").modal('show');
+      }); 
   }
  
 </script>

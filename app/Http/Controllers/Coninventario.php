@@ -34,6 +34,8 @@ use psig\models\InvUnidades;
 
 use psig\models\InvTickets;
 
+use psig\models\ListEnterprises;
+
 use psig\Helpers\Metodos;
 
 use psig\Helpers\horas_minutos;
@@ -148,8 +150,40 @@ class Coninventario extends Controller
 
     public function deleteSerial($id)
     {
-        $serial = InvSeriales::where('id','=',$id)->first();
-        $serial->delete();
+        $alquileres = InvAlquiler::where('id_serial','=',$id)->get();
+            foreach ($alquileres as $alquiler) {
+                $recesos = InvAlquilerRec::where('id_alquiler','=',$alquiler->id)->get();
+                foreach($recesos as $receso)
+                {
+                    DB::delete("delete from inventario_alquiler_recesos where id = ".$receso->id);        
+                }
+
+                $comentarios = InvAlquilerCom::where('id_alquiler','=',$alquiler->id)->get();
+                foreach($comentarios as $comentario)
+                {
+                    DB::delete("delete from inventario_alquiler_comentarios where id = ".$comentario->id);        
+                }
+
+                DB::delete("delete from inventario_alquiler where id = ".$alquiler->id);
+            }
+            
+
+            $reparaciones = InvReparacion::where('id_seriales','=',$id)->get();
+            
+            foreach($reparaciones as $reparacion)
+            {
+                $seguimientos = InvRepSeg::where('id_reparacion','=',$reparacion->id)->get();
+
+                foreach($seguimientos as $seguimiento)
+                {
+                    DB::delete("delete from inventario_reparacion_seguimiento where id = ".$seguimiento->id);    
+                }
+
+                DB::delete("delete from inventario_reparacion where id = ".$reparacion->id);
+            }
+
+        DB::delete("delete from inventario_seriales where id = ".$id);
+
         $element = InvElementos::where('id','=',$serial->id_elementos)->first();
         $element->cantidad = $element->cantidad-1;
         $element->save();  
@@ -177,8 +211,45 @@ class Coninventario extends Controller
 
     public function deleteEle($id)
     {
-        $element = InvElementos::where('id','=',$id)->first();
-        $element->delete();
+        $seriales = InvSeriales::where('id_elementos','=',$id)->get();
+        foreach($seriales as $serial)
+        {
+            $alquileres = InvAlquiler::where('id_serial','=',$serial->id)->get();
+            foreach ($alquileres as $alquiler) {
+                $recesos = InvAlquilerRec::where('id_alquiler','=',$alquiler->id)->get();
+                foreach($recesos as $receso)
+                {
+                    DB::delete("delete from inventario_alquiler_recesos where id = ".$receso->id);        
+                }
+
+                $comentarios = InvAlquilerCom::where('id_alquiler','=',$alquiler->id)->get();
+                foreach($comentarios as $comentario)
+                {
+                    DB::delete("delete from inventario_alquiler_comentarios where id = ".$comentario->id);        
+                }
+
+                DB::delete("delete from inventario_alquiler where id = ".$alquiler->id);
+            }
+            
+
+            $reparaciones = InvReparacion::where('id_seriales','=',$serial->id)->get();
+            
+            foreach($reparaciones as $reparacion)
+            {
+                $seguimientos = InvRepSeg::where('id_reparacion','=',$reparacion->id)->get();
+
+                foreach($seguimientos as $seguimiento)
+                {
+                    DB::delete("delete from inventario_reparacion_seguimiento where id = ".$seguimiento->id);    
+                }
+
+                DB::delete("delete from inventario_reparacion where id = ".$reparacion->id);
+            }
+
+            DB::delete("delete from inventario_seriales where id = ".$serial->id);
+
+        }       
+        DB::delete("delete from inventario_elementos where id = ".$id);      
         return $this->common_answer('Elemento eliminado!!',true);    
     }
 
@@ -763,6 +834,11 @@ class Coninventario extends Controller
 
     public function deleteConsumible($id)
     {
+        $tickets = InvTickets::where('consumible_id','=',$id)->get();
+        foreach($tickets as $ticket)
+        {
+            DB::delete("delete from inventario_tickets where id = ".$tickets->id);
+        }
         DB::delete("delete from inventario_consumibles where id = ".$id);
         return $this->common_answer("!Consumible eliminado!",true);
     }
@@ -794,8 +870,62 @@ class Coninventario extends Controller
 
     public function delete_unidad($id)
     {
-        $unidad = InvUnidades::where('id','=',$id)->first();
-        $unidad->delete();
+        $seriales = InvSeriales::where('id_inventario_unidades','=',$id)->get();
+        $consumibles = InvConsumibles::where('id_inventario_unidades','=',$id)->get();
+
+        
+        foreach($seriales as $serial)
+        {
+            $alquileres = InvAlquiler::where('id_serial','=',$serial->id)->get();
+            foreach ($alquileres as $alquiler) {
+                $recesos = InvAlquilerRec::where('id_alquiler','=',$alquiler->id)->get();
+                foreach($recesos as $receso)
+                {
+                    DB::delete("delete from inventario_alquiler_recesos where id = ".$receso->id);        
+                }
+
+                $comentarios = InvAlquilerCom::where('id_alquiler','=',$alquiler->id)->get();
+                foreach($comentarios as $comentario)
+                {
+                    DB::delete("delete from inventario_alquiler_comentarios where id = ".$comentario->id);        
+                }
+
+                DB::delete("delete from inventario_alquiler where id = ".$alquiler->id);
+            }
+            
+
+            $reparaciones = InvReparacion::where('id_seriales','=',$serial->id)->get();
+            
+            foreach($reparaciones as $reparacion)
+            {
+                $seguimientos = InvRepSeg::where('id_reparacion','=',$reparacion->id)->get();
+
+                foreach($seguimientos as $seguimiento)
+                {
+                    DB::delete("delete from inventario_reparacion_seguimiento where id = ".$seguimiento->id);    
+                }
+
+                DB::delete("delete from inventario_reparacion where id = ".$reparacion->id);
+            }
+
+            DB::delete("delete from inventario_seriales where id = ".$serial->id);
+
+        }
+
+        foreach($consumibles as $consumible)
+        {
+            $tickets = InvTickets::where('consumible_id','=',$consumible->id)->get();
+        
+            foreach($tickets as $ticket)
+            {
+                DB::delete("delete from inventario_tickets where id = ".$tickets->id);
+            }
+
+            DB::delete("delete from inventario_consumibles where id = ".$consumible->id);
+        }
+
+        DB::delete("delete from inventario_unidades where id = ".$id);
+
         return $this->common_answer("!Unidad eliminada!",true);
     }
 
@@ -913,6 +1043,19 @@ class Coninventario extends Controller
         $consumible->save();
 
         return $this->common_answer("!Consumibles entregados!",true);    
+    }
+
+    public function info_tickets($id)
+    {
+        $tickets = InvTickets::where('consumible_id','=',$id)->get();
+        $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+        return view('inventario.ajax.ticketslist',compact('tickets','empresas'));
+    }
+
+    public function delete_tickets($id)
+    {
+        DB::delete("delete from inventario_tickets where id = ".$id);
+        return $this->common_answer("!Ticket eliminado!",true);
     }
 
     private function common_answer($string,$bool)

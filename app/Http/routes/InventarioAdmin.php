@@ -166,3 +166,7 @@ Route::get('inventario/getprecioelemento/{id}','Coninventario@precio_elemento');
 Route::post('inventario/regresar_unidades','Coninventario@regresar_unidades');
 
 Route::post('inventario/entregar_consumible','Coninventario@entregar_consumible');
+
+Route::get('inventario/consumible/tickets_table/{id}','Coninventario@info_tickets');
+
+Route::get('inventario/consumible/ticketdelete/{id}','Coninventario@delete_tickets');
