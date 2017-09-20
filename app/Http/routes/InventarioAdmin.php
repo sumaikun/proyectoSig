@@ -142,7 +142,8 @@ Route::post('inventario/updateConsumible','Coninventario@updateConsumible');
 
 Route::get('inventario/Unidades',function(){
   $unidades = psig\models\InvUnidades::get();
-  return view('inventario.admin.gestion3',compact('unidades'));
+  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+  return view('inventario.admin.gestion3',compact('unidades','empresas'));
 });
 
 Route::post('inventario/crear_unidad','Coninventario@crear_unidad');

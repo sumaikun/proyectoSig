@@ -59,6 +59,7 @@
                 <a href="#" onclick="edit_unidad({{$unidad->id}})" title="editar"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
                 <a href="delete_unidad/{{$unidad->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 <a href="#"><i onclick="datos_unidad({{$unidad->id}})"  title="herramientas y consumibles asociados" class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                <a href="#"  onclick="rentthis({{$unidad->id}})"  title="Alquilar" style="margin-left: 5px;"  ><i class="fa fa-briefcase" aria-hidden="true"></i></a>
                 </td>
               </tr>
               @endforeach
@@ -158,6 +159,71 @@
   </div>
 </div>
 
+
+
+<div class="modal fade" id="Modalrent" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Datos para el alquiler</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="alquilar" onsubmit="return validar()" method="post" id="rent_form" enctype="multipart/form-data">
+        <input type="hidden" value="" id="objectid" name="objectid">
+         <div class="form-group">      
+            <label class="form-control">Selecciona el cliente</label>
+            <select name="empresa" class="form-control">
+              <option>Selecciona</option>
+              @foreach($empresas as $key=>$value)
+                <option value={{$key}}>{{$value}}</option>
+              @endforeach 
+            </select>            
+        </div>
+
+        <div class="form-group">      
+            <label class="form-control">Fecha de alquiler</label>
+            <input type="date" id="fecha1" name="fecha1" class="form-control">            
+        </div>
+
+        <div class="form-group">      
+            <label class="form-control">Fecha estimada de regreso</label>
+            <input type="date" id="fecha2" name="fecha2" class="form-control">            
+        </div> 
+        <button class='btn btn-warning form-control'>Siguiente</button>       
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+      </div>      
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="Modalrent2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Datos para el alquiler</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+      </div>      
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 
 
@@ -218,6 +284,11 @@
             }
         });
       });
+  }
+
+  function rentthis(id)
+  {
+    $('#Modalrent').modal('show');
   }
 
 </script>
