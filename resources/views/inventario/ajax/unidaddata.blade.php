@@ -25,9 +25,27 @@
 </table>
     
 @endif
+<br>
+<div class='col-lg-6 col-md-6'>
 <table class='table'>
   <tr>
-    <th>Herramientas</th>
-
+    <th>Herramientas</th>      
   </tr>
+  @foreach($seriales as $serial)
+    <tr>    
+      <td> @if(isset($categorias[$serial->elemento->categoria])) {{$categorias[$serial->elemento->categoria]}} @endif</td>
+      <td> {{$serial->valor}}</td>
+      <td> ${{$serial->elemento->precio}}</td>      
+    </tr>
+  @endforeach
 </table>
+</div>
+<br>
+<div class='col-lg-6 col-md-6'>
+<table class='table'>
+  <tr>
+    <th>Consumibles</th>      
+  </tr>
+ 
+</table>
+</div>
