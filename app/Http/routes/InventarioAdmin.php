@@ -175,3 +175,5 @@ Route::get('inventario/consumible/ticketdelete/{id}','Coninventario@delete_ticke
 Route::get('inventario/consumible/edit_ticket/{id}','Coninventario@edit_tickets');
 
 Route::post('inventario/actualizar_ticket','Coninventario@update_tickets');
+
+Route::get('inventario/unidad_all_data/{id}','Coninventario@unidad_all_data');

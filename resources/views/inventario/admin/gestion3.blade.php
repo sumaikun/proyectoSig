@@ -172,12 +172,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="alquilar" onsubmit="return validar()" method="post" id="rent_form" enctype="multipart/form-data">
-        <input type="hidden" value="" id="objectid" name="objectid">
+        
+        
          <div class="form-group">      
             <label class="form-control">Selecciona el cliente</label>
-            <select name="empresa" class="form-control">
-              <option>Selecciona</option>
+            <select id="empresa" name="empresa" class="form-control">
+              <option value=''>Selecciona</option>
               @foreach($empresas as $key=>$value)
                 <option value={{$key}}>{{$value}}</option>
               @endforeach 
@@ -193,8 +193,7 @@
             <label class="form-control">Fecha estimada de regreso</label>
             <input type="date" id="fecha2" name="fecha2" class="form-control">            
         </div> 
-        <button class='btn btn-warning form-control'>Siguiente</button>       
-        </form>
+        <button class='btn btn-warning form-control' onclick='search_all_data()'>Siguiente</button>       
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
@@ -215,7 +214,7 @@
         </button>
       </div>
       <div class="modal-body">
-      
+        <div id='ajax-rent'></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
@@ -286,9 +285,33 @@
       });
   }
 
+  var unidadid;
+
   function rentthis(id)
   {
+    unidadid = id;
+    $(".form-control").val('');
     $('#Modalrent').modal('show');
+  }
+
+  function search_all_data()
+  {
+    if($("#empresa").val()==''){
+      return  alert('Seleccione una empresa');
+    }
+    if($("#fecha1").val()==''){
+      return alert('Seleccione la fecha de alquiler');
+    }
+    if($("#fecha2").val()==''){
+      return alert('Seleccione la fecha estimada de regreso');
+    }
+
+    $.get("unidad_all_data/"+unidadid,function(res,sta){
+        $("#Modalrent").modal('hide');
+        $("#ajax-rent").empty();
+        $("#ajax-rent").append(res);
+        $("#Modalrent2").modal('show');
+    })
   }
 
 </script>

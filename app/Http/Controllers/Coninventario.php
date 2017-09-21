@@ -704,25 +704,26 @@ class Coninventario extends Controller
     {
         if($tipo == 'alquiler')
         {
-            $registro = InvAlquiler::where('id','=',$id)->orderby('id','desc')->first();
+            $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();
 
             $anotaciones = InvAlquilerCom::where('id_alquiler','=',$id)->get(); 
 
             $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
 
+            $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
             //return $recesos;
             if(Session::get('rol_nombre')=='administrador'){    
-                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos')); 
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas')); 
             }
             else{
                 if(Session::get('observar_alquileres')!=null)
-                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos'));}
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
                 else{return "no tiene permisos";}   
             }
         }
         if($tipo == 'mantenimiento')
         {
-            $registro = InvReparacion::where('id','=',$id)->orderby('id','desc')->first();
+            $registro = InvReparacion::where('id_seriales','=',$id)->orderby('id','desc')->first();
             if(Session::get('rol_nombre')=='administrador'){
                 return View::make('inventario.admin.detalles2',compact('registro'));
             }
@@ -1077,6 +1078,16 @@ class Coninventario extends Controller
         $ticket->precio = $request->precio;
         $ticket->save();
         return $this->common_answer("!Ticket actualizado!",true);
+    }
+
+    public function unidad_all_data($id)
+    {
+        $check_use_data = InvSeriales::where('id_inventario_unidades','=',$id)->where('id_status','!=',1)->get(); 
+        $status = InvStatus::lists('nombre','id');
+        $categorias = InvCategorias::lists('nombre','id');
+        $seriales = InvSeriales::where('id_inventario_unidades','=',$id)->where('id_status','=',1)->get();
+        $consumibles = InvConsumibles::where('id_inventario_unidades','=',$id)->get();
+        return view('inventario.ajax.unidaddata',compact('check_use_data','status','categorias','seriales','consumibles'));
     }
 
     private function common_answer($string,$bool)
