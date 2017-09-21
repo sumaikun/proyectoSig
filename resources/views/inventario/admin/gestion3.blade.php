@@ -305,6 +305,17 @@
     if($("#fecha2").val()==''){
       return alert('Seleccione la fecha estimada de regreso');
     }
+    var d2 = new Date($("#fecha2").val());
+    var d1 = new Date($("#fecha1").val());
+    
+
+    if(d2.getTime() < d1.getTime()){
+      return alert('La fecha estimada de retorno no debe ser menor');
+    }
+
+    if(d2.getTime() == d1.getTime()){
+      return alert('Las fechas no pueden ser iguales');
+    }
 
     $.get("unidad_all_data/"+unidadid,function(res,sta){
         $("#Modalrent").modal('hide');
