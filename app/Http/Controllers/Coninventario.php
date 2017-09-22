@@ -40,6 +40,8 @@ use psig\Helpers\Metodos;
 
 use psig\Helpers\horas_minutos;
 
+use psig\Helpers\Validation;
+
 use Redirect;
 
 use Session;
@@ -68,8 +70,14 @@ class Coninventario extends Controller
 
     public function createEle(Request $request)
     {
+
         //return print_r($_POST);
         $element = new InvElementos;
+
+        $validation = Validation::check_create_twoparams($element,'categoria','codigo',$request->categoria,$request->codigo);
+        if($validation != 'allow')
+            {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
+        
         $id = Metodos::id_generator($element,'id');
         //return $id;
         $foid = $id;
@@ -77,8 +85,7 @@ class Coninventario extends Controller
         $element->codigo = $request->codigo;
         $element->descripcion = $request->descripcion;          
         $element->cantidad = $request->cantidad;
-        $element->categoria = $request->categoria;
-        $element->categoria = $request->categoria;
+        $element->categoria = $request->categoria;        
         $element->precio = $request->precio;
         if($request->file('archivo'))
         {
@@ -1113,6 +1120,8 @@ class Coninventario extends Controller
             }
           
     }
+
+  
 
 
 }

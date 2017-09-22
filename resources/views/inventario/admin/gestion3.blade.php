@@ -213,7 +213,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body table-responsive" style='max-height: 500px !important;'>
         <div id='ajax-rent'></div>
       </div>
       <div class="modal-footer">
