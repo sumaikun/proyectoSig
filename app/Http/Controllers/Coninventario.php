@@ -77,7 +77,7 @@ class Coninventario extends Controller
         $validation = Validation::check_create_twoparams($element,'categoria','codigo',$request->categoria,$request->codigo);
         if($validation != 'allow')
             {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
-        
+
         $id = Metodos::id_generator($element,'id');
         //return $id;
         $foid = $id;
@@ -1095,6 +1095,82 @@ class Coninventario extends Controller
         $seriales = InvSeriales::where('id_inventario_unidades','=',$id)->where('id_status','=',1)->get();
         $consumibles = InvConsumibles::where('id_inventario_unidades','=',$id)->get();
         return view('inventario.ajax.unidaddata',compact('check_use_data','status','categorias','seriales','consumibles'));
+    }
+
+    public function rent_all_data(Request $request)
+    {
+        $unidad = InvUnidades::where('id','=',$request->id)->first();
+        $unidad->status = 1;
+        $unidad->save();
+
+            $alquiler = new InvAlquiler;
+            $alquiler->id = Metodos::id_generator($alquiler,'id');
+            $alquiler->id_usuario = Session::get('usu_id');
+            $alquiler->unidad_id = $request->id;
+            $alquiler->valor = $request->valor_estandar;            
+            $alquiler->valor2 = $request->valor_receso;
+            $alquiler->fecha_ingreso = $request->fecha1;
+            $alquiler->fecha_salida = $request->fecha2;
+            $alquiler->id_empresa = $request->cliente;
+            $alquiler->save();        
+            
+
+        $seriales = InvSeriales::where('id_inventario_unidades','=',$request->id)->where('id_status','=',1)->get();
+        foreach ($seriales as $serial) {
+            $serial->id_status = 4;
+            $serial->save();
+        }
+        $consumibles = InvConsumibles::where('id_inventario_unidades','=',$request->id)->get();
+        foreach ($consumibles as $consumible) {
+            if($consumible->cantidad>0)
+            {
+                $ticket = new InvTickets;
+                $ticket->id = Metodos::id_generator($ticket,'id');
+                $ticket->consumible_id = $consumible->id;
+                $ticket->cantidad = $consumible->cantidad;
+                $ticket->comentario = "generado por alquiler de unidad";
+                $ticket->fecha = $request->fecha1;
+                $ticket->cliente = $request->cliente;
+                $ticket->precio = $request->ticketp;
+                $ticket->save();
+
+                $consumible = InvConsumibles::where('id','=',$consumible->id)->first();
+                $consumible->cantidad = 0;
+                $consumible->save();
+            }
+            
+        }
+        return $this->common_answer("!Unidad alquilada!",true);
+    }
+
+    public function detalles_unidad($id)
+    {
+        $unidad = InvUnidades::where('id','=',$id)->first();
+
+
+         if($unidad->status==0)
+        {
+            return $this->common_answer("!No hay detalles de esta unidad!",false);                
+        }
+
+            $registro = InvAlquiler::where('unidad_id','=',$id)->orderby('id','desc')->first();
+
+            $anotaciones = InvAlquilerCom::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get(); 
+
+            $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
+
+            $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+
+            //return $recesos;
+            if(Session::get('rol_nombre')=='administrador'){
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas'));
+            }
+            else{
+                if(Session::get('observar_alquileres')!=null)
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
+                else{return "no tiene permisos";}
+                
+            }
     }
 
     private function common_answer($string,$bool)

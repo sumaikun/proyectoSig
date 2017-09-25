@@ -59,7 +59,11 @@
                 <a href="#" onclick="edit_unidad({{$unidad->id}})" title="editar"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
                 <a href="delete_unidad/{{$unidad->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 <a href="#"><i onclick="datos_unidad({{$unidad->id}})"  title="herramientas y consumibles asociados" class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                @if($unidad->status == 0)
                 <a href="#"  onclick="rentthis({{$unidad->id}})"  title="Alquilar" style="margin-left: 5px;"  ><i class="fa fa-briefcase" aria-hidden="true"></i></a>
+                @else
+                <a href="DetallesUnidad/{{$unidad->id}}" title="Detalles" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a>
+                @endif
                 </td>
               </tr>
               @endforeach
@@ -173,7 +177,7 @@
       </div>
       <div class="modal-body">
         
-        
+        <input type='hidden' id='id'>
          <div class="form-group">      
             <label class="form-control">Selecciona el cliente</label>
             <select id="empresa" name="empresa" class="form-control">
@@ -289,13 +293,15 @@
 
   function rentthis(id)
   {
-    unidadid = id;
+    unidadid = id;    
     $(".form-control").val('');
     $('#Modalrent').modal('show');
   }
 
   function search_all_data()
   {
+    $('#id').val(unidadid);
+
     if($("#empresa").val()==''){
       return  alert('Seleccione una empresa');
     }

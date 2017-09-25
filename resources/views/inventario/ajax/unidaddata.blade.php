@@ -55,7 +55,7 @@
         <td> {{$consumible->cantidad}}</td>
         <td> precio individual: ${{$consumible->precio}}</td>
         <td> precio total: ${{($consumible->precio)*($consumible->cantidad)}}</td>
-        <?php $TOTAL +=  ($consumible->precio)*($consumible->cantidad)?>      
+        <?php $TOTAL +=  ($consumible->precio)*($consumible->cantidad); $ticketprice = ($consumible->precio)*($consumible->cantidad);?>      
       </tr>
     @endforeach
 </table>
@@ -66,8 +66,13 @@
 <div class='col-lg-12 col-md-12'>
 <form action='rent_all_data' method='post' onsubmit="return confirm_alldata()">
   <div class='form-group'>
+    <input id="id-h" type="hidden" name="id">
+    <input id="cliente-h" type="hidden" name="cliente">
+    <input id="fecha1-h" type="hidden" name="fecha1">
+     <input id="fecha2-h" type="hidden"  name="fecha2">
+     <input name="ticketp" value="{{$ticketprice}}" type="hidden"> 
     <label class="form-control">Valor estandar</label>
-    <input class="form-control" min='100000' name='valor_estandar' required>
+    <input class="form-control" value="{{$TOTAL}}" min='100000' name='valor_estandar' required>
   </div>
   <div class='form-group'>
     <label class="form-control">Valor receso</label>
@@ -84,5 +89,15 @@
     if(confirm('este proceso cambiara de estatus todas las herramientas asociadas al alquiler y generara un ticket por todos los consumibles asociados y estos no podran volver a utilizarse ¿Desea continuar?'))
     { return true;}
     else{ return false;}
+  }
+
+  execute();
+
+  function execute()
+  {
+    $("#cliente-h").val($("#empresa").val());
+    $("#fecha1-h").val($("#fecha1").val());
+    $("#fecha2-h").val($("#fecha2").val());
+    $("#id-h").val($("#id").val());
   }
 </script>
