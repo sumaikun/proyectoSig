@@ -28,8 +28,8 @@
            <a href="#" data-toggle="modal" onclick="rentthis({{$serial->id}})" data-target="#myModal3" title="Alquilar" style="margin-left: 5px;"><i class="fa fa-briefcase" aria-hidden="true"></i></a>
            <?php } ?>
            @endif
-           @if($serial->id_status == 1)
-           <a href="Detalles/{{$serial->id}}" title="Detalles" style="margin-left: 5px;"  class="inactive" ><i class="fa fa-calendar" aria-hidden="true"></i></a>
+           @if($serial->id_status != 1 and $serial->id_status != 4)
+           <a href="Detalles/{{$serial->id}}" title="Detalles" style="margin-left: 5px;" ><i class="fa fa-calendar" aria-hidden="true"></i></a>
            @endif
            @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_crear')!=null)
            <?php if($serial->id_status == 1) {  ?>
@@ -40,7 +40,7 @@
            <a href="serialdelete/{{$serial->id}}" onclick="return confirm_action()" title="Borrar" style="margin-left: 5px;"><i class="fa fa-times" aria-hidden="true"></i></a>
            @endif
            <a href="#" onclick="modal_unidades('{{$serial->id}}')"><i class="fa fa-car" aria-hidden="true" title="Unidades"></i></a>
-           @if($serial->id_status != 1)
+           @if($serial->id_status != 1 and $serial->id_status != 4)
            <a href="serialback/{{$serial->id}}" onclick="return confirm_action()"><i title="Regresar a bodega" class="fa fa-backward" aria-hidden="true"></i></a>
            @endif
            </td>            

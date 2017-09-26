@@ -157,6 +157,7 @@ class Coninventario extends Controller
 
     public function deleteSerial($id)
     {
+        $serial = InvSeriales::where('id','=',$id)->first();
         $alquileres = InvAlquiler::where('id_serial','=',$id)->get();
             foreach ($alquileres as $alquiler) {
                 $recesos = InvAlquilerRec::where('id_alquiler','=',$alquiler->id)->get();
@@ -199,7 +200,11 @@ class Coninventario extends Controller
 
     public function createSerial(Request $request)
     {
-        $serial = new InvSeriales;
+       $serial = new InvSeriales; 
+       $validation = Validation::check_create_twoparams($serial,'id_elementos','valor',$request->newsid,$request->serial);
+        if($validation != 'allow')
+            {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
+        
         $serial->id = Metodos::id_generator($serial,'id');
         $serial->id_elementos = $request->newsid;
         $serial->valor  = $request->serial;
@@ -210,6 +215,11 @@ class Coninventario extends Controller
 
     public function editnameSerial(Request $request)
     {
+        $serialtable = new InvSeriales;
+        $validation = Validation::check_update_repeat($request->serial,$serialtable,'valor','id',$request->namesid);
+        if($validation != 'allow')
+            {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
+
         $serial = InvSeriales::where('id','=',$request->namesid)->first();
         $serial->valor = $request->serial;
         $serial->save();
@@ -682,27 +692,35 @@ class Coninventario extends Controller
             {
                 $alert = [];
                 $alert['tipo'] = "alquiler";
-                $alert['id'] = $alquiler->id;
+                $alert['id'] = $alquiler->id_serial;
                 $serial = InvSeriales::where('id','=',$alquiler->id_serial)->first();
-                //echo "serial :".$serial->id.",";
-                $elemento = InvElementos::where('id','=',$serial->id_elementos)->first();                             
-                $categoria = InvCategorias::where('id','=',$elemento->categoria)->first();
-                $alert['comment'] = "El periodo de alquiler del elemento ".$categoria->nombre." con el serial ".$serial->valor." esta proximo a vencerse";
-                array_push($alerts, $alert);
+                if($serial->id_status == 3)
+                {
+                    //echo "serial :".$serial->id.",";
+                    $elemento = InvElementos::where('id','=',$serial->id_elementos)->first();                             
+                    $categoria = InvCategorias::where('id','=',$elemento->categoria)->first();
+                    $alert['comment'] = "El periodo de alquiler del elemento ".$categoria->nombre." con el serial ".$serial->valor." esta proximo a vencerse";
+                    array_push($alerts, $alert);    
+                }
+                
             }
         }
 
         $mantenimientos = InvReparacion::All();
         foreach($mantenimientos as $mantenimiento)
         {
-            if(horas_minutos::taking_away_days($mantenimiento->fecha,date("Ymd"))<10)
-            {
-                $alert = [];
-                $alert['tipo'] = "mantenimiento";
-                $alert['id'] = $mantenimiento->id;
-                $alert['comment'] = "El periodo de mantenimiento del elemento con el serial esta proximo a vencerse";
-                array_push($alerts, $alert);
+            $serial = InvSeriales::where('id','=',$mantenimiento->id_seriales)->first();
+            if($serial->id_status == 2){
+                if(horas_minutos::taking_away_days($mantenimiento->fecha,date("Ymd"))<10)
+                {
+                    $alert = [];
+                    $alert['tipo'] = "mantenimiento";
+                    $alert['id'] = $mantenimiento->id_seriales;
+                    $alert['comment'] = "El periodo de mantenimiento del elemento con el serial esta proximo a vencerse";
+                    array_push($alerts, $alert);
+                }    
             }
+            
         }
         return view('inventario.ajax.alerts_table',compact('alerts')); 
     }
@@ -813,6 +831,10 @@ class Coninventario extends Controller
     {
         //return "crear consumible";
         $consumible = new InvConsumibles;
+         $validation = Validation::check_create_repeat($consumible,$request->serial,'serial_general');
+        if($validation != 'allow')
+            {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
+        
         $id = Metodos::id_generator($consumible,'id');
         $consumible->id = $id;
         $consumible->codigo = $request->codigo;
@@ -832,6 +854,10 @@ class Coninventario extends Controller
 
     public function updateConsumible(Request $request)
     {
+        $consumibletable = new InvConsumibles;
+        $validation = Validation::check_update_repeat($request->serial,$consumibletable,'serial_general','id',$request->id);
+        if($validation != 'allow')
+            {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
         $consumible = InvConsumibles::where('id','=',$request->id)->first();
         $consumible->codigo = $request->codigo;
         $consumible->descripcion = $request->descripcion;
@@ -847,7 +873,7 @@ class Coninventario extends Controller
         $tickets = InvTickets::where('consumible_id','=',$id)->get();
         foreach($tickets as $ticket)
         {
-            DB::delete("delete from inventario_tickets where id = ".$tickets->id);
+            DB::delete("delete from inventario_tickets where id = ".$ticket->id);
         }
         DB::delete("delete from inventario_consumibles where id = ".$id);
         return $this->common_answer("!Consumible eliminado!",true);
@@ -855,7 +881,10 @@ class Coninventario extends Controller
 
     public function crear_unidad(Request $request)
     {
-        $unidad = new InvUnidades;
+        $unidad = new InvUnidades;        
+        $validation = Validation::check_create_repeat($unidad,$request->placa,'placa');
+        if($validation != 'allow')
+        {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
         $unidad->id = Metodos::id_generator($unidad,'id');
         $unidad->placa = $request->placa;
         $unidad->descripcion = $request->descripcion;
@@ -871,6 +900,11 @@ class Coninventario extends Controller
 
     public function update_unidad(Request $request)
     {
+        $unidadtable = new InvUnidades;
+        $validation = Validation::check_update_repeat($request->placa,$unidadtable,'placa','id',$request->id);
+        if($validation != 'allow')
+            {return $this->common_answer('!Ya existe un registro similar en el sistema!',false);}
+        
         $unidad = InvUnidades::where('id','=',$request->id)->first();
         $unidad->placa = $request->placa_edit;
         $unidad->descripcion = $request->descripcion_edit;
@@ -928,7 +962,7 @@ class Coninventario extends Controller
         
             foreach($tickets as $ticket)
             {
-                DB::delete("delete from inventario_tickets where id = ".$tickets->id);
+                DB::delete("delete from inventario_tickets where id = ".$ticket->id);
             }
 
             DB::delete("delete from inventario_consumibles where id = ".$consumible->id);
@@ -1011,6 +1045,8 @@ class Coninventario extends Controller
         $serial->save();
         return $this->common_answer("!Herramienta regresada a bodega!",true);   
     }
+
+
 
     public function precio_elemento($id)
     {
@@ -1141,6 +1177,19 @@ class Coninventario extends Controller
             
         }
         return $this->common_answer("!Unidad alquilada!",true);
+    }
+
+    public function backUnidad($id)
+    {
+        $unidad = InvUnidades::where('id','=',$id)->first();
+        $unidad->status = 0;
+        $unidad->save();
+        $seriales = InvSeriales::where('id_inventario_unidades','=',$id)->where('id_status','!=',1)->get();
+        foreach ($seriales as $serial) {
+            $serial->id_status = 1;
+            $serial->save();
+        }
+        return $this->common_answer("!Unidad regresada!",true);   
     }
 
     public function detalles_unidad($id)

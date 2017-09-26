@@ -64,6 +64,9 @@
                 @else
                 <a href="DetallesUnidad/{{$unidad->id}}" title="Detalles" style="margin-left: 5px;"><i class="fa fa-calendar" aria-hidden="true"></i></a>
                 @endif
+                @if($unidad->status == 1)
+                <a href="unidadback/{{$unidad->id}}" onclick="return confirm_action()"><i title="Regresar a bodega" class="fa fa-backward" aria-hidden="true"></i></a>
+                @endif
                 </td>
               </tr>
               @endforeach
