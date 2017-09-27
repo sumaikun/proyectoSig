@@ -686,21 +686,37 @@ class Coninventario extends Controller
     {
         $alerts = [];
         $alquileres = InvAlquiler::All();
+        $n = 0;
         foreach($alquileres as $alquiler)
         {
             if(horas_minutos::taking_away_days($alquiler->fecha_salida,date("Ymd"))<25)
             {
                 $alert = [];
                 $alert['tipo'] = "alquiler";
-                $alert['id'] = $alquiler->id_serial;
-                $serial = InvSeriales::where('id','=',$alquiler->id_serial)->first();
-                if($serial->id_status == 3)
+                if($alquiler->id_serial != null)
                 {
-                    //echo "serial :".$serial->id.",";
-                    $elemento = InvElementos::where('id','=',$serial->id_elementos)->first();                             
-                    $categoria = InvCategorias::where('id','=',$elemento->categoria)->first();
-                    $alert['comment'] = "El periodo de alquiler del elemento ".$categoria->nombre." con el serial ".$serial->valor." esta proximo a vencerse";
-                    array_push($alerts, $alert);    
+                    $alert['id'] = $alquiler->id_serial;
+                    $serial = InvSeriales::where('id','=',$alquiler->id_serial)->first();
+                    if($serial->id_status == 3)
+                    {
+                        $n++;
+                        //echo "serial :".$serial->id.",";
+                        $elemento = InvElementos::where('id','=',$serial->id_elementos)->first();                             
+                        $categoria = InvCategorias::where('id','=',$elemento->categoria)->first();
+                        $alert['comment'] = "El periodo de alquiler del elemento ".$categoria->nombre." con el serial ".$serial->valor." esta proximo a vencerse";
+                        array_push($alerts, $alert);    
+                    }    
+                }
+                else{
+                    $alert['tipo'] = "alquiler-unidad";
+                    $alert['id'] = $alquiler->unidad_id;
+                    $unidad = InvUnidades::where('id','=',$alquiler->unidad_id)->first();
+                    if($unidad->status == 1)
+                    {
+                        $n++;
+                        $alert['comment'] = "El periodo de alquiler de la unidad con placa ".$unidad->placa." esta proximo a vencerse";
+                        array_push($alerts, $alert);
+                    }
                 }
                 
             }
@@ -711,6 +727,7 @@ class Coninventario extends Controller
         {
             $serial = InvSeriales::where('id','=',$mantenimiento->id_seriales)->first();
             if($serial->id_status == 2){
+                $n++;
                 if(horas_minutos::taking_away_days($mantenimiento->fecha,date("Ymd"))<10)
                 {
                     $alert = [];
@@ -722,7 +739,13 @@ class Coninventario extends Controller
             }
             
         }
-        return view('inventario.ajax.alerts_table',compact('alerts')); 
+         if($n>0)
+         {
+            return view('inventario.ajax.alerts_table',compact('alerts'));  
+         }
+         else{
+            return $n;
+         }   
     }
 
     public function info_alert($id,$tipo)
@@ -730,6 +753,25 @@ class Coninventario extends Controller
         if($tipo == 'alquiler')
         {
             $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();
+
+            $anotaciones = InvAlquilerCom::where('id_alquiler','=',$id)->get(); 
+
+            $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
+
+            $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+            //return $recesos;
+            if(Session::get('rol_nombre')=='administrador'){    
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas')); 
+            }
+            else{
+                if(Session::get('observar_alquileres')!=null)
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
+                else{return "no tiene permisos";}   
+            }
+        }
+        if($tipo == 'alquiler-unidad')
+        {
+            $registro = InvAlquiler::where('unidad_id','=',$id)->orderby('id','desc')->first();
 
             $anotaciones = InvAlquilerCom::where('id_alquiler','=',$id)->get(); 
 

@@ -207,25 +207,25 @@
           <td style="text-align: center">Fecha de alquiler</td>          
         </tr>
         <tr>
-          <td style="text-align: center"> <input type="date" name="fecha1" onblur="update_calendar()" value="{{$registro->fecha_ingreso}}"></td>          
+          <td style="text-align: center"> <input type="date" name="fecha1" onmouseleave="update_calendar()" value="{{$registro->fecha_ingreso}}"></td>          
         </tr>
          <tr>
           <td style="text-align: center">Fecha de devolución</td>          
         </tr>
         <tr>
-          <td style="text-align: center"> <input type="date" name="fecha2" onblur="update_calendar()" value="{{$registro->fecha_salida}}"></td>          
+          <td style="text-align: center"> <input type="date" name="fecha2" onmouseleave="update_calendar()" value="{{$registro->fecha_salida}}"></td>          
         </tr>
          <tr>
           <td style="text-align: center">Valor Estandar</td>          
         </tr>
         <tr>
-          <td style="text-align: center">$<input type="number" name="valor" onblur="update_calendar()" value="{{$registro->valor}}"></td>          
+          <td style="text-align: center">$<input type="number" name="valor" onmouseleave="update_calendar()" value="{{$registro->valor}}"></td>          
         </tr>
          <tr>
           <td style="text-align: center">Valor Receso</td>          
         </tr>
         <tr>
-          <td style="text-align: center">$<input type="number" name="valor2" onblur="update_calendar()" value="{{$registro->valor2}}"></td>          
+          <td style="text-align: center">$<input type="number" name="valor2" onmouseleave="update_calendar()" value="{{$registro->valor2}}"></td>          
         </tr>
           <input type="hidden" name="cantidad_v" value="{{$registro->cantidad_valor2}}">
          <tr>

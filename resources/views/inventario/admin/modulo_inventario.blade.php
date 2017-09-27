@@ -113,8 +113,11 @@
 
 $( document ).ready(function() {
     $.get("inventario/check_alerts", function(res, sta){
+        if(res!=0)
+        {
          $("#ajax-content").append(res);
-         $("#myModal").modal('show');
+         $("#myModal").modal('show'); 
+        }         
       });
 });
 
