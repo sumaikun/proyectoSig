@@ -1,5 +1,9 @@
-<?php $TOTAL = 0 ?>
-@if($check_use_data != null)
+<?php
+ $TOTAL = 0;
+$ticketprice = 0;
+//echo count($check_use_data);
+?>
+@if(count($check_use_data) > 0)
 <div class="alert alert-warning">
   <strong>¡Aviso!</strong> Hay herramientas que no pueden alquilarse con la unidad por que no se encuentran en bodega.
 </div>
@@ -27,7 +31,7 @@
     
 @endif
 
-<br>
+
 <div class='col-lg-6 col-md-6'>
 <table class='table'>
   <tr>
@@ -43,7 +47,7 @@
   @endforeach
 </table>
 </div>
-<br>
+
 <div class='col-lg-6 col-md-6'>
 <table class='table'>
   <tr>

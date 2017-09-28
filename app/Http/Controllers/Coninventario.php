@@ -685,10 +685,11 @@ class Coninventario extends Controller
     public function check_alerts()
     {
         $alerts = [];
-        $alquileres = InvAlquiler::All();
+        $alquileres = DB::select(DB::raw("select distinct(id_serial) from inventario_alquiler where id_serial != 0 order by created_at desc;"));
         $n = 0;
-        foreach($alquileres as $alquiler)
+        foreach($alquileres as $alq)
         {
+            $alquiler = InvAlquiler::where('id_serial','=',$alq->id_serial)->orderby('id','desc')->first();
             if(horas_minutos::taking_away_days($alquiler->fecha_salida,date("Ymd"))<25)
             {
                 $alert = [];
@@ -722,7 +723,30 @@ class Coninventario extends Controller
             }
         }
 
-        $mantenimientos = InvReparacion::All();
+         $alquileres = DB::select(DB::raw("select distinct(unidad_id) from inventario_alquiler where unidad_id is not null  order by created_at desc;"));
+
+
+        foreach($alquileres as $alq)
+        {
+            $alquiler = InvAlquiler::where('unidad_id','=',$alq->unidad_id)->orderby('id','desc')->first();
+            if(horas_minutos::taking_away_days($alquiler->fecha_salida,date("Ymd"))<25)
+            {                
+                    $alert['tipo'] = "alquiler-unidad";
+                    $alert['id'] = $alquiler->unidad_id;
+                    $unidad = InvUnidades::where('id','=',$alquiler->unidad_id)->first();
+                    if($unidad->status == 1)
+                    {
+                        $n++;
+                        $alert['comment'] = "El periodo de alquiler de la unidad con placa ".$unidad->placa." esta proximo a vencerse";
+                        array_push($alerts, $alert);
+                    }
+            }
+                
+            
+        }
+
+
+        $mantenimientos =  DB::select(DB::raw("select * from inventario_reparacion order by created_at desc"));
         foreach($mantenimientos as $mantenimiento)
         {
             $serial = InvSeriales::where('id','=',$mantenimiento->id_seriales)->first();
