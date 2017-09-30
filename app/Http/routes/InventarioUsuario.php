@@ -122,6 +122,81 @@ Route::get('inventario/consumible/edit_element/{id}','Coninventario@editConsumib
 Route::post('inventario/updateConsumible','Coninventario@updateConsumible');
 
 Route::get('inventario/Gestion2', function(){  
-  $consumibles =  psig\models\InvConsumibles::All();          
-  return View::make('inventario.usuario.gestion2',compact('consumibles'));
+  $consumibles =  psig\models\InvConsumibles::All();
+  $unidades = psig\models\InvUnidades::lists('placa','id');
+  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');          
+  return View::make('inventario.usuario.gestion2',compact('consumibles','unidades','empresas'));
 });
+
+
+Route::get('inventario/Unidades',function(){
+  $unidades = psig\models\InvUnidades::get();
+  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+  return view('inventario.usuario.gestion3',compact('unidades','empresas'));
+});
+
+Route::post('inventario/crear_unidad','Coninventario@crear_unidad');
+
+Route::get('inventario/editar_unidad/{id}','Coninventario@editar_unidad');
+
+Route::post('inventario/update_unidad','Coninventario@update_unidad');
+
+Route::get('inventario/delete_unidad/{id}','Coninventario@delete_unidad');
+
+Route::get('inventario/asignar_unidad/{id}/{unidad}','Coninventario@asignar_unidad');
+
+Route::post('inventario/distribuir_unidades','Coninventario@distribuir_unidades');
+
+Route::get('inventario/datos_unidad_seriales/{id}','Coninventario@datos_unidad_seriales');
+
+Route::get('inventario/datos_unidad_consumibles/{id}','Coninventario@datos_unidad_consumibles');
+
+Route::get('inventario/getprecioelemento/{id}','Coninventario@precio_elemento');
+
+Route::post('inventario/regresar_unidades','Coninventario@regresar_unidades');
+
+Route::post('inventario/entregar_consumible','Coninventario@entregar_consumible');
+
+Route::get('inventario/consumible/tickets_table/{id}','Coninventario@info_tickets');
+
+Route::get('inventario/consumible/ticketdelete/{id}','Coninventario@delete_tickets');
+
+Route::get('inventario/consumible/edit_ticket/{id}','Coninventario@edit_tickets');
+
+Route::post('inventario/actualizar_ticket','Coninventario@update_tickets');
+
+Route::get('inventario/unidad_all_data/{id}','Coninventario@unidad_all_data');
+
+Route::post('inventario/rent_all_data','Coninventario@rent_all_data');
+
+Route::get('inventario/DetallesUnidad/{id}','Coninventario@detalles_unidad');
+
+Route::post('inventario/DetallesUnidad/calendar_options','Coninventario@calendar_action');
+
+Route::post('inventario/DetallesUnidad/delete_anotation','Coninventario@delete_anotation');
+
+Route::post('inventario/DetallesUnidad/delete_rest','Coninventario@delete_rest');
+
+Route::get('inventario/DetallesUnidad/get_all_res/{id}','Coninventario@get_all_res');
+
+Route::get('inventario/DetallesUnidad/get_all_anotations/{id}','Coninventario@get_all_anotations');
+
+Route::get('inventario/DetallesUnidad/get_main_event/{id}','Coninventario@get_main_event');
+
+Route::get('inventario/DetallesUnidad/deletereparacion/{id}','Coninventario@delete_reparacion');
+
+Route::post('inventario/DetallesUnidad/addrepairdate','Coninventario@edit_reparacion_fecha');
+
+Route::post('inventario/DetallesUnidad/addrepaircomment}','Coninventario@edit_reparacion_comentario');
+
+Route::post('inventario/DetallesUnidad/create_seguimiento','Coninventario@create_seguimiento');
+
+Route::get('inventario/DetallesUnidad/table_seguimiento/{id}','Coninventario@table_seguimiento');
+
+Route::get('inventario/DetallesUnidad/delete_seguimiento/{id}','Coninventario@delete_seguimiento');
+
+Route::post('inventario/DetallesUnidad/update_seguimiento','Coninventario@update_seguimiento');
+
+Route::get('inventario/DetallesUnidad/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}/{valor2}/{cantidad}','Coninventario@edit_alquilar');
+
+Route::get('inventario/unidadback/{id}','Coninventario@backUnidad');

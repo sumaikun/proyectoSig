@@ -329,6 +329,10 @@ class Coninventario extends Controller
     public function details($id)
     {        //Alquier
 
+        $serial = InvSeriales::where('id','=',$id)->first();
+
+        $detalles = "Herramienta serial ".$serial->valor;
+
         $status = InvSeriales::where('id','=',$id)->value('id_status');
         if($status==3)
         {
@@ -338,15 +342,15 @@ class Coninventario extends Controller
 
             $recesos = InvAlquilerRec::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get();
 
-            $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+            $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');            
 
             //return $recesos;
             if(Session::get('rol_nombre')=='administrador'){
-                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas'));
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas','detalles'));
             }
             else{
                 if(Session::get('observar_alquileres')!=null)
-                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas','detalles'));}
                 else{return "no tiene permisos";}
                 
             }
@@ -357,12 +361,12 @@ class Coninventario extends Controller
         {
             $registro = InvReparacion::where('id_seriales','=',$id)->orderby('id','desc')->first();
             if(Session::get('rol_nombre')=='administrador'){
-                return View::make('inventario.admin.detalles2',compact('registro'));
+                return View::make('inventario.admin.detalles2',compact('registro','detalles'));
             }
             else{
                 if(Session::get('observar_mantemiento')!=null)
                 {
-                    return View::make('inventario.usuario.detalles2',compact('registro'));
+                    return View::make('inventario.usuario.detalles2',compact('registro','detalles'));
                 }                
                 else{ return "no tiene permisos";}
             }    
@@ -776,6 +780,10 @@ class Coninventario extends Controller
     {
         if($tipo == 'alquiler')
         {
+            $serial = InvSeriales::where('id','=',$id)->first();
+
+            $detalles = "Herramienta serial ".$serial->valor;
+
             $registro = InvAlquiler::where('id_serial','=',$id)->orderby('id','desc')->first();
 
             $anotaciones = InvAlquilerCom::where('id_alquiler','=',$id)->get(); 
@@ -785,16 +793,21 @@ class Coninventario extends Controller
             $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
             //return $recesos;
             if(Session::get('rol_nombre')=='administrador'){    
-                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas')); 
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas','detalles')); 
             }
             else{
                 if(Session::get('observar_alquileres')!=null)
-                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas','detalles'));}
                 else{return "no tiene permisos";}   
             }
         }
         if($tipo == 'alquiler-unidad')
         {
+
+            $unidad = InvUnidades::where('id','=',$id)->first();
+
+            $detalles = "Unidad con placa ".$unidad->placa;
+
             $registro = InvAlquiler::where('unidad_id','=',$id)->orderby('id','desc')->first();
 
             $anotaciones = InvAlquilerCom::where('id_alquiler','=',$id)->get(); 
@@ -804,23 +817,27 @@ class Coninventario extends Controller
             $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
             //return $recesos;
             if(Session::get('rol_nombre')=='administrador'){    
-                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas')); 
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas','detalles')); 
             }
             else{
                 if(Session::get('observar_alquileres')!=null)
-                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas','detalles'));}
                 else{return "no tiene permisos";}   
             }
         }
         if($tipo == 'mantenimiento')
         {
+            $serial = InvSeriales::where('id','=',$id)->first();
+
+            $detalles = "Herramienta serial ".$serial->valor;
+
             $registro = InvReparacion::where('id_seriales','=',$id)->orderby('id','desc')->first();
             if(Session::get('rol_nombre')=='administrador'){
-                return View::make('inventario.admin.detalles2',compact('registro'));
+                return View::make('inventario.admin.detalles2',compact('registro','detalles'));
             }
             else{
                 if(Session::get('observar_mantemiento')!=null)
-                {return View::make('inventario.usuario.detalles2',compact('registro'));}                
+                {return View::make('inventario.usuario.detalles2',compact('registro','detalles'));}                
                 else{ return "no tiene permisos";}   
             }
         }
@@ -1268,6 +1285,8 @@ class Coninventario extends Controller
             return $this->common_answer("!No hay detalles de esta unidad!",false);                
         }
 
+            $detalles = "Unidad con placa ".$unidad->placa;
+
             $registro = InvAlquiler::where('unidad_id','=',$id)->orderby('id','desc')->first();
 
             $anotaciones = InvAlquilerCom::where('id_alquiler','=',$registro->id)->where('estado','=',1)->get(); 
@@ -1278,11 +1297,11 @@ class Coninventario extends Controller
 
             //return $recesos;
             if(Session::get('rol_nombre')=='administrador'){
-                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas'));
+                return View::make('inventario.admin.detalles',compact('registro','anotaciones','recesos','empresas','detalles'));
             }
             else{
                 if(Session::get('observar_alquileres')!=null)
-                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas'));}
+                {return View::make('inventario.usuario.detalles',compact('registro','anotaciones','recesos','empresas','detalles'));}
                 else{return "no tiene permisos";}
                 
             }

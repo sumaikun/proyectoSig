@@ -91,6 +91,11 @@
                 <input class="form-control" name="archivo" type="file">
               </div>
 
+              <div class="form-group">         
+                <label>Precio</label>
+                <input class="form-control" min="1000" name="precio" type="number">
+              </div>
+
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
                 <button type="submit" onclick="clicked();" class="btn btn-success">
                       <i class="fa fa-floppy-o"></i> <b>Crear &nbsp&nbsp</b>

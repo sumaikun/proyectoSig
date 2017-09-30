@@ -23,7 +23,7 @@
 <!-- header de la pagina -->
 <section class="content-header">
 
-  <h1><i class="fa fa-plus-circle"></i> Detalles  <!-- <small>Nuevo usuario</small> --></h1>
+  <h1><i class="fa fa-plus-circle"></i> Detalles {{$detalles}} <!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
     <li><a href="{{ url('usuario/actividades') }}"><i class="fa fa-users"></i> Inventario</a></li>
       <li class="active">Calendario</li>
@@ -246,9 +246,12 @@
         </tr>
         @if(Session::get('cambiar_alquileres')!=null)
         <tr>
-          <td style="text-align: center"><button onclick="update_data()" class="btn btn-warning">Guardar</button></td>          
+          <td style="text-align: center"><button onclick="update_data()" class="btn btn-warning">Guardar</button></td>  
         </tr>
-        @endif    
+        @endif
+        <tr>
+         Cliente: {{$empresas[$registro->id_empresa]}}
+        </tr>    
       </tbody>
     </table>
   </div>      

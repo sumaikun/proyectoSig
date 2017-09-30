@@ -78,6 +78,15 @@
   </a>
 </div>
 
+ <div class="col-lg-2">
+    <a href="{{ url('usuario/inventario/Unidades') }}">
+    <div class="thumbnail">
+      {{ HTML::image('admin/images/inventarios/unities.png', 'categoria', array('class' => 'center-block')) }}
+      <button type="button" class="btn btn-default btn-block btn-xs"><span class="text-success">Gestion de unidades</span></button>
+    </div>
+    </a>
+  </div>
+
 
 
 </section>
@@ -108,12 +117,15 @@
 
 <script>
 
-@if(session::get('no_show_alerts')==null and Session::get('ver_alertas')!=null)
+@if( session::get('no_show_alerts')==null and session::get('ver_alertas')!=null)
 
 $( document ).ready(function() {
     $.get("inventario/check_alerts", function(res, sta){
+        if(res!=0)
+        {
          $("#ajax-content").append(res);
-         $("#myModal").modal('show');
+         $("#myModal").modal('show'); 
+        }         
       });
 });
 

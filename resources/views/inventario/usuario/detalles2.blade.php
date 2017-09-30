@@ -22,7 +22,7 @@
 <!-- header de la pagina -->
 <section class="content-header">
 
-  <h1><i class="fa fa-plus-circle"></i> Detalles de Mantenimiento  <!-- <small>Nuevo usuario</small> --></h1>
+  <h1><i class="fa fa-plus-circle"></i> Detalles de Mantenimiento  {{$detalles}}<!-- <small>Nuevo usuario</small> --></h1>
    <ol class="breadcrumb">
     <li><a href="{{ url('usuario/actividades') }}""><i class="fa fa-users"></i> Inventario</a></li>
       <li class="active">Mantenimiento</li>

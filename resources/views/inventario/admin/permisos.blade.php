@@ -31,7 +31,7 @@
     <div class="col-lg-8 col-sm-8 table-responsive" style="max-height: 580px;">
       <div class="panel-group" >
         <div class="panel panel-default">
-          <div class="panel-heading"><strong>Administración de elementos</strong></div>
+          <div class="panel-heading"><strong>Administración de elementos (Herramientas)</strong></div>
           <div class="panel-body">
             <ul>
               <li>

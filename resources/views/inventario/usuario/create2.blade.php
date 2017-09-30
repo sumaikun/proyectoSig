@@ -66,7 +66,11 @@
                   <label>*SERIAL GENERAL</label>
                   <input  class="form-control" name="serial" id="serial" type="text"  required/>            
               </div>      
-
+              
+              <div class="form-group">         
+                <label>Precio</label>
+                <input class="form-control" name="precio" type="number">
+              </div>
 
               <div class="col-lg-6 col-lg-offset-6 col-xs-12">
                 <button type="submit" onclick="clicked();" class="btn btn-success">

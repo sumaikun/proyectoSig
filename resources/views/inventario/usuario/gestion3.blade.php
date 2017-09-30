@@ -1,12 +1,22 @@
-@extends('administrador.layouts.layout')
+@extends('usuarios.layouts.layout')
 
-@section('menu')
-    @include('administrador.layouts.menu', array('op'=>'usuarios'))
+
+@section('barra_usuario')
+  @include('usuarios.layouts.barra_usuario', array('op'=>'inicio'))
 @stop
+
+
+@section('menu_lateral')
+  @include('usuarios.layouts.menu_lateral', array('op'=>'inicio'))
+@stop
+
 
 @section('css')
    {{ HTML::style('general/css/icono_info.css') }}
 @stop
+
+
+
 
 @section('contenido')
 

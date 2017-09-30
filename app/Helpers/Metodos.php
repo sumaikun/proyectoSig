@@ -430,13 +430,13 @@ class Metodos{
 	    	if(in_array('cambiar_alquileres', $array)){
 	    		 Session::put('cambiar_alquileres','cambiar_alquileres'); 
 	    	}
-	    	if(in_array('ges_ciudades', $array)){
+	    	if(in_array('observar_mantenimiento', $array)){
 	    		 Session::put('observar_mantenimiento','observar_mantenimiento'); 
 	    	}
-	    	if(in_array('ges_ciudades', $array)){
+	    	if(in_array('cambiar_mantenimiento', $array)){
 	    		 Session::put('cambiar_mantenimiento','cambiar_mantenimiento'); 
 	    	}
-	    	if(in_array('ges_ciudades', $array)){
+	    	if(in_array('ver_alertas', $array)){
 	    		 Session::put('ver_alertas','ver_alertas'); 
 	    	}
 	    	if(in_array('crear_consumibles', $array)){
@@ -445,6 +445,7 @@ class Metodos{
 	    	if(in_array('man_consumibles', $array)){
 	    		 Session::put('man_consumibles','man_consumibles'); 
 	    	}
+	    	
     	
     		return true;	
     	}
