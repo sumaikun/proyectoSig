@@ -73,10 +73,20 @@
                   <td> {{$consumible->serial_general}}</td>                                    
                   <td> @if($consumible->id_inventario_unidades == null) {{"BODEGA SIG"}} @else {{$unidades[$consumible->id_inventario_unidades]}} @endif </td>
                   <td> {{$consumible->precio}}</td> 
-                  <td>@if($consumible->id_inventario_unidades == null) <a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></i></a> @endif <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <td>
+                  
+                  <?php if(Session::get('man_consumibles')!=null){ ?>
+                  @if($consumible->id_inventario_unidades == null) <a href="#" data-toggle="modal" onclick="edit_element({{$consumible->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></i></a> @endif <a href="consumibledelete/{{$consumible->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                  <?php } ?>
+                  
+                  <?php if(Session::get('dis_consumibles')!=null){ ?>
                   <a href="#"  @if($consumible->id_inventario_unidades == null) onclick="modal_unidades('{{$consumible->id}}','{{$consumible->cantidad}}')" > <i class="fa fa-car" aria-hidden="true" title="Distribuir Unidades"></i> @else  onclick="modal_regresar('{{$consumible->id}}','{{$consumible->cantidad}}')"> <i class="fa fa-sort-desc" title="regresar consumibles a bodega" aria-hidden="true"></i> @endif</a>
+                  <?php } ?>
+
+                  <?php if(Session::get('con_ticket')!=null){ ?>
                   @if($consumible->id_inventario_unidades == null) <a href="#" onclick="entregar_consumible('{{$consumible->id}}','{{$consumible->precio}}','{{$consumible->cantidad}}')" title="entregar consumibles"><i class="fa fa-users" aria-hidden="true"></i></a>  @endif
                   <a href="#" onclick="informacion_tickets({{$consumible->id}})" title="informacion de tickets"><i class="fa fa-ticket" aria-hidden="true"></i></a>
+                  <?php } ?>
                   </td>  
                 </tr>  
               @endforeach
@@ -86,6 +96,7 @@
    </div>
 </div>
 
+<?php if(Session::get('man_consumibles')!=null){ ?>
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
 
@@ -105,7 +116,9 @@
 
   </div>
 </div>
+<?php } ?>
 
+<?php if(Session::get('dis_consumibles')!=null){ ?>
 <!-- Modal -->
 <div id="modalUnidades" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -208,7 +221,7 @@
 
   </div>
 </div>
-
+<?php } ?>
 
 <!-- Modal -->
 <div id="Ajaxmodal" class="modal fade" role="dialog">

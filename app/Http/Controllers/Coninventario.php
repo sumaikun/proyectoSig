@@ -931,12 +931,24 @@ class Coninventario extends Controller
 
     public function editConsumible($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('man_consumibles')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $consumible = InvConsumibles::where('id','=',$id)->first();
         return view('inventario.ajax.edit_consumible',compact('consumible'));
     }
 
     public function updateConsumible(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('man_consumibles')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $consumibletable = new InvConsumibles;
         $validation = Validation::check_update_repeat($request->serial,$consumibletable,'serial_general','id',$request->id);
         if($validation != 'allow')
@@ -953,6 +965,12 @@ class Coninventario extends Controller
 
     public function deleteConsumible($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('man_consumibles')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $tickets = InvTickets::where('consumible_id','=',$id)->get();
         foreach($tickets as $ticket)
         {
@@ -964,6 +982,13 @@ class Coninventario extends Controller
 
     public function crear_unidad(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('crear_unidades')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
+
         $unidad = new InvUnidades;        
         $validation = Validation::check_create_repeat($unidad,$request->placa,'placa');
         if($validation != 'allow')
@@ -977,12 +1002,24 @@ class Coninventario extends Controller
 
     public function editar_unidad($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('man_unidades')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $unidad = InvUnidades::where('id','=',$id)->first();
         return $unidad;
     }
 
     public function update_unidad(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('man_unidades')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $unidadtable = new InvUnidades;
         $validation = Validation::check_update_repeat($request->placa,$unidadtable,'placa','id',$request->id);
         if($validation != 'allow')
@@ -997,6 +1034,12 @@ class Coninventario extends Controller
 
     public function delete_unidad($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('man_unidades')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $seriales = InvSeriales::where('id_inventario_unidades','=',$id)->get();
         $consumibles = InvConsumibles::where('id_inventario_unidades','=',$id)->get();
 
@@ -1069,6 +1112,13 @@ class Coninventario extends Controller
 
     public function distribuir_unidades(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('dis_consumibles')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
+
         $unidades = InvUnidades::lists('placa','id');
         $unidad_base = InvConsumibles::where('id','=',$request->id)->first();
         
@@ -1140,6 +1190,13 @@ class Coninventario extends Controller
 
     public function regresar_unidades(Request $request)
     {
+       if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('dis_consumibles')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
+         
        $consumible = InvConsumibles::where('id','=',$request->id)->first();
        $original = InvConsumibles::where('codigo','=',$consumible->codigo)->where('id_inventario_unidades','=',null)->first();
          $original->cantidad = $original->cantidad+$request->total;
@@ -1157,6 +1214,12 @@ class Coninventario extends Controller
 
     public function entregar_consumible(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('dis_consumibles')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $ticket = new InvTickets;
         $ticket->id = Metodos::id_generator($ticket,'id');
         $ticket->consumible_id = $request->id;
@@ -1176,19 +1239,37 @@ class Coninventario extends Controller
 
     public function info_tickets($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('con_ticket')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $tickets = InvTickets::where('consumible_id','=',$id)->get();
         $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
         return view('inventario.ajax.ticketslist',compact('tickets','empresas'));
     }
 
     public function delete_tickets($id)
-    {        
+    {   
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('con_ticket')==null)
+            {
+                return "no tiene permiso";
+            }
+        }     
         DB::delete("delete from inventario_tickets where id = ".$id);
         return $this->common_answer("!Ticket eliminado!",true);
     }
 
     public function edit_tickets($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('con_ticket')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $empresas = ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
         $ticket = InvTickets::where('id','=',$id)->first();
         return view('inventario.ajax.edit_ticket',compact('ticket','empresas'));
@@ -1196,6 +1277,12 @@ class Coninventario extends Controller
 
     public function update_tickets(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('con_ticket')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $ticket = InvTickets::where('id','=',$request->id)->first();
         $ticket->cantidad = $request->cantidad;
         $ticket->comentario = $request->comentario;
@@ -1218,6 +1305,12 @@ class Coninventario extends Controller
 
     public function rent_all_data(Request $request)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('alq_unidades')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $unidad = InvUnidades::where('id','=',$request->id)->first();
         $unidad->status = 1;
         $unidad->save();
@@ -1264,6 +1357,12 @@ class Coninventario extends Controller
 
     public function backUnidad($id)
     {
+        if(Session::get('rol_nombre')!='administrador'){
+            if(Session::get('alq_unidades')==null)
+            {
+                return "no tiene permiso";
+            }
+        }
         $unidad = InvUnidades::where('id','=',$id)->first();
         $unidad->status = 0;
         $unidad->save();

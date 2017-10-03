@@ -39,10 +39,13 @@
            @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_eliminar')!=null)
            <a href="serialdelete/{{$serial->id}}" onclick="return confirm_action()" title="Borrar" style="margin-left: 5px;"><i class="fa fa-times" aria-hidden="true"></i></a>
            @endif
+           
+           <?php if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_editar')!=null){?>
            <a href="#" onclick="modal_unidades('{{$serial->id}}')"><i class="fa fa-car" aria-hidden="true" title="Unidades"></i></a>
            @if($serial->id_status != 1 and $serial->id_status != 4)
            <a href="serialback/{{$serial->id}}" onclick="return confirm_action()"><i title="Regresar a bodega" class="fa fa-backward" aria-hidden="true"></i></a>
            @endif
+           <?php } ?>
            </td>            
         </tr>
       @endforeach  

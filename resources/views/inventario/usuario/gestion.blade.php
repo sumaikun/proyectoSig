@@ -71,7 +71,16 @@
                   <td style="text-align: center;"> {{$elemento->cantidad}}</td>                  
                   <td> {{$elemento->categoria}}</td>
                   <td> {{$elemento->precio}}</td>                  
-                  <td> <a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i> <a href="elementdelete/{{$elemento->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a><a href="#" data-toggle="modal" title="Gestión" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a><a  href="#" title="Componentes" style="margin-left: 5px;" data-target="#myModal8" data-toggle="modal" onclick="get_components({{$elemento->id}})"><i class="fa fa-list-ul" aria-hidden="true"></i></a> <a @if($elemento->archivo == null) {{'onclick=no_file()'}} @else{{"href=downloadpdf/".$elemento->id}} target="_blank" @endif ><i class="fa fa-arrow-down" title="pdf" aria-hidden="true"></i></a>
+                  <td>
+                    <?php if(Session::get('inventario_editar')!=null){?> 
+                   <a href="#" data-toggle="modal" onclick="edit_element({{$elemento->id}})" title="editar" data-target="#myModal"><i class="fa fa-pencil" aria-hidden="true"></a></i>
+                    <?php } ?>
+                    <?php if(Session::get('inventario_eliminar')!=null){?>
+                    <a href="elementdelete/{{$elemento->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                    <?php } ?>
+                   <a href="#" data-toggle="modal" title="Gestión" onclick="get_serials({{$elemento->id}})" data-target="#myModal4" style="margin-left: 5px;"><i class="fa fa-binoculars" aria-hidden="true"></i></a>
+                   <a  href="#" title="Componentes" style="margin-left: 5px;" data-target="#myModal8" data-toggle="modal" onclick="get_components({{$elemento->id}})"><i class="fa fa-list-ul" aria-hidden="true"></i></a> 
+                   <a @if($elemento->archivo == null) {{'onclick=no_file()'}} @else{{"href=downloadpdf/".$elemento->id}} target="_blank" @endif ><i class="fa fa-arrow-down" title="pdf" aria-hidden="true"></i></a>
                   </td>  
                 </tr>  
               @endforeach

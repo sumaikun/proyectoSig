@@ -66,9 +66,14 @@
                 <td>{{$unidad->placa}}</td>
                 <td>{{$unidad->descripcion}}</td>
                 <td>
+
+                <?php if(Session::get('man_unidades')!=null){ ?>
                 <a href="#" onclick="edit_unidad({{$unidad->id}})" title="editar"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
                 <a href="delete_unidad/{{$unidad->id}}" onclick="return confirm_action()" title="Eliminar" style="margin-left: 5px;"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                 <a href="#"><i onclick="datos_unidad({{$unidad->id}})"  title="herramientas y consumibles asociados" class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                <?php } ?>
+                
+                <?php if(Session::get('alq_unidades')!=null){ ?>
                 @if($unidad->status == 0)
                 <a href="#"  onclick="rentthis({{$unidad->id}})"  title="Alquilar" style="margin-left: 5px;"  ><i class="fa fa-briefcase" aria-hidden="true"></i></a>
                 @else
@@ -77,13 +82,16 @@
                 @if($unidad->status == 1)
                 <a href="unidadback/{{$unidad->id}}" onclick="return confirm_action()"><i title="Regresar a bodega" class="fa fa-backward" aria-hidden="true"></i></a>
                 @endif
+                <?php } ?>
                 </td>
               </tr>
               @endforeach
             </tbody>
          </table>
          </div>
+          <?php if(Session::get('crear_unidades')!=null){ ?>
          <button onclick="nueva_unidad()">Crear nueva unidad</button>
+         <?php } ?>
       </div>      
    </div>
 </div>

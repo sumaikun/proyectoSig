@@ -69,6 +69,7 @@
 </div>
 @endif
 
+@if(Session::get('ver_consumibles')!=null)
 <div class="col-lg-2">
   <a href="{{ url('usuario/inventario/Gestion2') }}">
   <div class="thumbnail">
@@ -77,7 +78,10 @@
   </div>
   </a>
 </div>
+@endif
 
+
+@if(Session::get('ver_unidades')!=null)
  <div class="col-lg-2">
     <a href="{{ url('usuario/inventario/Unidades') }}">
     <div class="thumbnail">
@@ -86,6 +90,7 @@
     </div>
     </a>
   </div>
+@endif
 
 
 

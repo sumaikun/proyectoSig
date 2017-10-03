@@ -111,18 +111,56 @@
           <div class="panel-body">
             <ul>
               <li>
+                <label class="form-control">Ver consumibles</label>
+                <input class="form-control" name="permisos9" value="ver_consumibles" type="checkbox">
+              </li>
+              <li>
                 <label class="form-control">Crear consumibles</label>
-                <input class="form-control" name="permisos9" value="crear_consumibles" type="checkbox">
+                <input class="form-control" name="permisos10" value="crear_consumibles" type="checkbox">
               </li>
               <li>
                 <label class="form-control">Manipular consumibles</label>
-                <input class="form-control" name="permisos10" value="man_consumibles" type="checkbox">
+                <input class="form-control" name="permisos11" value="man_consumibles" type="checkbox">
+              </li>
+              <li>
+                <label class="form-control">Distribucion de consumibles</label>
+                <input class="form-control" name="permisos12" value="dis_consumibles" type="checkbox">
+              </li>
+              <li>
+                <label class="form-control">Crear y verificar tickets de entrega</label>
+                <input class="form-control" name="permisos13" value="con_ticket" type="checkbox">
               </li>                        
             </ul>
           </div>
         </div>
       </div>
-      
+
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading"><strong>Unidades</strong></div>
+          <div class="panel-body">
+            <ul>
+              <li>
+                <label class="form-control">Ver unidades</label>
+                <input class="form-control" name="permisos14" value="ver_unidades" type="checkbox">
+              </li>
+              <li>
+                <label class="form-control">Crear unidades</label>
+                <input class="form-control" name="permisos15" value="crear_unidades" type="checkbox">
+              </li>
+              <li>
+                <label class="form-control">Manipular unidades</label>
+                <input class="form-control" name="permisos16" value="man_unidades" type="checkbox">
+              </li>
+              <li>
+                <label class="form-control">Alquilar unidades</label>
+                <input class="form-control" name="permisos17" value="alq_unidades" type="checkbox">
+              </li>                                      
+            </ul>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="col-lg-4 col-sm-4">

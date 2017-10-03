@@ -445,7 +445,27 @@ class Metodos{
 	    	if(in_array('man_consumibles', $array)){
 	    		 Session::put('man_consumibles','man_consumibles'); 
 	    	}
-	    	
+	    	if(in_array('ver_consumibles', $array)){
+	    		 Session::put('ver_consumibles','ver_consumibles'); 
+	    	}
+	    	if(in_array('dis_consumibles', $array)){
+	    		 Session::put('dis_consumibles','dis_consumibles'); 
+	    	}
+	    	if(in_array('con_ticket', $array)){
+	    		 Session::put('con_ticket','con_ticket'); 
+	    	}
+	    	if(in_array('ver_unidades', $array)){
+	    		 Session::put('ver_unidades','ver_unidades'); 
+	    	}
+	    	if(in_array('crear_unidades', $array)){
+	    		 Session::put('crear_unidades','crear_unidades'); 
+	    	}
+	    	if(in_array('man_unidades', $array)){
+	    		 Session::put('man_unidades','man_unidades'); 
+	    	}
+	    	if(in_array('alq_unidades', $array)){
+	    		 Session::put('alq_unidades','alq_unidades'); 
+	    	}
     	
     		return true;	
     	}

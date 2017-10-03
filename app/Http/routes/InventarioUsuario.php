@@ -15,15 +15,20 @@ Route::any('inventario', function(){
 });
 
 Route::get('inventario/create', function(){
-
-   $categorias = psig\models\InvCategorias::lists('nombre','id');
-   $estados = psig\models\InvStatus::lists('nombre','id'); 
-   return View::make('inventario.usuario.create',compact("categorias","estados"));
+   if(Session::get('inventario_crear')!=null)
+  { 
+    $categorias = psig\models\InvCategorias::lists('nombre','id');
+    $estados = psig\models\InvStatus::lists('nombre','id'); 
+    return View::make('inventario.usuario.create',compact("categorias","estados"));
+   }
+  else{
+    return "no tiene permisos";
+  }  
 });
 
 Route::get('inventario/Gestion', function(){	
 	$estados = psig\models\InvStatus::lists('nombre','id');
-  $elementos = DB::select(DB::raw("select e.id,e.codigo,e.descripcion, e.archivo,(select count(id) from inventario_seriales where id_elementos=e.id and deleted_at is null) as cantidad ,c.nombre as categoria from inventario_elementos as e INNER JOIN inventario_categorias as c on e.categoria = c.id where e.deleted_at is null"));
+  $elementos = DB::select(DB::raw("select e.id,e.codigo,e.descripcion, e.precio, e.archivo,(select count(id) from inventario_seriales where id_elementos=e.id and deleted_at is null) as cantidad ,c.nombre as categoria from inventario_elementos as e INNER JOIN inventario_categorias as c on e.categoria = c.id where e.deleted_at is null"));
   $empresas = psig\models\ListEnterprises::lists('nombre','id');             
 	return View::make('inventario.usuario.gestion',compact('elementos','estados','empresas'));
 });
@@ -37,9 +42,10 @@ Route::post('inventario/addElemento','Coninventario@createEle');
 Route::post('inventario/editElemento','Coninventario@editEle');
 
 Route::get('inventario/get_seriales/{id}',function($id){
-  $seriales = DB::SELECT(DB::RAW("select s.id_status,s.id,s.valor,e.nombre, s.id_elementos from inventario_seriales as s INNER JOIN inventario_status as e on s.id_status = e.id where s.deleted_at is null and s.id_elementos=".$id));  
-  
-  return View::make('inventario.ajax.seriallist',compact('seriales','id'));
+  $seriales = DB::SELECT(DB::RAW("select s.id_status,s.id,s.valor,e.nombre, s.id_elementos, s.id_inventario_unidades from inventario_seriales as s INNER JOIN inventario_status as e on s.id_status = e.id where s.deleted_at is null and s.id_elementos=".$id));  
+  $unidades = psig\models\InvUnidades::lists('placa','id');
+  //return $unidades;
+  return View::make('inventario.ajax.seriallist',compact('seriales','id','unidades'));
 
 });
 
@@ -115,24 +121,35 @@ Route::post('inventario/addConsumible','Coninventario@createCons');
 
 Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
 
-Route::get('inventario/consumibledelete/{id}','Coninventario@deleteConsumible');
-
 Route::get('inventario/consumible/edit_element/{id}','Coninventario@editConsumible');
 
 Route::post('inventario/updateConsumible','Coninventario@updateConsumible');
 
-Route::get('inventario/Gestion2', function(){  
-  $consumibles =  psig\models\InvConsumibles::All();
-  $unidades = psig\models\InvUnidades::lists('placa','id');
-  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');          
-  return View::make('inventario.usuario.gestion2',compact('consumibles','unidades','empresas'));
+Route::get('inventario/Gestion2', function(){
+  if(Session::get('ver_consumibles')!=null)
+  {
+    $consumibles =  psig\models\InvConsumibles::All();
+    $unidades = psig\models\InvUnidades::lists('placa','id');
+    $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');          
+    return View::make('inventario.usuario.gestion2',compact('consumibles','unidades','empresas'));
+  }
+  else{
+    return "no tiene permisos";
+  }  
+  
 });
 
 
 Route::get('inventario/Unidades',function(){
-  $unidades = psig\models\InvUnidades::get();
-  $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
-  return view('inventario.usuario.gestion3',compact('unidades','empresas'));
+  if(Session::get('ver_unidades')!=null)
+  {
+    $unidades = psig\models\InvUnidades::get();
+    $empresas = psig\models\ListEnterprises::Where('cliente','=',1)->lists('nombre','id');
+    return view('inventario.usuario.gestion3',compact('unidades','empresas'));
+  }
+  else{
+    return "no tiene permisos";
+  }    
 });
 
 Route::post('inventario/crear_unidad','Coninventario@crear_unidad');
