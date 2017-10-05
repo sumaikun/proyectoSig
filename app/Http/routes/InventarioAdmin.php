@@ -211,3 +211,5 @@ Route::post('inventario/DetallesUnidad/update_seguimiento','Coninventario@update
 Route::get('inventario/DetallesUnidad/modify_rent_data/{id}/{fecha2}/{fecha1}/{valor}/{valor2}/{cantidad}','Coninventario@edit_alquilar');
 
 Route::get('inventario/unidadback/{id}','Coninventario@backUnidad');
+
+Route::get('inventario/ticketserial/{id}','Coninventario@ticketSerial');

@@ -36,16 +36,26 @@
            <a href="#" data-target="#myModalRep"   data-toggle="modal" onclick="fixthis({{$serial->id}})" title="Reparación" style="margin-left: 5px;"><i class="fa fa-life-ring" aria-hidden="true"></i></a>
            <?php } ?>
            @endif
+
            @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_eliminar')!=null)
            <a href="serialdelete/{{$serial->id}}" onclick="return confirm_action()" title="Borrar" style="margin-left: 5px;"><i class="fa fa-times" aria-hidden="true"></i></a>
            @endif
-           
-           <?php if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_editar')!=null){?>
+
+           @if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_editar')!=null)           
            <a href="#" onclick="modal_unidades('{{$serial->id}}')"><i class="fa fa-car" aria-hidden="true" title="Unidades"></i></a>
+           @endif
+
+           <?php if(Session::get('rol_nombre')=='administrador' or Session::get('inventario_editar')!=null) {  ?>
            @if($serial->id_status != 1 and $serial->id_status != 4)
            <a href="serialback/{{$serial->id}}" onclick="return confirm_action()"><i title="Regresar a bodega" class="fa fa-backward" aria-hidden="true"></i></a>
            @endif
-           <?php } ?>
+          <?php } ?> 
+
+           <?php if(Session::get('rol_nombre')=='administrador' or Session::get('observar_alquileres')!=null or Session::get('observar_mantenimiento')!=null) {?> 
+           <a href="#" onclick="informacion_tickets({{$serial->id}})" title="tickets historicos"><i class="fa fa-ticket" aria-hidden="true"></i></a>
+           <?php } ?> 
+
+           
            </td>            
         </tr>
       @endforeach  
@@ -67,7 +77,7 @@
       <div class="modal-body">
         <label class="form-control">Unidad asignada</label>
         <select class="form-control" name='asignunidad'>
-          <option value="0">Sin unidad</option>
+          <option value="0">Bodega Sig</option>
           @foreach($unidades as $key => $temp)
             <option value=" {{$key}} ">{{$temp}}</option>
           @endforeach
@@ -76,6 +86,28 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-default" onclick="asignar_unidad()">Asignar</button>      
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div id="modalTickets" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Tickets de serial</h4>
+      </div>
+      <div class="modal-body">
+        <div id="ajax-tickets"></div>
+      </div>
+      <div class="modal-footer">
+           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
@@ -128,6 +160,14 @@
     $.get('asignar_unidad/'+id_unidad+"/"+$("select[name='asignunidad']").val(),function(){
       $("#modalUnidades").modal('hide');
       $("#myModal4").modal('hide');    
+    })
+ }
+
+ function informacion_tickets(id)
+ {
+     $.get('ticketserial/'+id,function(res,sta){
+      $("#ajax-tickets").append(res);
+      $("#modalTickets").modal('show');         
     })
  }
  
