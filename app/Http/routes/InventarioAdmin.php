@@ -213,3 +213,5 @@ Route::get('inventario/DetallesUnidad/modify_rent_data/{id}/{fecha2}/{fecha1}/{v
 Route::get('inventario/unidadback/{id}','Coninventario@backUnidad');
 
 Route::get('inventario/ticketserial/{id}','Coninventario@ticketSerial');
+
+Route::get('inventario/ticketunidad/{id}','Coninventario@ticketUnidad');

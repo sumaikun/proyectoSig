@@ -36,27 +36,7 @@
     </tbody>
  </table>
 
- <table id="ticketlist2" class="table table-striped table-bordered" cellspacing="0" width="100%">
-    <thead>
-       <tr><th colspan="4" style="text-align:center;">Mantenimientos</th></tr> 
-       <tr class="active">
-          <th>#</th>          
-          <th><strong>Fecha</strong></th>
-          <th><strong>info extra</strong></th>
-          <th><strong>Salida</strong></th>    
-        </tr>
-    </thead>
-    <tbody>
-      @foreach($Mantenimientos as $reparacion)
-        <tr>
-           <td> {{$reparacion->id}} </td>
-           <td> {{$reparacion->fecha}} </td>
-           <td> {{$reparacion->info_extra}} </td>
-           <td> {{$reparacion->updated_at}} </td>                     
-        </tr>
-      @endforeach  
-    </tbody>
- </table>
+
 </div>
 
 

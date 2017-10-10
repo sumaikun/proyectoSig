@@ -1413,6 +1413,12 @@ class Coninventario extends Controller
         return view('inventario.ajax.ticketslistseriales',compact('Alquileres','Mantenimientos'));
     }
 
+    public function ticketUnidad($id)
+    {
+        $Alquileres = InvAlquiler::where("id_serial","=",$id)->get();        
+        return view('inventario.ajax.ticketslistunidades',compact('Alquileres'));
+    }
+
     private function common_answer($string,$bool)
     {
         if(Session::get('rol_nombre')=='administrador')

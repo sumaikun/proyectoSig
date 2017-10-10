@@ -14,4 +14,9 @@ class InvReparacion extends Model
 
     	return $this->belongsTo('psig\models\InvSeriales','id_serial','id');
     }
+
+    public function usuarios(){
+
+    	return $this->belongsTo('psig\models\Modusuarios','id_usuario','usu_id');
+    }
 }

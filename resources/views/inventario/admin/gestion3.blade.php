@@ -67,6 +67,7 @@
                 @if($unidad->status == 1)
                 <a href="unidadback/{{$unidad->id}}" onclick="return confirm_action()"><i title="Regresar a bodega" class="fa fa-backward" aria-hidden="true"></i></a>
                 @endif
+                <a href="#" onclick="informacion_tickets({{$unidad->id}})" title="tickets historicos"><i class="fa fa-ticket" aria-hidden="true"></i></a>
                 </td>
               </tr>
               @endforeach
@@ -229,6 +230,27 @@
   </div>
 </div>
 
+
+<div class="modal fade" id="modalTickets" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tickets de alquiler</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body table-responsive" style='max-height: 500px !important;'>
+        <div id='ajax-tickets'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+      </div>      
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 
 
@@ -332,6 +354,15 @@
         $("#Modalrent2").modal('show');
     })
   }
+
+  function informacion_tickets(id)
+ {
+      $("#ajax-tickets").empty();
+     $.get('ticketunidad/'+id,function(res,sta){
+      $("#ajax-tickets").append(res);
+      $("#modalTickets").modal('show');         
+    })
+ }
 
 </script>
 

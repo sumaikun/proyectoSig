@@ -165,6 +165,7 @@
 
  function informacion_tickets(id)
  {
+      $("#ajax-tickets").empty();
      $.get('ticketserial/'+id,function(res,sta){
       $("#ajax-tickets").append(res);
       $("#modalTickets").modal('show');         
