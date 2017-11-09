@@ -187,7 +187,7 @@ class Congdversiones extends Controller {
 		$documento = $version->documento;
 		$subcategoria = $documento->subcategorias;
 
-		if($version->empresa != null and Input::has('for_conse'))
+		if(Input::has('for_conse'))
 		{
 			$exist = Modgdconsecutivos::where('gddoc_id','=',$version->gddoc_id)->where('empresa','=',$version->empresa)->orderBy('gdcon_id','desc')->first();
 			if($exist == null)
@@ -195,7 +195,14 @@ class Congdversiones extends Controller {
 				$consecutivo = new Modgdconsecutivos;
 				$consecutivo->gddoc_id = $documento->gddoc_id;
 				$consecutivo->usu_id = Session::get('usu_id');
-				$consecutivo->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1).'-'.$version->empresas->abbr;
+				if($version->empresa != null)
+				{
+					$consecutivo->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1).'-'.$version->empresas->abbr;
+				}
+				else{
+					$consecutivo->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1);
+				} 
+				
 				$consecutivo->gdcon_numero = Input::get('gddoc_consecutivo_ini');
 				$consecutivo->gdcon_anio = date("y");
 				$consecutivo->empresa = $version->empresa;
@@ -204,7 +211,13 @@ class Congdversiones extends Controller {
 			}
 			else{
 				$exist->gdcon_numero = Input::get('gddoc_consecutivo_ini');
-				$exist->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1).'-'.$version->empresas->abbr;
+				if($version->empresa != null)
+				{
+					$exist->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1).'-'.$version->empresas->abbr;
+				}
+				else{
+					$exist->gdcon_consecutivo = Metodos::arma_y_suma_cons(Input::get('gddoc_consecutivo_ini')-1);
+				}
 				$exist->save(); 
 			}
 
