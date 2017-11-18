@@ -137,8 +137,9 @@ class Congdconsecutivos extends Controller {
 
 					//dd($existe_conse).exit();
 					
-					// opteniendo el ultimo consecutivo registrado por el id del documento resivido
-					$ultimo_conse = DB::select('SELECT * FROM gd_consecutivos WHERE gddoc_id=? and gdcon_anio=? order by gdcon_id desc limit 1', array($documento->gddoc_id, date("y"));
+					//$ultimo_conse = DB::select('SELECT * FROM gd_consecutivos WHERE gddoc_id=? and gdcon_anio=? ', array($documento->gddoc_id, date("y"), $documento->gddoc_id, date("y")));
+					$ultimo_conse = DB::select('SELECT * FROM gd_consecutivos WHERE gddoc_id=? and gdcon_anio=? order by gddoc_id desc limit 1 ', array($documento->gddoc_id, date("y")));
+										//dd($ultimo_conse).exit();
 					
 					//dd($ultimo_conse).exit();
 

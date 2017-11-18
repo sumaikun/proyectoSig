@@ -21,17 +21,3 @@
   </table>
 </div>
 
-<script>
-$(document).ready(function() {
-    
-
-   
-    $('#example3').DataTable({
-       "bSort": false,
-        "language": {
-                "url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
-            }
-    });
-  
-  });
-</script>
