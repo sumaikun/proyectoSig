@@ -63,6 +63,8 @@ Route::get('inventario/edit_element/{id}',function($id){
 
 Route::get('inventario/serialdelete/{id}','Coninventario@deleteSerial');
 
+Route::get('inventario/serialback/{id}','Coninventario@backSerial');
+
 Route::get('inventario/elementdelete/{id}','Coninventario@deleteEle');
 
 Route::post('inventario/addSerial','Coninventario@createSerial');
