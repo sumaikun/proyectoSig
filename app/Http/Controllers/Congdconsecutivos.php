@@ -46,9 +46,7 @@ class Congdconsecutivos extends Controller {
 		if($documento->gddoc_is_multcons==1)
 		{
 			$existe_activo = Modgdconsecutivos::where('usu_id','=',Session::get('usu_id'))->where('gdcon_estado','=','abierto')->where('gddoc_id','=',$documento->gddoc_id)->where('empresa','=',$version->empresa)->exists();
-			//$existe_activo = Modgdconsecutivos::whereRaw('usu_id = ? and gdcon_estado=? and gddoc_id=? and empresa', array( Session::get('usu_id'), 'abierto', $documento->gddoc_id,$version->empresa))->first();
-
-			//return $existe_activo;
+			
 
 		}
 		else{
@@ -63,7 +61,6 @@ class Congdconsecutivos extends Controller {
 
 			if($documento->gddoc_is_multcons==1)
 			{
-
 				$existe_conse = Modgdconsecutivos::where('gddoc_id', '=', $documento->gddoc_id)->where('empresa','=',$version->empresa)->exists();
 				if($existe_conse){
 					//return 'here';
@@ -85,8 +82,8 @@ class Congdconsecutivos extends Controller {
 						if($conse_igual->save()) $consecutivo = $conse_igual->gdcon_consecutivo;
 
 					}else{ //si el año es diferente debe empezar con 0001
-							print_r($version);
-							return '';
+							//print_r($version);
+							//return '';
 							$conse_dif = new Modgdconsecutivos;
 							$conse_dif->gddoc_id = $documento->gddoc_id;
 							$conse_dif->usu_id = Session::get('usu_id');

@@ -31,12 +31,10 @@ class Congdpermisosdocumentos extends Controller {
 	 * @return Response
 	 */
 	public function create_per_doc(){
-
-		// return Input::get('usuario');
-		 //print_r($_POST);
-		 //return '';		
-		//$documentos = Modgddocumentos::where('gddoc_estado','=','activo')->get();
+		
 		$documentos = Modgdversiones::all();
+
+		//return $documentos;
 		//showreturn $documentos;
 		foreach ($documentos as $key => $value) {
 			if($value->empresa==null)
