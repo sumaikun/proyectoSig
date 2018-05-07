@@ -474,6 +474,8 @@ class Metodos{
     }
 
     public static function asDollars($value) {
+    	$value = str_replace(",","",$value);
+    	$value = str_replace(".","",$value);
   		return '$' . number_format($value, 0);
 	}
 }
